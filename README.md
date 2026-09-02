@@ -199,6 +199,40 @@ Sigue siendo **lista blanca** (`ENLACES_EXTERNOS_PERMITIDOS`, hoy sólo
 Cualquier otro dominio es un error, para que nadie meta un pixel de seguimiento
 disfrazado de enlace.
 
+### Ninguna fila con una sola tarjeta
+
+Regla de composición, reportada desde la página publicada el 2-sep-2026:
+«Para quién es» tenía cuatro tarjetas y a 1280 px quedaban **3 + 1**, con la
+última huérfana abajo.
+
+La causa es `grid-template-columns: repeat(auto-fit, minmax(...))`: elige
+**cuantas columnas entren**, sin saber cuántos elementos hay. Sirve cuando el
+número de tarjetas divide bien por 1, 2 y 3 —las rejas de **6** y de **12** no
+necesitan nada—, y falla justo cuando no.
+
+Por eso, en las rejas cuyo número de elementos no se lleva bien con tres
+columnas, las columnas van **explícitas**:
+
+| Reja | Elementos | Saltos |
+|---|---|---|
+| `.datos` (franja de cifras) | 4 | 4 → 2 → 1, nunca 3 |
+| `.reja--4` («Para quién es») | 4 | 4 → 2 → 1, nunca 3 |
+| `.flujo` (cómo funciona) | 4 | 4 → 2 → 1, nunca 3 |
+| `.cadena` (la cola sin señal) | 4 | 4 → 2 → 1, nunca 3 |
+| `.integra` (integraciones) | 3 | 3 → 2 con la última a lo ancho → 1 |
+
+**Tres elementos no se reparten en dos columnas sin dejar uno solo**, así que
+ahí la última tarjeta ocupa la fila entera (`grid-column: 1 / -1`): queda
+deliberada en vez de huérfana. Si agregás una cuarta tarjeta a
+«Integraciones», ese `:last-child` hay que sacarlo y pasar la reja a los
+saltos de cuatro.
+
+Se comprueba con el navegador, contando las columnas que de verdad calculó
+—no las que uno cree—: metiendo la página en un `<iframe>` del ancho a medir
+y leyendo `getComputedStyle(reja).gridTemplateColumns` desde el padre, junto
+con `children.length`. Si `elementos % columnas === 1`, hay una huérfana.
+Medido así de 320 a 1440 px en las tres páginas con rejas: ninguna.
+
 ### Medir que no haya desplazamiento horizontal
 
 Medido el 2-sep-2026 de **320 a 1440 px** en las cinco páginas: `scrollWidth`

@@ -313,6 +313,15 @@ a:hover { text-decoration-thickness: 2px; }
 /* La tarjeta la define el BORDE, no el relleno (DESIGN_SYSTEM §1 de la app). */
 .reja { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 268px), 1fr)); }
 .reja--2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); }
+/* ⚠️ `.reja` con CUATRO tarjetas: `auto-fit` daba tres columnas en el ancho
+   de escritorio y dejaba la cuarta sola abajo (reportado el 2-sep-2026 en
+   «Para quién es», a 1280 px). Con cuatro elementos los saltos son
+   4 → 2 → 1: 2 × 2 en el medio y una sola fila en pantalla grande.
+   Las rejas de 6 y de 12 tarjetas NO necesitan esto: con 1, 2 o 3 columnas
+   el resto siempre da cero. */
+.reja--4 { grid-template-columns: 1fr; }
+@media (min-width: 620px)  { .reja--4 { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1080px) { .reja--4 { grid-template-columns: repeat(4, 1fr); } }
 
 .tarjeta {
   background: var(--superficie);
@@ -503,7 +512,12 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
 .i-chico     { font-size: 10px; }
 
 /* --- La cadena de la cola ----------------------------------------------- */
-.cadena { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); counter-reset: eslabon; }
+/* Cuatro eslabones, 4 → 2 → 1. Y acá el orden importa además de la
+   estética: son los pasos de la cola, y con 3 + 1 el cuarto parecía otra
+   cosa en vez del final de la misma cadena. */
+.cadena { display: grid; gap: 14px; grid-template-columns: 1fr; counter-reset: eslabon; }
+@media (min-width: 620px)  { .cadena { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .cadena { grid-template-columns: repeat(4, 1fr); } }
 .cadena li { list-style: none; counter-increment: eslabon; position: relative; border: var(--grosor) solid var(--borde-suave); border-radius: var(--r-tarjeta); background: var(--superficie); padding: 20px; }
 .cadena li::before {
   content: counter(eslabon); position: absolute; top: -13px; left: 18px;
@@ -573,18 +587,28 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
 .boton--mini svg { width: 17px; height: 17px; }
 
 /* --- Franja de datos duros ---------------------------------------------- */
+/* ⚠️ CUATRO elementos, y por eso las columnas van EXPLÍCITAS y no con
+   `auto-fit`: auto-fit elige el número que entre, y en una tableta elegía
+   TRES — o sea 3 + 1, con el último dato solo en su fila. La regla del
+   sitio es que ninguna fila quede con un solo elemento, así que para los
+   grupos de cuatro los saltos son 4 → 2 → 1 y nunca 3. */
 .datos {
   display: grid; gap: 1px; margin: 0; padding: 0; list-style: none;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+  grid-template-columns: 1fr;
   border: var(--grosor) solid var(--borde-suave); border-radius: var(--r-tarjeta);
   background: var(--borde-suave); overflow: hidden;
 }
+@media (min-width: 420px)  { .datos { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 900px)  { .datos { grid-template-columns: repeat(4, 1fr); } }
 .datos li { background: var(--superficie); padding: 20px 22px; }
 .datos b { display: block; font-size: 1.5rem; font-weight: 700; letter-spacing: -.03em; color: var(--acento); line-height: 1.15; }
 .datos span { color: var(--tinta-suave); font-size: .9rem; }
 
 /* --- Flujo en pasos («Cómo funciona») ----------------------------------- */
-.flujo { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); counter-reset: hito; margin: 0; padding: 0; list-style: none; }
+/* Cuatro pasos: mismos saltos que la franja de datos, 4 → 2 → 1. */
+.flujo { display: grid; gap: 16px; grid-template-columns: 1fr; counter-reset: hito; margin: 0; padding: 0; list-style: none; }
+@media (min-width: 620px)  { .flujo { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .flujo { grid-template-columns: repeat(4, 1fr); } }
 .flujo li {
   counter-increment: hito; position: relative;
   border: var(--grosor) solid var(--borde-suave); border-radius: var(--r-tarjeta);
@@ -625,7 +649,18 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
 .captura p { color: var(--tinta-suave); font-size: .88rem; margin: 0; }
 
 /* --- Integraciones ------------------------------------------------------ */
-.integra { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+/* ⚠️ TRES tarjetas: 3 no se parte en 2 columnas sin dejar una sola abajo.
+   En el tramo de dos columnas la última ocupa la fila entera —queda
+   deliberada en vez de huérfana— y en pantalla angosta van apiladas. */
+.integra { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 620px) {
+  .integra { grid-template-columns: repeat(2, 1fr); }
+  .integra > :last-child { grid-column: 1 / -1; }
+}
+@media (min-width: 940px) {
+  .integra { grid-template-columns: repeat(3, 1fr); }
+  .integra > :last-child { grid-column: auto; }
+}
 .integra .tarjeta { display: flex; flex-direction: column; }
 .sello {
   display: inline-flex; align-items: center; gap: 7px; align-self: flex-start;
