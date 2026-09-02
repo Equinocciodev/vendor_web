@@ -657,27 +657,19 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
 .captura h3 { font-size: 1rem; margin-bottom: .2em; }
 .captura p { color: var(--tinta-suave); font-size: .88rem; margin: 0; }
 
-/* --- Integraciones ------------------------------------------------------ */
-/* ⚠️ TRES tarjetas: 3 no se parte en 2 columnas sin dejar una sola abajo.
-   En el tramo de dos columnas la última ocupa la fila entera —queda
-   deliberada en vez de huérfana— y en pantalla angosta van apiladas. */
-.integra { display: grid; gap: 16px; grid-template-columns: 1fr; }
-@media (min-width: 620px) {
-  .integra { grid-template-columns: repeat(2, 1fr); }
-  .integra > :last-child { grid-column: 1 / -1; }
-}
-@media (min-width: 940px) {
-  .integra { grid-template-columns: repeat(3, 1fr); }
-  .integra > :last-child { grid-column: auto; }
-}
-.integra .tarjeta { display: flex; flex-direction: column; }
+/* --- Rótulo de estado («Cotización», «Recalculado…») -------------------- */
+/* La reja `.integra` de tres tarjetas se retiró el 2-sep-2026: el muro de ERP
+   dice con sus etiquetas qué es nativo y qué es a medida, y el trío dice qué
+   sube y qué baja. Lo único que no decía nadie más quedó como nota. El
+   `.sello` sí sigue vivo: lo usan los dos papeles que se comparan. */
 .sello {
   display: inline-flex; align-items: center; gap: 7px; align-self: flex-start;
   margin-bottom: 14px; padding: 4px 11px; border-radius: var(--r-chip);
   font-size: .72rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
   border: var(--grosor) solid var(--borde);  color: var(--tinta-suave);
 }
-.sello--hoy { border-color: var(--acento); color: var(--acento); background: var(--velo-acento); }
+/* `.sello--hoy` se retiró con las tarjetas de integración: lo que marcaba
+   —qué está en producción hoy— lo dice ahora la ficha de Odoo en el muro. */
 
 /* --- Portada: la fila de apoyo bajo los botones ------------------------- */
 .apoyo { display: flex; align-items: center; gap: 10px; margin-top: 20px; color: var(--tinta-suave); font-size: .88rem; }
@@ -989,3 +981,107 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
   .mosaico p { font-size: .78rem; }
   .mosaico .icono { width: 38px; height: 38px; margin-bottom: 10px; }
 }
+
+/* ==========================================================================
+   El muro de ERP (2-sep-2026)
+
+   ⚠️ NO HAY UN SOLO LOGO DIBUJADO ACÁ, y es a propósito: los logotipos de
+   SAP, Oracle, Microsoft y compañía son marcas registradas de terceros. No se
+   dibujan de memoria —saldría un logo falso, que es peor que ninguno— y no se
+   descargan —sería un recurso externo y además casi todas exigen aceptar su
+   guía de marca—. Cada ficha es la **marca escrita**, que es un uso nominativo
+   legítimo, monocroma en reposo y con el color de la marca sólo al pasar por
+   encima.
+
+   Cuando el dueño consiga los SVG oficiales, la ficha se cambia a mano: está
+   explicado en `assets/img/erp/README.md`, y el estilo de `.con-logo` ya está
+   escrito acá abajo esperando.
+   ========================================================================== */
+.erps {
+  display: grid; gap: 12px; margin: 0; padding: 0; list-style: none;
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width: 620px)  { .erps { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1000px) { .erps { grid-template-columns: repeat(4, 1fr); } }
+/* Doce fichas: 2, 3 y 4 columnas dividen exacto y nunca dejan una sola
+   abajo. Si agregás o sacás una, revisá esa cuenta. */
+
+.erp {
+  min-width: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; text-align: center;
+  background: var(--superficie);
+  border: var(--grosor) solid var(--borde-suave);
+  border-radius: var(--r-tarjeta);
+  padding: 20px 12px 16px;
+  color: var(--tinta-suave);
+}
+.erp__marca {
+  font-weight: 700; font-size: 1.02rem; letter-spacing: -.02em;
+  color: var(--tinta); overflow-wrap: break-word;
+}
+.erp__linea { font-size: .78rem; color: var(--tinta-suave); }
+.erp__sello {
+  margin-top: 9px; font-size: .64rem; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--tinta-suave);
+  border: 1px solid var(--borde-suave); border-radius: var(--r-chip);
+  padding: 3px 9px;
+}
+.erp--nativo { border-color: var(--acento); background: linear-gradient(var(--velo-acento), var(--velo-acento)), var(--superficie); }
+.erp--nativo .erp__sello { color: var(--acento); border-color: var(--acento); }
+
+/* El color de la marca sólo al pasar por encima o al llegar con el tabulador.
+   `--erp-c` la define cada ficha; las que no la traen usan el acento del
+   sitio, que es lo honesto cuando no confirmamos el color con su guía. */
+@media (prefers-reduced-motion: no-preference) {
+  .erp { transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease; }
+}
+.erp:hover, .erp:focus-within {
+  border-color: var(--erp-c, var(--acento));
+  transform: translateY(-3px); box-shadow: var(--sombra);
+}
+.erp:hover .erp__marca, .erp:focus-within .erp__marca { color: var(--erp-c, var(--acento)); }
+:root[data-tema="oscuro"] .erp:hover, :root[data-tema="oscuro"] .erp:focus-within { border-color: var(--erp-c-osc, var(--acento)); }
+:root[data-tema="oscuro"] .erp:hover .erp__marca, :root[data-tema="oscuro"] .erp:focus-within .erp__marca { color: var(--erp-c-osc, var(--acento)); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) .erp:hover, :root:not([data-tema="claro"]) .erp:focus-within { border-color: var(--erp-c-osc, var(--acento)); }
+  :root:not([data-tema="claro"]) .erp:hover .erp__marca, :root:not([data-tema="claro"]) .erp:focus-within .erp__marca { color: var(--erp-c-osc, var(--acento)); }
+}
+
+/* Los colores de marca, sólo para ese tinte. Son aproximaciones tomadas de
+   material público y NO sustituyen a la guía de cada marca; las que no están
+   acá no se inventaron. Cada una lleva su variante clara para fondo oscuro,
+   porque un morado o un rojo oscuro sobre negro no se lee. */
+.erp--odoo      { --erp-c: #714B67; --erp-c-osc: #C79CB9; }
+.erp--sap       { --erp-c: #0A6ED1; --erp-c-osc: #6EB6F5; }
+.erp--oracle    { --erp-c: #C74634; --erp-c-osc: #F09287; }
+.erp--microsoft { --erp-c: #0067B8; --erp-c-osc: #6BB6F0; }
+.erp--intuit    { --erp-c: #1B7D12; --erp-c-osc: #6FD35F; }
+.erp--sage      { --erp-c: #0B7A3B; --erp-c-osc: #4FE07A; }
+.erp--zoho      { --erp-c: #B7202A; --erp-c-osc: #FF8E90; }
+.erp--sf        { --erp-c: #0176D3; --erp-c-osc: #6BC5F0; }
+
+/* Cuando exista el SVG oficial: se agrega `con-logo` a la ficha y se cambia
+   el <span class="erp__marca"> por el <img class="erp__logo">. Nada más. */
+.erp__logo { display: block; height: 26px; width: auto; max-width: 100%; margin: 2px auto 0; }
+.erp.con-logo .erp__marca { display: none; }
+/* Los logos ajenos vienen con sus colores; en oscuro se los aclara un punto
+   para que un logotipo negro no desaparezca contra el fondo. */
+:root[data-tema="oscuro"] .erp.con-logo .erp__logo { filter: brightness(0) invert(1) opacity(.86); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) .erp.con-logo .erp__logo { filter: brightness(0) invert(1) opacity(.86); }
+}
+
+.marca-ajena { font-size: .82rem; color: var(--tinta-suave); max-width: 74ch; }
+
+/* --- Trío de refuerzo: sube / baja / la verdad --------------------------- */
+.trio { display: grid; gap: 16px; grid-template-columns: 1fr; margin: 0; padding: 0; list-style: none; }
+@media (min-width: 760px) { .trio { grid-template-columns: repeat(3, 1fr); } }
+.trio li {
+  border: var(--grosor) solid var(--borde-suave); border-radius: var(--r-tarjeta);
+  background: var(--superficie); padding: 20px 22px;
+}
+.trio b { display: flex; align-items: center; gap: 9px; font-weight: 600; margin-bottom: 6px; }
+.trio svg { width: 19px; height: 19px; flex: none; color: var(--acento); }
+.trio span { color: var(--tinta-suave); font-size: .93rem; }

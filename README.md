@@ -123,13 +123,44 @@ sin una sola librería. Las informativas llevan `role="img"` con `<title>` y
 | La visita | Línea de tiempo | Los ocho pasos con un riel que se llena y los números que se encienden en orden. |
 | Sin señal | La cola | Tres envíos guardados en el teléfono viajan al ERP cuando vuelve la red, y el ERP confirma. |
 | La regla de fondo | Dos papeles | El total del teléfono y el del ERP, uno al lado del otro: lo que se firma contra lo que se recalcula. |
-| Integraciones | Teléfono ↔ Vendoo ↔ ERP | El dato va y vuelve; el ERP con Odoo nativo y SAP u otros a medida. |
+| Integraciones | Teléfono ↔ Vendoo ↔ ERP | El dato va y vuelve; abajo, el muro de doce ERP y el trío de qué sube, qué baja y quién tiene la verdad. |
 | Seguridad | Tres capas | PIN por fuera, base cifrada en el medio, sesión del ERP adentro. |
 
 ⚠️ **Las infografías llevan tope de ancho** (`.info`, 620 px; `.info--ancha`,
 780 px). Un `<svg>` con `width: 100%` y un `viewBox` de 460 se estira a los
 1.120 px de la envoltura **y escala su texto con él**: el «3 en cola» de 11 px
 terminaba dibujado a 28 px, como un cartel de la calle.
+
+### El muro de ERP, y por qué no hay ni un logotipo
+
+En **Integraciones** hay doce fichas —Odoo, SAP S/4HANA, SAP Business One,
+Oracle NetSuite, Dynamics 365 Business Central, QuickBooks, Sage, Zoho,
+Salesforce, Siigo, Alegra y CONTPAQi—, la primera marcada **«Integración
+nativa»** y las once restantes **«A medida»**.
+
+⚠️ **Cada ficha es la marca ESCRITA, no su logotipo.** Son marcas registradas
+de terceros: no se dibujan de memoria —saldría un logotipo falso, que es peor
+que ninguno— y no se descargan de su servidor —sería un recurso externo, y
+casi todas exigen aceptar antes su guía de marca—. Nombrar una marca por
+escrito para decir con qué sistemas trabaja el producto es un uso nominativo;
+poner su logotipo ya es usar su identidad visual.
+
+El color de cada marca aparece **sólo al pasar el cursor** (`--erp-c` y su
+variante para fondo oscuro). Las tres latinoamericanas no tienen color
+asignado y usan el violeta del sitio: no lo confirmamos con su guía y no se
+inventa, igual que con los datos de contacto.
+
+El día que lleguen los SVG oficiales, la ficha se cambia **a mano**: se le
+agrega `con-logo` y se reemplaza el `<span class="erp__marca">` por un
+`<img class="erp__logo">`. El estilo ya está escrito y el paso a paso, con el
+HTML listo para copiar, está en **`assets/img/erp/README.md`**. Se descartó un
+`<img>` con `onerror` que cayera al texto: la CSP no admite manejadores en
+línea, y un logotipo que sólo aparece si corre el JavaScript no es un
+logotipo. **Que el HTML diga la verdad de lo que hay.**
+
+⚠️ Y la regla que no se negocia: **una etiqueta «A medida» no se convierte en
+«Integración nativa»** hasta que esa integración exista y esté corriendo. Hoy
+la única es Odoo.
 
 ### De dónde sale la identidad visual
 
@@ -301,13 +332,16 @@ columnas, las columnas van **explícitas**:
 | `.reja--4` («Para quién es») | 4 | 4 → 2 → 1, nunca 3 |
 | `.flujo` (cómo funciona) | 4 | 4 → 2 → 1, nunca 3 |
 | `.cadena` (la cola sin señal) | 4 | 4 → 2 → 1, nunca 3 |
-| `.integra` (integraciones) | 3 | 3 → 2 con la última a lo ancho → 1 |
+| `.trio` (sube / baja / la verdad) | 3 | 3 → 1, nunca 2 |
+| `.latidos` (los tres del corazón) | 3 | 3 → 1, nunca 2 |
+| `.mosaico` (capacidades) | 12 | 4 → 3 → 2 → 1: doce se divide por todas |
+| `.erps` (muro de ERP) | 12 | 4 → 3 → 2 → 1, por lo mismo |
 
-**Tres elementos no se reparten en dos columnas sin dejar uno solo**, así que
-ahí la última tarjeta ocupa la fila entera (`grid-column: 1 / -1`): queda
-deliberada en vez de huérfana. Si agregás una cuarta tarjeta a
-«Integraciones», ese `:last-child` hay que sacarlo y pasar la reja a los
-saltos de cuatro.
+**Tres elementos no se reparten en dos columnas sin dejar uno solo**: por eso
+las rejas de tres saltan de 3 a 1 y **nunca pasan por 2**. Y las de **doce**
+—el mosaico de capacidades y el muro de ERP— no necesitan nada, porque doce se
+divide exacto por 4, 3, 2 y 1: si alguna vez pasan a trece, hay que volver
+acá.
 
 Se comprueba con el navegador, contando las columnas que de verdad calculó
 —no las que uno cree—: metiendo la página en un `<iframe>` del ancho a medir

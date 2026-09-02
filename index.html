@@ -688,23 +688,104 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
         <text class="i-suave" x="488" y="157" font-size="9" text-anchor="middle">Otros · a medida</text>
       </svg>
     </div>
-    <div class="integra mt-lg">
-      <article class="tarjeta tarjeta--realce revelar">
-        <span class="sello sello--hoy">Hoy, en producción</span>
-        <h3>Odoo 19</h3>
-        <p>Directo con su API, sin pasarela: la sesión es la de Odoo y el pedido nace como documento de Odoo, con su recálculo de precios e impuestos.</p>
-      </article>
-      <article class="tarjeta revelar revelar--b">
-        <span class="sello">A medida</span>
-        <h3>SAP y otros ERP</h3>
-        <p>No hay conector de estantería y no vamos a decir que lo hay. Lo que sí está resuelto es la parte difícil: el teléfono.</p>
-      </article>
-      <article class="tarjeta revelar revelar--c">
-        <span class="sello">Lo que hace falta</span>
-        <h3>Cuatro verbos</h3>
-        <p><strong>Bajar</strong> cartera, catálogo, tarifas y facturas. <strong>Subir</strong> visitas, pedidos y cobros con su identificador, para que reintentar no duplique.</p>
-      </article>
+    <!-- ⚠️ MURO DE ERP. Cada ficha es la marca ESCRITA, no su logotipo: son
+         marcas registradas de terceros, no se dibujan de memoria ni se
+         descargan. Cuando exista el SVG oficial de alguna, se le agrega la
+         clase `con-logo` a su <li> y se cambia el <span class="erp__marca">
+         por un <img class="erp__logo">. El paso a paso, con el HTML listo
+         para copiar, está en assets/img/erp/README.md. -->
+    <ul class="erps mt-lg revelar">
+      <li class="erp erp--nativo erp--odoo">
+        <span class="erp__marca">Odoo</span>
+        <span class="erp__linea">17, 18 y 19</span>
+        <span class="erp__sello">Integración nativa</span>
+      </li>
+      <li class="erp erp--sap">
+        <span class="erp__marca">SAP</span>
+        <span class="erp__linea">S/4HANA</span>
+        <span class="erp__sello">A medida</span>
+      </li>
+      <li class="erp erp--sap">
+        <span class="erp__marca">SAP</span>
+        <span class="erp__linea">Business One</span>
+        <span class="erp__sello">A medida</span>
+      </li>
+      <li class="erp erp--oracle">
+        <span class="erp__marca">NetSuite</span>
+        <span class="erp__linea">Oracle</span>
+        <span class="erp__sello">A medida</span>
+      </li>
+      <li class="erp erp--microsoft">
+        <span class="erp__marca">Dynamics 365</span>
+        <span class="erp__linea">Business Central</span>
+        <span class="erp__sello">A medida</span>
+      </li>
+      <li class="erp erp--intuit">
+        <span class="erp__marca">QuickBooks</span>
+        <span class="erp__linea">Online y Desktop</span>
+        <span class="erp__sello">A medida</span>
+      </li>
+      <li class="erp erp--sage">
+        <span class="erp__marca">Sage</span>
+        <span class="erp__linea">300 y X3</span>
+        <span class="erp__sello">A medida</span>
+      </li>
+      <li class="erp erp--zoho">
+        <span class="erp__marca">Zoho</span>
+        <span class="erp__linea">Books e Inventory</span>
+        <span class="erp__sello">A medida</span>
+      </li>
+      <li class="erp erp--sf">
+        <span class="erp__marca">Salesforce</span>
+        <span class="erp__linea">CRM</span>
+        <span class="erp__sello">A medida</span>
+      </li>
+      <li class="erp">
+        <span class="erp__marca">Siigo</span>
+        <span class="erp__linea">Colombia</span>
+        <span class="erp__sello">A medida</span>
+      </li>
+      <li class="erp">
+        <span class="erp__marca">Alegra</span>
+        <span class="erp__linea">Latinoamérica</span>
+        <span class="erp__sello">A medida</span>
+      </li>
+      <li class="erp">
+        <span class="erp__marca">CONTPAQi</span>
+        <span class="erp__linea">México</span>
+        <span class="erp__sello">A medida</span>
+      </li>
+    </ul>
+    <p class="marca-ajena mt-sm revelar">Sólo Odoo tiene hoy integración construida y en producción. Con el resto la conexión se define y se construye para cada operación: nombrarlos acá no significa que exista un conector hecho. Todas las marcas mencionadas pertenecen a sus respectivos titulares y se nombran para decir con qué sistemas trabaja el cliente.</p>
+
+    <ul class="trio mt-xl revelar">
+      <li>
+        <b>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V5"/><path d="M6 11l6-6 6 6"/></svg>
+          Sube al ERP
+        </b>
+        <span>Pedidos, cobranzas, visitas con su evidencia y solicitudes de clientes nuevos.</span>
+      </li>
+      <li>
+        <b>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v15"/><path d="M6 13l6 6 6-6"/></svg>
+          Baja del ERP
+        </b>
+        <span>Catálogo, precios por cliente, stock, crédito disponible y facturas abiertas.</span>
+      </li>
+      <li>
+        <b>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.4-3.2 8.3-8 9.5C7.2 20.3 4 16.4 4 12V6z"/><path d="M9 12l2 2 4-4"/></svg>
+          La verdad la tiene el ERP
+        </b>
+        <span>El teléfono propone; el número que vale lo recalcula tu sistema al recibir el pedido.</span>
+      </li>
+    </ul>
+
+    <div class="nota mt-lg revelar">
+      <p><strong>«Nativa» quiere decir esto:</strong> con Odoo, Vendoo habla directo con su API, sin pasarela ni base intermedia. La sesión es la del propio Odoo y el pedido nace como un documento de Odoo, con su recálculo de precios e impuestos al recibirlo. Con los demás, esa capa es la que se construye.</p>
     </div>
+
     <div class="llamado mt-xl revelar">
       <div>
         <h2>¿Con qué sistema trabajas?</h2>
