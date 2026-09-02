@@ -1,14 +1,13 @@
-# Publicación del sitio de Vendoo en Cloudflare Pages.
+# Publicación del sitio de Vendoo en GitHub Pages.
 #
 # Dos trabajos y en este orden: primero se verifica, y sólo si pasa se publica.
 # Un sitio con un enlace roto o una página que no cierra sus etiquetas no llega
 # a producción.
 #
-# Secretos que hay que cargar en el repositorio (Settings › Secrets and
-# variables › Actions):
-#   CLOUDFLARE_API_TOKEN   — token con el permiso «Cloudflare Pages: Edit»
-#   CLOUDFLARE_ACCOUNT_ID  — el id de la cuenta de Cloudflare
-# Están explicados paso a paso en el README.
+# No hace falta ningún secreto: GitHub Pages se despliega con el token del
+# propio workflow (`pages: write` + `id-token: write`). Lo único que hay que
+# hacer una vez en el repositorio es Settings › Pages › Source: «GitHub
+# Actions», y cargar el dominio en «Custom domain». Está en el README.
 
 name: Publicar
 
@@ -20,6 +19,8 @@ on:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
 
 concurrency:
   group: publicar-${{ github.ref }}
@@ -56,30 +57,32 @@ jobs:
             tidy -quiet -errors --gnu-emacs yes "$f" || true
           done
 
+      # Se sube una carpeta armada a mano y no el repositorio entero: así
+      # `tool/`, `.github/` y el README no terminan servidos como parte del
+      # sitio. Es copiar archivos, no compilar nada. El CNAME es lo que le
+      # dice a Pages qué dominio sirve.
+      - name: Armar la carpeta que se publica
+        run: |
+          mkdir -p _sitio
+          cp -R assets _sitio/
+          cp *.html robots.txt sitemap.xml favicon.svg site.webmanifest CNAME _sitio/
+          touch _sitio/.nojekyll
+          ls -la _sitio
+
+      - name: Subir el artefacto de Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _sitio
+
   publicar:
-    name: Publicar en Cloudflare Pages
+    name: Publicar en GitHub Pages
     needs: verificar
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
-      name: produccion
-      url: https://vendooapp.com
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
-
-      # Se sube una carpeta armada a mano y no el repositorio entero: así
-      # `tool/`, `.github/` y el README no terminan servidos como parte del
-      # sitio. Es copiar archivos, no compilar nada.
-      - name: Armar la carpeta que se sube
-        run: |
-          mkdir -p _sitio
-          cp -R assets _sitio/
-          cp *.html robots.txt sitemap.xml favicon.svg site.webmanifest _headers _sitio/
-          ls -la _sitio
-
       - name: Desplegar
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy _sitio --project-name vendoo-web --branch main
+        id: deploy
+        uses: actions/deploy-pages@v4

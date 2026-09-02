@@ -26,7 +26,8 @@ corregir una coma de la política de privacidad sin instalar nada.
 ├── robots.txt
 ├── sitemap.xml
 ├── site.webmanifest
-├── _headers              Cabeceras de Cloudflare Pages (CSP, caché)
+├── _headers              Referencia de cabeceras (Pages no las sirve; la CSP va en <meta>)
+├── CNAME                 El dominio que sirve GitHub Pages
 ├── assets/
 │   ├── css/estilo.css    TODO el estilo del sitio, en un solo archivo
 │   ├── js/sitio.js       Lo único que hace JavaScript: el cambio de tema
@@ -94,72 +95,51 @@ no haya **ningún** recurso externo. Es el mismo script que corre en CI.
 
 ---
 
-## Publicación: Cloudflare Pages
+## Publicación: GitHub Pages
 
-Cada `push` a `main` verifica y despliega. El flujo está en
-`.github/workflows/publicar.yml`.
+Cada push a `main` corre `.github/workflows/publicar.yml`: verifica el sitio y,
+si pasa, lo publica en GitHub Pages con `actions/deploy-pages`. No hay
+secretos que cargar: el workflow se autoriza con su propio token.
 
-### 1. Crear el proyecto en Cloudflare
+### 1. Encender Pages en el repositorio (una vez)
 
-En el panel de Cloudflare → **Workers & Pages** → **Create** → **Pages** →
-**Connect to Git** *no*: se usa **Direct Upload**, porque quien sube es GitHub
-Actions.
+**Settings → Pages → Build and deployment → Source: «GitHub Actions».** Sin
+esto el trabajo «Publicar» falla con *«Get Pages site failed»*.
 
-- **Nombre del proyecto:** `vendoo-web` — tiene que ser exactamente ése, es el
-  que nombra el flujo (`--project-name vendoo-web`).
-- Crear el proyecto vacío. El primer despliegue lo hace el flujo.
+### 2. Apuntar el dominio
 
-### 2. Sacar los dos secretos
+En **Settings → Pages → Custom domain** escribí `vendooapp.com` y guardá; el
+archivo `CNAME` del repo ya lo lleva, así cada publicación lo conserva. Marcá
+**Enforce HTTPS** cuando GitHub termine de emitir el certificado (minutos).
 
-**`CLOUDFLARE_ACCOUNT_ID`** — está en el panel de Cloudflare, en la barra
-lateral derecha de la vista de la cuenta, o en la URL:
-`dash.cloudflare.com/<account-id>/...`.
+En Cloudflare (DNS de `vendooapp.com`), **solo la raíz y `www`** — los
+`<slug>.vendooapp.com` de las bases de clientes no se tocan:
 
-**`CLOUDFLARE_API_TOKEN`** — **My Profile** → **API Tokens** → **Create Token**
-→ **Create Custom Token**:
+| Tipo | Nombre | Valor | Proxy |
+|---|---|---|---|
+| A | `@` | `185.199.108.153` | DNS only (nube gris) |
+| A | `@` | `185.199.109.153` | DNS only |
+| A | `@` | `185.199.110.153` | DNS only |
+| A | `@` | `185.199.111.153` | DNS only |
+| CNAME | `www` | `equinocciodev.github.io` | DNS only |
 
-- Permiso: **Account · Cloudflare Pages · Edit**.
-- Recursos de cuenta: la cuenta de Grupo Leiros.
-- Sin filtro de IP y sin TTL, o con el que la empresa prefiera.
+«DNS only» mientras GitHub verifica el dominio y emite el certificado; después
+se puede pasar a proxy si se quiere, con SSL en modo **Full**.
 
-Y en GitHub: **Settings** → **Secrets and variables** → **Actions** → **New
-repository secret**, uno con cada nombre. Los nombres tienen que ser exactos.
+### 3. Comprobar
 
-### 3. Apuntar el dominio
+`https://vendooapp.com/` y `https://www.vendooapp.com/` tienen que responder
+la página de inicio; `https://vendooapp.com/robots.txt` tiene que existir. El
+estado de cada publicación está en la pestaña **Actions** y en **Settings →
+Pages**.
 
-`vendooapp.com` ya está en Cloudflare (servidores de nombres `dean` y `zelda`).
-En el proyecto de Pages → **Custom domains** → **Set up a custom domain**:
+### Cabeceras de seguridad
 
-- `vendooapp.com`
-- `www.vendooapp.com`
-
-Cloudflare crea solo los registros —un `CNAME` a `vendoo-web.pages.dev`, o el
-`A`/`AAAA` aplanado en la raíz— y emite el certificado. No hay que crearlos a
-mano.
-
-⚠️ **Ojo con los subdominios de los clientes.** Cada base de un cliente vive en
-`<slug>.vendooapp.com` y esos registros ya existen. Al agregar el dominio del
-sitio **no se toca el comodín ni ningún subdominio existente**: sólo la raíz y
-`www`.
-
-> **El primer despliegue falla, y está bien.** Mientras los dos secretos no
-> estén cargados, el trabajo `Verificar el sitio` pasa y `Publicar en
-> Cloudflare Pages` se cae con *«it's necessary to set a CLOUDFLARE_API_TOKEN
-> environment variable»*. Es exactamente ese mensaje el que confirma que el
-> flujo está bien cableado y que lo único que falta son las credenciales.
-
-### 4. Comprobar
-
-```bash
-curl -I https://vendooapp.com
-curl -I https://vendooapp.com/privacidad.html
-```
-
-Deberían dar `200`, y las cabeceras de `_headers` (`content-security-policy`,
-`x-content-type-options`, …) tienen que venir en la respuesta. Si no vienen,
-`_headers` no llegó a la carpeta que se subió.
-
----
+GitHub Pages no permite cabeceras propias, así que la política de seguridad
+de contenido va como `<meta http-equiv="Content-Security-Policy">` en cada
+página (sin `frame-ancestors`, que no se admite en `<meta>`). El archivo
+`_headers` se conserva solo como referencia de lo que se serviría con un
+CDN que sí las admita.
 
 ## Lo que falta completar antes de publicar
 
