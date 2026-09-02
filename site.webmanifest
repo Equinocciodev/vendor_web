@@ -1,16 +1,17 @@
 {
-  "name": "Vendoo",
+  "name": "Vendoo — fuerza de ventas de campo",
   "short_name": "Vendoo",
-  "description": "La aplicación de campo de los vendedores de Grupo Leiros.",
+  "description": "La aplicación Android con la que una fuerza de ventas de campo arma su ruta, levanta pedidos, cobra y deja constancia de cada visita. Funciona sin señal.",
   "lang": "es-VE",
   "start_url": "/",
+  "scope": "/",
   "display": "browser",
   "background_color": "#0E0E10",
   "theme_color": "#6D28D9",
   "icons": [
     { "src": "/assets/img/favicon-32.png", "sizes": "32x32", "type": "image/png" },
     { "src": "/assets/img/icono-180.png", "sizes": "180x180", "type": "image/png" },
-    { "src": "/assets/img/icono-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/assets/img/icono-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
     { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
   ]
 }

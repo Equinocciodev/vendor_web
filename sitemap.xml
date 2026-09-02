@@ -1,27 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://vendooapp.com/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://vendooapp.com/"/>
     <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://vendooapp.com/contacto.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://vendooapp.com/contacto.html"/>
     <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://vendooapp.com/privacidad.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://vendooapp.com/privacidad.html"/>
     <lastmod>2026-09-02</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://vendooapp.com/terminos.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://vendooapp.com/terminos.html"/>
     <lastmod>2026-09-02</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.6</priority>
   </url>
 </urlset>

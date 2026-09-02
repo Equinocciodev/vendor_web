@@ -9,20 +9,38 @@ chequeo *liviano* a propósito. Lo que comprueba:
   1. que existan las páginas del sitio;
   2. que cada HTML esté bien formado (etiquetas balanceadas);
   3. que cada página tenga lo mínimo de SEO y accesibilidad (title, meta
-     description, lang, canonical, viewport, exactamente un <h1>);
+     description, lang, canonical, viewport, Open Graph, Twitter Card y
+     exactamente un <h1>);
   4. que ningún enlace interno ni ningún recurso apunte a un archivo que no
      está, y que ninguna ancla apunte a un id que no existe;
   5. que NO haya recursos externos — nada de CDN: el sitio se sirve entero
      desde su propio origen, que es lo que hace posible la política de
      seguridad de contenido de `_headers`;
   6. que no quede ningún atributo `style=` en el HTML, por lo mismo: cada uno
-     obligaría a abrir `style-src` a `unsafe-inline`.
+     obligaría a abrir `style-src` a `unsafe-inline`;
+  7. que cada `<script>` en línea tenga su hash sha256 declarado en la CSP de
+     esa misma página, y
+  8. que cada bloque JSON-LD sea JSON válido.
+
+⚠️ RECURSO y ENLACE no son lo mismo, y desde el 2-sep-2026 el script los
+trata distinto. Un *recurso* externo (una hoja de estilo, un script, una
+fuente, una imagen de otro dominio) sigue siendo un error: lo carga el
+navegador, lo bloquearía la CSP y le contaría a un tercero quién visita el
+sitio. Un *enlace* externo es una navegación que el visitante decide, no la
+carga: no la toca la CSP y no delata a nadie hasta que se hace clic. La app
+está publicada en Google Play y el botón de descarga tiene que poder
+apuntar ahí. Por eso hay una lista blanca corta —y sigue siendo lista
+blanca: cualquier otro dominio es un error, para que nadie meta un pixel de
+seguimiento disfrazado de enlace.
 
 Sale con código 1 si encuentra algo. Los avisos no rompen la publicación.
 """
 
 from __future__ import annotations
 
+import base64
+import hashlib
+import json
 import re
 import sys
 from html.parser import HTMLParser
@@ -31,6 +49,10 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 OBLIGATORIAS = ['index.html', 'contacto.html', 'terminos.html', 'privacidad.html']
 ADEMAS = ['404.html', 'robots.txt', 'sitemap.xml', 'favicon.svg', 'site.webmanifest']
+
+# Los únicos dominios a los que el sitio puede ENLAZAR (nunca pedirles un
+# recurso). Uno solo, y con su razón: ahí está publicada la aplicación.
+ENLACES_EXTERNOS_PERMITIDOS = {'play.google.com'}
 
 VACIAS = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
           'meta', 'param', 'source', 'track', 'wbr'}
@@ -55,7 +77,7 @@ class Lector(HTMLParser):
         self.archivo = archivo
         self.pila: list[tuple[str, int]] = []
         self.ids: set[str] = set()
-        self.enlaces: list[tuple[str, int]] = []
+        self.enlaces: list[tuple[str, int, dict]] = []
         self.recursos: list[tuple[str, int]] = []
         self.h1 = 0
         self.titulo = ''
@@ -64,7 +86,13 @@ class Lector(HTMLParser):
         self.canonica = ''
         self.viewport = ''
         self.lang = ''
+        self.csp = ''
+        self.metas: dict[str, str] = {}
         self.imagenes_sin_alt = 0
+        self.en_script: str | None = None   # el `type` del <script> abierto
+        self.guiones_de_script: list[tuple[str, int, str]] = []  # (tipo, linea, cuerpo)
+        self.linea_script = 0
+        self.cuerpo_script = ''
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
@@ -83,18 +111,32 @@ class Lector(HTMLParser):
         elif tag == 'title':
             self.en_titulo = True
         elif tag == 'meta':
+            nombre = a.get('name') or a.get('property') or ''
+            if nombre:
+                self.metas[nombre] = a.get('content', '')
             if a.get('name') == 'description':
                 self.descripcion = a.get('content', '')
             if a.get('name') == 'viewport':
                 self.viewport = a.get('content', '')
+            if (a.get('http-equiv') or '').lower() == 'content-security-policy':
+                self.csp = a.get('content', '')
         elif tag == 'link':
             if a.get('rel') == 'canonical':
                 self.canonica = a.get('href', '')
+            elif a.get('rel') == 'alternate':
+                pass                      # hreflang: apunta a URLs absolutas propias
             elif a.get('href'):
                 self.recursos.append((a['href'], linea))
         elif tag == 'a' and a.get('href'):
-            self.enlaces.append((a['href'], linea))
-        elif tag in ('script', 'img') and a.get('src'):
+            self.enlaces.append((a['href'], linea, a))
+        elif tag == 'script':
+            self.en_script = (a.get('type') or 'text/javascript').lower()
+            self.linea_script = linea
+            self.cuerpo_script = ''
+            if a.get('src'):
+                self.recursos.append((a['src'], linea))
+                self.en_script = None
+        elif tag == 'img' and a.get('src'):
             self.recursos.append((a['src'], linea))
 
         if tag == 'img' and not a.get('alt') and a.get('alt') != '':
@@ -111,6 +153,10 @@ class Lector(HTMLParser):
             error(self.archivo, f'línea {self.getpos()[0]}: atributo style= en <{tag}>')
 
     def handle_endtag(self, tag):
+        if tag == 'script' and self.en_script is not None:
+            self.guiones_de_script.append(
+                (self.en_script, self.linea_script, self.cuerpo_script))
+            self.en_script = None
         if tag in VACIAS:
             return
         if not self.pila:
@@ -132,9 +178,8 @@ class Lector(HTMLParser):
     def handle_data(self, datos):
         if self.en_titulo:
             self.titulo += datos
-
-    def handle_endtag_title(self):
-        self.en_titulo = False
+        if self.en_script is not None:
+            self.cuerpo_script += datos
 
 
 def destino(href: str) -> Path | None:
@@ -147,6 +192,17 @@ def destino(href: str) -> Path | None:
     if ruta == '' or ruta.endswith('/'):
         ruta += 'index.html'
     return RAIZ / ruta
+
+
+def dominio(url: str) -> str:
+    sin = re.sub(r'^https?://', '', url)
+    sin = sin[2:] if sin.startswith('//') else sin
+    return sin.split('/')[0].split(':')[0].lower()
+
+
+def sha256_b64(texto: str) -> str:
+    return 'sha256-' + base64.b64encode(
+        hashlib.sha256(texto.encode('utf-8')).digest()).decode()
 
 
 def main() -> int:
@@ -195,13 +251,45 @@ def main() -> int:
         if lector.imagenes_sin_alt:
             error(pagina.name, f'{lector.imagenes_sin_alt} <img> sin alt')
 
+        # Open Graph y Twitter Card: lo que decide cómo se ve el sitio cuando
+        # alguien lo pega en un chat. Si falta, no se nota hasta que se pega.
+        for etiqueta in ('og:title', 'og:description', 'og:image', 'og:url',
+                         'og:type', 'twitter:card', 'twitter:title',
+                         'twitter:description', 'twitter:image'):
+            if not lector.metas.get(etiqueta):
+                error(pagina.name, f'sin <meta> {etiqueta}')
+
+        # Cada <script> en línea tiene que estar declarado en la CSP de SU
+        # página, o el navegador lo bloquea en silencio y el tema parpadea.
+        # (Los bloques JSON-LD no se ejecutan y no los alcanza la CSP.)
+        for tipo, linea, cuerpo in lector.guiones_de_script:
+            if tipo == 'application/ld+json':
+                try:
+                    json.loads(cuerpo)
+                except Exception as exc:
+                    error(pagina.name, f'línea {linea}: el JSON-LD no es JSON válido ({exc})')
+                continue
+            h = sha256_b64(cuerpo)
+            if h not in lector.csp:
+                error(pagina.name,
+                      f'línea {linea}: <script> en línea sin su hash en la CSP de esta '
+                      f'página. El que corresponde es {h!r} — ver el README.')
+
     for nombre, lector in lectores.items():
-        for href, linea in lector.enlaces + lector.recursos:
+        for href, linea, attrs in lector.enlaces:
             if href.startswith(('mailto:', 'tel:')):
                 continue
             if href.startswith(('http://', 'https://', '//')):
-                error(nombre, f'línea {linea}: recurso o enlace EXTERNO ({href}). '
-                              'El sitio se sirve entero desde su propio origen.')
+                d = dominio(href)
+                if d not in ENLACES_EXTERNOS_PERMITIDOS:
+                    error(nombre, f'línea {linea}: enlace EXTERNO a {d}. Sólo se permite '
+                                  f'enlazar a {", ".join(sorted(ENLACES_EXTERNOS_PERMITIDOS))}.')
+                    continue
+                if not href.startswith('https://'):
+                    error(nombre, f'línea {linea}: el enlace externo {href} no es https')
+                if 'noopener' not in (attrs.get('rel') or ''):
+                    error(nombre, f'línea {linea}: el enlace externo a {d} necesita '
+                                  'rel="noopener"')
                 continue
             if href.startswith('#'):
                 if href[1:] not in lector.ids:
@@ -219,10 +307,20 @@ def main() -> int:
                 if ids is not None and ancla not in ids:
                     error(nombre, f'línea {linea}: {href} apunta a un id que no existe')
 
+        for href, linea in lector.recursos:
+            if href.startswith(('http://', 'https://', '//')):
+                error(nombre, f'línea {linea}: RECURSO externo ({href}). El sitio se '
+                              'sirve entero desde su propio origen.')
+                continue
+            archivo = destino(href)
+            if archivo is not None and not archivo.exists():
+                error(nombre, f'línea {linea}: {href} apunta a un archivo que no está')
+
     # El sitemap tiene que nombrar las cuatro páginas y ninguna que no exista.
     mapa = (RAIZ / 'sitemap.xml')
     if mapa.exists():
-        urls = re.findall(r'<loc>\s*([^<\s]+)\s*</loc>', mapa.read_text(encoding='utf-8'))
+        xml = mapa.read_text(encoding='utf-8')
+        urls = re.findall(r'<loc>\s*([^<\s]+)\s*</loc>', xml)
         rutas = {u.split('vendooapp.com', 1)[-1] or '/' for u in urls}
         for p in OBLIGATORIAS:
             esperada = '/' if p == 'index.html' else '/' + p
@@ -232,6 +330,14 @@ def main() -> int:
             d = destino(r)
             if d is not None and not d.exists():
                 error('sitemap.xml', f'{r} no existe en el sitio')
+        if len(re.findall(r'<lastmod>', xml)) != len(urls):
+            error('sitemap.xml', 'hay <url> sin <lastmod>')
+
+    # robots.txt tiene que declarar el sitemap, o nadie lo encuentra.
+    robots = (RAIZ / 'robots.txt')
+    if robots.exists() and 'Sitemap: https://vendooapp.com/sitemap.xml' not in \
+            robots.read_text(encoding='utf-8'):
+        error('robots.txt', 'no declara el Sitemap')
 
     for a in avisos:
         print('aviso  ' + a)

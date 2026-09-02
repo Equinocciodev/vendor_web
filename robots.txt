@@ -1,6 +1,6 @@
 # Vendoo — https://vendooapp.com
-# Sitio público de una aplicación de uso interno. Se indexa entero: son cuatro
-# páginas y ninguna tiene datos de nadie.
+# Sitio público de producto. Se indexa entero: son cuatro páginas y ninguna
+# tiene datos de nadie. La única que se deja fuera es la de «no encontrado».
 User-agent: *
 Allow: /
 Disallow: /404.html
