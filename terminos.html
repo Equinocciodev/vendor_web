@@ -2,7 +2,7 @@
 <html lang="es-VE">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Q/MQfM1ys4NaAWCkFoulY6fsYf5R2oN/1w7Vut9HNMo='; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sBSmF0cvqwH9q89LN1kE6J363Sy1ybqC0YQqLHqJ1RI='; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Términos de servicio — Vendoo</title>
 <meta name="description" content="Condiciones de uso de Vendoo, la aplicación de fuerza de ventas de campo de GUUAO LLC: cuenta, uso permitido, cotización de pedidos, cobros y disponibilidad.">
@@ -40,10 +40,19 @@
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-400.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-600.woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/estilo.css">
-<script>/* El tema elegido, ANTES del primer pintado: con `defer` la pagina
-   parpadearia en claro. Los tres valores estan explicados en sitio.js. */
+<script>/* Dos cosas que tienen que pasar ANTES del primer pintado.
+
+   1. El tema elegido: con `defer` la pagina parpadearia en claro. Los tres
+      valores estan explicados en sitio.js.
+   2. `data-anim`, que es lo que habilita las animaciones de entrada. Va aca
+      y no en sitio.js por lo mismo: puesto despues, lo que va a aparecer se
+      veria un instante antes de esconderse. Y se QUITA SOLO a los dos
+      segundos si sitio.js no alcanzo a marcar `data-listo` — sin esa red,
+      un script que no cargue dejaria media pagina en opacity 0. */
 try{var t=localStorage.getItem('vendoo-tema');
-if(t==='claro'||t==='oscuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}</script>
+if(t==='claro'||t==='oscuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}
+try{var h=document.documentElement;h.setAttribute('data-anim','1');
+setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-anim');}},2000);}catch(e){}</script>
 <script src="/assets/js/sitio.js" defer></script>
 
 <script type="application/ld+json">

@@ -2,10 +2,10 @@
 <html lang="es-VE">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Q/MQfM1ys4NaAWCkFoulY6fsYf5R2oN/1w7Vut9HNMo='; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sBSmF0cvqwH9q89LN1kE6J363Sy1ybqC0YQqLHqJ1RI='; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Contacto y demo — Vendoo</title>
-<meta name="description" content="Pide una demo de Vendoo, escribe a soporte si ya la usas en la calle o haz una solicitud de datos personales. Vendoo es un producto de GUUAO LLC.">
+<meta name="description" content="Pedí una demo de Vendoo, escribí a soporte si ya la usás en la calle o hacé una solicitud de datos personales. Vendoo es un producto de GUUAO LLC.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://vendooapp.com/contacto.html">
 <link rel="alternate" hreflang="es" href="https://vendooapp.com/contacto.html">
@@ -20,7 +20,7 @@
 <meta property="og:locale" content="es_VE">
 <meta property="og:url" content="https://vendooapp.com/contacto.html">
 <meta property="og:title" content="Contacto y demo — Vendoo">
-<meta property="og:description" content="Pide una demo de Vendoo, escribe a soporte si ya la usas en la calle o haz una solicitud de datos personales. Vendoo es un producto de GUUAO LLC.">
+<meta property="og:description" content="Pedí una demo de Vendoo, escribí a soporte si ya la usás en la calle o hacé una solicitud de datos personales. Vendoo es un producto de GUUAO LLC.">
 <meta property="og:image" content="https://vendooapp.com/assets/img/og.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
@@ -28,7 +28,7 @@
 <meta property="og:image:alt" content="Vendoo — la fuerza de ventas de campo, de punta a punta.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Contacto y demo — Vendoo">
-<meta name="twitter:description" content="Pide una demo de Vendoo, escribe a soporte si ya la usas en la calle o haz una solicitud de datos personales. Vendoo es un producto de GUUAO LLC.">
+<meta name="twitter:description" content="Pedí una demo de Vendoo, escribí a soporte si ya la usás en la calle o hacé una solicitud de datos personales. Vendoo es un producto de GUUAO LLC.">
 <meta name="twitter:image" content="https://vendooapp.com/assets/img/og.png">
 <meta name="twitter:image:alt" content="Vendoo — la fuerza de ventas de campo, de punta a punta.">
 
@@ -40,10 +40,19 @@
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-400.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-600.woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/estilo.css">
-<script>/* El tema elegido, ANTES del primer pintado: con `defer` la pagina
-   parpadearia en claro. Los tres valores estan explicados en sitio.js. */
+<script>/* Dos cosas que tienen que pasar ANTES del primer pintado.
+
+   1. El tema elegido: con `defer` la pagina parpadearia en claro. Los tres
+      valores estan explicados en sitio.js.
+   2. `data-anim`, que es lo que habilita las animaciones de entrada. Va aca
+      y no en sitio.js por lo mismo: puesto despues, lo que va a aparecer se
+      veria un instante antes de esconderse. Y se QUITA SOLO a los dos
+      segundos si sitio.js no alcanzo a marcar `data-listo` — sin esa red,
+      un script que no cargue dejaria media pagina en opacity 0. */
 try{var t=localStorage.getItem('vendoo-tema');
-if(t==='claro'||t==='oscuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}</script>
+if(t==='claro'||t==='oscuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}
+try{var h=document.documentElement;h.setAttribute('data-anim','1');
+setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-anim');}},2000);}catch(e){}</script>
 <script src="/assets/js/sitio.js" defer></script>
 
 <script type="application/ld+json">
@@ -132,12 +141,12 @@ if(t==='claro'||t==='oscuro'){document.documentElement.setAttribute('data-tema',
           <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg></div>
           <div>
             <h3>Solicitar una demo</h3>
-            <p>Te mostramos la aplicación completa y te decimos con franqueza qué hace falta para conectarla con tu sistema. Para que la primera conversación sirva, cuéntanos en el correo:</p>
+            <p>Te mostramos la aplicación completa y te decimos con franqueza qué hace falta para conectarla con tu sistema. Para que la primera conversación sirva, contanos en el correo:</p>
             <ul>
-              <li>cuántos vendedores de campo tienes y cómo trabajan hoy;</li>
-              <li>qué ERP o sistema contable usas (Odoo, SAP, otro);</li>
-              <li>si vendes con varias empresas o almacenes;</li>
-              <li>en qué país y con qué monedas facturas.</li>
+              <li>cuántos vendedores de campo tenés y cómo trabajan hoy;</li>
+              <li>qué ERP o sistema contable usás (Odoo, SAP, otro);</li>
+              <li>si vendés con varias empresas o almacenes;</li>
+              <li>en qué país y con qué monedas facturás.</li>
             </ul>
             <p class="dato"><a href="mailto:hola@vendooapp.com?subject=Demo%20de%20Vendoo">hola@vendooapp.com</a></p>
           </div>
@@ -149,9 +158,9 @@ if(t==='claro'||t==='oscuro'){document.documentElement.setAttribute('data-tema',
           <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.5L3 21l2.1-5.6A8.4 8.4 0 1 1 21 11.5z"/></svg></div>
           <div>
             <h3>Soporte a vendedores</h3>
-            <p>Si ya usas Vendoo en la calle y algo no te funciona —no te entra la sesión, un pedido no sale de la cola, la aplicación se cierra sola—, escríbenos contando qué estabas haciendo cuando pasó: con eso se resuelve mucho más rápido.</p>
+            <p>Si ya usás Vendoo en la calle y algo no te funciona —no te entra la sesión, un pedido no sale de la cola, la aplicación se cierra sola—, escribinos contando qué estabas haciendo cuando pasó: con eso se resuelve mucho más rápido.</p>
             <p class="dato"><a href="mailto:hola@vendooapp.com?subject=Soporte%20Vendoo">hola@vendooapp.com</a></p>
-            <p><small>Dentro de la aplicación, el mismo canal está en <strong>Perfil &rsaquo; Soporte</strong>. Si tu empresa tiene una mesa de ayuda propia, empieza por ahí: son ellos los que administran las cuentas.</small></p>
+            <p><small>Dentro de la aplicación, el mismo canal está en <strong>Perfil &rsaquo; Soporte</strong>. Si tu empresa tiene una mesa de ayuda propia, empezá por ahí: son ellos los que administran las cuentas.</small></p>
           </div>
         </div>
       </article>
@@ -161,7 +170,7 @@ if(t==='claro'||t==='oscuro'){document.documentElement.setAttribute('data-tema',
           <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.4-3.2 8.3-8 9.5C7.2 20.3 4 16.4 4 12V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
           <div>
             <h3>Privacidad y datos</h3>
-            <p>Para pedir <strong>acceso</strong>, <strong>corrección</strong> o <strong>eliminación</strong> de datos personales. Pon en el asunto <em>Solicitud de datos — Vendoo</em> y aporta información suficiente para identificarte. Se responde en un máximo de treinta días hábiles.</p>
+            <p>Para pedir <strong>acceso</strong>, <strong>corrección</strong> o <strong>eliminación</strong> de datos personales. Poné en el asunto <em>Solicitud de datos — Vendoo</em> y aportá información suficiente para identificarte. Se responde en un máximo de treinta días hábiles.</p>
             <p class="dato"><a href="mailto:hola@vendooapp.com?subject=Solicitud%20de%20datos%20%E2%80%94%20Vendoo">hola@vendooapp.com</a></p>
             <p><small>El detalle de qué se recoge y para qué está en la <a href="/privacidad.html">política de privacidad</a>.</small></p>
           </div>
@@ -188,7 +197,7 @@ if(t==='claro'||t==='oscuro'){document.documentElement.setAttribute('data-tema',
     <div class="reja reja--2">
       <div class="tarjeta">
         <h3>Descargar la aplicación</h3>
-        <p>Vendoo está publicada en Google Play como <code>com.leiros.vendoo</code>. Se descarga libremente, pero <strong>no se puede crear una cuenta desde la aplicación</strong>: se entra con las credenciales que entrega la empresa que la contrata. Si quieres verla con datos, pide una demo.</p>
+        <p>Vendoo está publicada en Google Play como <code>com.leiros.vendoo</code>. Se descarga libremente, pero <strong>no se puede crear una cuenta desde la aplicación</strong>: se entra con las credenciales que entrega la empresa que la contrata. Si querés verla con datos, pedí una demo.</p>
         <div class="botones mt-sm">
           <a class="boton boton--play" href="https://play.google.com/store/apps/details?id=com.leiros.vendoo" target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -203,7 +212,7 @@ if(t==='claro'||t==='oscuro'){document.documentElement.setAttribute('data-tema',
       </div>
       <div class="tarjeta">
         <h3>Reportar un problema de seguridad</h3>
-        <p>Si encontraste algo que compromete datos de una empresa o de sus clientes, escribe con el asunto <em>Seguridad — Vendoo</em> y una descripción de cómo reproducirlo. Se responde antes que cualquier otra cosa.</p>
+        <p>Si encontraste algo que compromete datos de una empresa o de sus clientes, escribí con el asunto <em>Seguridad — Vendoo</em> y una descripción de cómo reproducirlo. Se responde antes que cualquier otra cosa.</p>
         <p class="dato mt-sm"><a href="mailto:hola@vendooapp.com?subject=Seguridad%20%E2%80%94%20Vendoo">hola@vendooapp.com</a></p>
       </div>
     </div>

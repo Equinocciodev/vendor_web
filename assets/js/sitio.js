@@ -61,3 +61,70 @@
 
   rotular();
 })();
+
+
+/* ==========================================================================
+   Lo que se mueve al hacer scroll (2-sep-2026)
+
+   Tres cosas y ninguna más: las secciones aparecen una vez al entrar en
+   pantalla, las cifras cuentan desde cero, y las infografías arrancan su
+   animación cuando se las ve (y no antes, corriendo en vano arriba del todo).
+
+   ⚠️ TODO SE VE SIN ESTE ARCHIVO. La regla es que nada quede en `opacity: 0`
+   si el JavaScript no corre: el `<head>` de cada página pone `data-anim` y lo
+   RETIRA solo a los dos segundos si acá no llegamos a marcar `data-listo`.
+   Este archivo es lo primero que hace: reclamar esa marca. Si se bloquea el
+   script, la red de seguridad se dispara y la página queda visible, quieta y
+   completa — que es exactamente lo que tiene que pasar.
+
+   ⚠️ Y con `prefers-reduced-motion: reduce` no se anima NADA: se quita
+   `data-anim` y las cifras se quedan en su valor final, que ya está escrito
+   en el HTML. No es una animación más rápida: es ninguna.
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var raiz = document.documentElement;
+  raiz.setAttribute('data-listo', '1');   // el <head> ya no va a quitar data-anim
+
+  var quieto = window.matchMedia &&
+               window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (quieto || !('IntersectionObserver' in window)) {
+    raiz.removeAttribute('data-anim');    // todo visible, en su estado final
+    return;
+  }
+
+  /* Las cifras. El valor final ya está escrito en el HTML —es lo que ve
+     quien tenga el script apagado y lo que lee un buscador—; acá sólo se
+     cuenta hasta él. `data-cifra` es el número y `data-formato` el molde
+     («~%d», «%d pasos»), para no tener que adivinar dónde va el símbolo. */
+  function contar(nodo) {
+    var fin = parseFloat(nodo.getAttribute('data-cifra'));
+    var molde = nodo.getAttribute('data-formato') || '%d';
+    if (isNaN(fin)) return;
+    var arranque = null;
+    var duracion = 1100;
+    function paso(ahora) {
+      if (arranque === null) arranque = ahora;
+      var t = Math.min((ahora - arranque) / duracion, 1);
+      // desaceleración: llega y se queda, sin rebote
+      var v = Math.round(fin * (1 - Math.pow(1 - t, 3)));
+      nodo.textContent = molde.replace('%d', v);
+      if (t < 1) requestAnimationFrame(paso);
+    }
+    requestAnimationFrame(paso);
+  }
+
+  var mirador = new IntersectionObserver(function (entradas) {
+    entradas.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('visible');
+      if (e.target.hasAttribute('data-cifra')) contar(e.target);
+      mirador.unobserve(e.target);        // una sola vez, nunca al volver
+    });
+  }, { threshold: 0.18, rootMargin: '0px 0px -6% 0px' });
+
+  var candidatos = document.querySelectorAll('.revelar, [data-cifra]');
+  Array.prototype.forEach.call(candidatos, function (n) { mirador.observe(n); });
+})();

@@ -50,6 +50,11 @@
   --alerta:       #7A4A00;   /* marrón oscuro: ningún naranja saturado pasa 3:1 */
   --peligro:      #A81B12;
 
+  --calido:       #B45309;   /* 5,06:1 sobre blanco — AA. El acento de los
+                                momentos buenos: el objetivo cumplido, la
+                                cifra que sube, el sol de la ilustración. NO
+                                es `--alerta`: eso avisa, esto celebra. */
+  --velo-calido:  rgba(180, 83, 9, .09);
   --marca-disco:  #8644D5;   /* el disco de la ultima «o» del logotipo:
                                 5,52:1 sobre blanco — AA. Es el acento de
                                 `logotipo_vendoo_claro.svg` de la app. */
@@ -87,6 +92,8 @@
     --exito:        #4ADE80;
     --alerta:       #FFB020;
     --peligro:      #FF8A8A;
+    --calido:       #FBBF24;   /* 10,4:1 sobre la superficie oscura */
+    --velo-calido:  rgba(251, 191, 36, .12);
     --marca-disco:  #9B5DE5;   /* sobre fondo oscuro, 4,84:1. El #8644D5 de
                                   la variante clara se apaga aca. */
     --play-fondo:   #FFFFFF;
@@ -111,6 +118,8 @@
   --exito:        #4ADE80;
   --alerta:       #FFB020;
   --peligro:      #FF8A8A;
+  --calido:       #FBBF24;
+  --velo-calido:  rgba(251, 191, 36, .12);
   --marca-disco:  #9B5DE5;
   --play-fondo:   #FFFFFF;
   --play-tinta:   #0E0E10;
@@ -142,7 +151,7 @@ img, svg { max-width: 100%; }
 img { height: auto; }
 
 h1, h2, h3, h4 { line-height: 1.18; letter-spacing: -.018em; margin: 0 0 .5em; font-weight: 700; }
-h1 { font-size: clamp(2.1rem, 1.35rem + 3.2vw, 3.9rem); letter-spacing: -.03em; }
+h1 { font-size: clamp(2.05rem, 1.4rem + 2.3vw, 3.2rem); letter-spacing: -.03em; }
 h2 { font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.4rem); letter-spacing: -.024em; }
 h3 { font-size: 1.14rem; letter-spacing: -.012em; }
 h4 { font-size: 1rem; }
@@ -708,3 +717,275 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
 /* --- Utilidades --------------------------------------------------------- */
 .mt-xl { margin-top: 38px; }
 .ancho-medio { max-width: 62ch; }
+
+/* ==========================================================================
+   PORTADA 2 — 2-sep-2026. «Menos texto, más infografías, ponle corazón.»
+
+   La regla de composición: UNA idea por sección, un titular corto, una frase
+   de apoyo y un dibujo que cuente el resto. Si algo se puede mostrar, no se
+   escribe.
+
+   ⚠️ TODO SE VE EN REPOSO. Las reglas que esconden algo cuelgan de
+   `[data-anim]`, que pone el <head> y que se retira solo si `sitio.js` no
+   llegó. Sin JavaScript no hay ni un `opacity: 0` en pie.
+   ========================================================================== */
+
+/* --- Aparecer al entrar en pantalla ------------------------------------- */
+[data-anim] .revelar { opacity: 0; transform: translateY(18px); }
+[data-anim] .revelar.visible {
+  opacity: 1; transform: none;
+  transition: opacity .55s ease, transform .55s cubic-bezier(.22, .8, .3, 1);
+}
+/* El escalonado va por clase y NO por `style="--i:2"`: un atributo style
+   obligaría a abrir `style-src` a 'unsafe-inline' y tirar abajo la CSP. */
+[data-anim] .revelar--b.visible { transition-delay: .09s; }
+[data-anim] .revelar--c.visible { transition-delay: .18s; }
+[data-anim] .revelar--d.visible { transition-delay: .27s; }
+@media (prefers-reduced-motion: reduce) {
+  [data-anim] .revelar { opacity: 1; transform: none; }
+}
+
+/* --- Aire: las secciones respiran más ----------------------------------- */
+.seccion { padding-block: clamp(64px, 9vw, 128px); }
+.seccion--velo { background: var(--superficie-2); }
+.seccion--velo + .seccion--velo { border-top: 0; }
+.encabezado--centro { margin-inline: auto; text-align: center; }
+.encabezado--centro p { margin-inline: auto; }
+
+/* --- Portada: la escena de la calle ------------------------------------- */
+.escena { width: min(100%, 520px); margin-inline: auto; display: block; overflow: visible; }
+.portada__reja { align-items: center; }
+@media (min-width: 900px) { .portada__reja { grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr); } }
+.portada h1 { max-width: 17ch; }
+.entrada { max-width: 46ch; }
+
+/* Colores de la ilustración. Salen de los tokens; los dos propios son el
+   tono de piel y el ladrillo del local, que no existen en la paleta de
+   interfaz y no se usan para texto en ningún lado. */
+.e-piel   { fill: #C68A63; }
+.e-local  { fill: var(--superficie-2); }
+.e-toldo  { fill: var(--acento); }
+.e-toldo2 { fill: var(--sobre-acento); }
+.e-sol    { fill: var(--calido); }
+.e-ropa   { fill: var(--acento); }
+.e-ropa2  { fill: var(--marca-disco); }
+.e-piso   { fill: var(--borde-suave); }
+.e-linea  { fill: none; stroke: var(--borde); stroke-width: 2.4; stroke-linecap: round; }
+.e-tinta  { fill: var(--tinta); }
+.e-suave  { fill: var(--tinta-suave); }
+
+/* --- Mosaico de capacidades (12 fichas con su ícono) -------------------- */
+.mosaico {
+  display: grid; gap: 14px; margin: 0; padding: 0; list-style: none;
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width: 620px)  { .mosaico { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1000px) { .mosaico { grid-template-columns: repeat(4, 1fr); } }
+.mosaico li {
+  background: var(--superficie);
+  border: var(--grosor) solid var(--borde-suave);
+  border-radius: var(--r-tarjeta);
+  padding: 20px 16px; text-align: center;
+}
+.mosaico .icono { margin: 0 auto 12px; }
+.mosaico h3 { font-size: .98rem; margin-bottom: .2em; }
+.mosaico p { color: var(--tinta-suave); font-size: .84rem; margin: 0; line-height: 1.5; }
+@media (prefers-reduced-motion: no-preference) {
+  .mosaico li { transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+  .mosaico li:hover { transform: translateY(-3px); border-color: var(--acento); box-shadow: var(--sombra); }
+}
+.mosaico li:focus-within { border-color: var(--acento); }
+
+/* --- Los tres latidos del «corazón» ------------------------------------- */
+.latidos {
+  display: grid; gap: 18px; margin: 0; padding: 0; list-style: none;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 700px) { .latidos { grid-template-columns: repeat(3, 1fr); } }
+.latidos li { display: flex; align-items: center; gap: 14px; justify-content: center; }
+.latidos b { font-weight: 600; font-size: 1.05rem; display: block; }
+.latidos span { color: var(--tinta-suave); font-size: .9rem; }
+.latidos svg { width: 32px; height: 32px; flex: none; color: var(--calido); }
+
+/* --- La visita: línea de tiempo con su riel ----------------------------- */
+.pasos { position: relative; }
+.pasos li { position: relative; grid-template-columns: 46px 1fr; }
+/* El riel: una línea que se llena de arriba abajo cuando la sección entra. */
+.riel { position: relative; }
+.riel::before {
+  content: ''; position: absolute; left: 15px; top: 26px; bottom: 26px;
+  width: 2px; background: var(--borde-suave);
+}
+.riel::after {
+  content: ''; position: absolute; left: 15px; top: 26px; bottom: 26px;
+  width: 2px; background: var(--acento); transform-origin: top center;
+}
+[data-anim] .riel::after { transform: scaleY(0); }
+[data-anim] .riel.visible::after { animation: llenar 2.6s .2s ease-out forwards; }
+@keyframes llenar { to { transform: scaleY(1); } }
+.pasos li::before {
+  content: counter(paso, decimal-leading-zero);
+  position: relative; z-index: 1;
+  width: 32px; height: 32px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--superficie); border: var(--grosor) solid var(--borde-suave);
+  color: var(--acento); font-size: .74rem; font-weight: 700; padding: 0;
+}
+[data-anim] .riel.visible li::before { animation: encender .5s both; }
+[data-anim] .riel.visible li:nth-child(1)::before { animation-delay: .25s; }
+[data-anim] .riel.visible li:nth-child(2)::before { animation-delay: .55s; }
+[data-anim] .riel.visible li:nth-child(3)::before { animation-delay: .85s; }
+[data-anim] .riel.visible li:nth-child(4)::before { animation-delay: 1.15s; }
+[data-anim] .riel.visible li:nth-child(5)::before { animation-delay: 1.45s; }
+[data-anim] .riel.visible li:nth-child(6)::before { animation-delay: 1.75s; }
+[data-anim] .riel.visible li:nth-child(7)::before { animation-delay: 2.05s; }
+[data-anim] .riel.visible li:nth-child(8)::before { animation-delay: 2.35s; }
+@keyframes encender {
+  from { border-color: var(--borde-suave); transform: scale(1); }
+  55%  { border-color: var(--acento); transform: scale(1.16); }
+  to   { border-color: var(--acento); transform: scale(1); }
+}
+
+/* --- Infografías: piezas comunes ---------------------------------------- */
+/* ⚠️ Las infografías LLEVAN TOPE DE ANCHO. Un <svg> con `width: 100%` y un
+   viewBox de 460 se estira a los 1.120 px de la envoltura y escala su texto
+   con él: el «3 en cola» de 11 px terminaba dibujado a 28 px, como un cartel.
+   El tope las deja a una escala cercana a 1 y centradas. */
+.info { width: 100%; max-width: 620px; height: auto; display: block; margin-inline: auto; font-family: 'Poppins', sans-serif; }
+.info--ancha { max-width: 780px; }
+.info text { font-size: 13px; }
+.info .chico { font-size: 11px; }
+.info .neg { font-weight: 600; }
+
+/* La cola que se vacía. El bucle es lento a propósito: tiene que leerse
+   como una explicación, no como un GIF. */
+[data-anim] .visible .sobre-1 { animation: volar 5.4s .2s ease-in-out infinite; }
+[data-anim] .visible .sobre-2 { animation: volar 5.4s 1.0s ease-in-out infinite; }
+[data-anim] .visible .sobre-3 { animation: volar 5.4s 1.8s ease-in-out infinite; }
+@keyframes volar {
+  0%       { transform: translateX(0); opacity: 1; }
+  8%       { transform: translateX(0); opacity: 1; }
+  40%, 100%{ transform: translateX(196px); opacity: 0; }
+}
+[data-anim] .visible .senal-vuelve { animation: latir 2.4s ease-in-out infinite; }
+[data-anim] .visible .tilde-servidor { animation: aparecer .5s 2.2s both; }
+
+/* El mapa de la ruta: el trazo se dibuja y las paradas se marcan. */
+.ruta-traza { fill: none; stroke: var(--acento); stroke-width: 3; stroke-linecap: round;
+              stroke-dasharray: 620; }
+[data-anim] .ruta-traza { stroke-dashoffset: 620; }
+[data-anim] .visible .ruta-traza { animation: trazar 2.4s .2s ease-out forwards; }
+@keyframes trazar { to { stroke-dashoffset: 0; } }
+[data-anim] .visible .parada { animation: brotar .45s both; }
+[data-anim] .visible .parada-1 { animation-delay: .5s; }
+[data-anim] .visible .parada-2 { animation-delay: .95s; }
+[data-anim] .visible .parada-3 { animation-delay: 1.4s; }
+[data-anim] .visible .parada-4 { animation-delay: 1.85s; }
+@keyframes brotar { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: none; } }
+.parada { transform-box: fill-box; transform-origin: center; }
+
+/* El diagrama de integración: el dato va y vuelve. */
+[data-anim] .visible .flecha-ida   { animation: correr 3.2s ease-in-out infinite; }
+[data-anim] .visible .flecha-vuelta{ animation: correr 3.2s 1.6s ease-in-out infinite; }
+@keyframes correr { 0% { opacity: .15; } 40% { opacity: 1; } 100% { opacity: .15; } }
+
+/* Las capas de seguridad. */
+[data-anim] .visible .capa { animation: brotar .5s both; }
+[data-anim] .visible .capa-1 { animation-delay: .1s; }
+[data-anim] .visible .capa-2 { animation-delay: .3s; }
+[data-anim] .visible .capa-3 { animation-delay: .5s; }
+.capa { transform-box: fill-box; transform-origin: center; }
+
+/* --- Las dos tarjetas que se comparan ----------------------------------- */
+.comparar { display: grid; gap: 16px; align-items: stretch; grid-template-columns: 1fr; }
+@media (min-width: 780px) { .comparar { grid-template-columns: 1fr auto 1fr; } }
+.comparar .flecha {
+  display: grid; place-items: center; color: var(--acento);
+  padding: 6px 0;
+}
+.comparar .flecha svg { width: 30px; height: 30px; }
+@media (max-width: 779px) { .comparar .flecha svg { transform: rotate(90deg); } }
+.papel {
+  border: var(--grosor) solid var(--borde-suave); border-radius: var(--r-tarjeta);
+  background: var(--superficie); padding: 22px 24px;
+}
+.papel--firme { border-color: var(--acento); background: linear-gradient(var(--velo-acento), var(--velo-acento)), var(--superficie); }
+.papel h3 { margin-bottom: .5em; }
+.papel dl { display: grid; grid-template-columns: 1fr auto; gap: 7px 16px; margin: 0; font-size: .93rem; }
+.papel dt { color: var(--tinta-suave); }
+.papel dd { margin: 0; font-variant-numeric: tabular-nums; font-weight: 600; }
+.papel .total { border-top: 1px solid var(--borde-suave); padding-top: 9px; margin-top: 3px; }
+.papel .sello {
+  margin: 14px 0 0; border: 0; padding: 0; background: none;
+  color: var(--tinta-suave); font-size: .82rem; text-transform: none; letter-spacing: 0;
+  font-weight: 500; display: block;
+}
+
+/* --- Cifras grandes ----------------------------------------------------- */
+.datos b { font-variant-numeric: tabular-nums; }
+.datos li:nth-child(2) b { color: var(--calido); }
+
+/* --- Cita con más presencia -------------------------------------------- */
+.cita--grande { font-size: clamp(1.15rem, 1rem + .9vw, 1.5rem); border-left-width: 4px; }
+.e-brazo    { fill: none; stroke: #C68A63; stroke-width: 13; stroke-linecap: round; }
+.e-pantalon { fill: var(--tinta-suave); }
+.e-sombra   { fill: rgba(20, 20, 30, .10); }
+:root[data-tema="oscuro"] .e-sombra { fill: rgba(0, 0, 0, .35); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) .e-sombra { fill: rgba(0, 0, 0, .35); }
+}
+/* El teléfono de la portada: los pasos se completan en bucle lento. */
+[data-anim] .paso-tilde { opacity: 0; }
+[data-anim] .paso-tilde { animation: ciclo 9s infinite; }
+[data-anim] .paso-tilde--2 { animation-delay: 2.1s; }
+[data-anim] .paso-tilde--3 { animation-delay: 4.2s; }
+@keyframes ciclo {
+  0%, 4%   { opacity: 0; transform: scale(.5); }
+  10%, 72% { opacity: 1; transform: scale(1); }
+  80%, 100%{ opacity: 0; transform: scale(1); }
+}
+.paso-tilde { transform-box: fill-box; transform-origin: center; }
+[data-anim] .barra-paso { transform-box: fill-box; transform-origin: left center;
+                          animation: avance 9s infinite; }
+@keyframes avance {
+  0%, 4%   { transform: scaleX(.12); }
+  30%      { transform: scaleX(.42); }
+  56%      { transform: scaleX(.72); }
+  76%, 90% { transform: scaleX(1); }
+  100%     { transform: scaleX(.12); }
+}
+/* Lista corta de la sección de seguridad: viñetas que no gritan. */
+.lista-cortita { list-style: none; margin: 18px 0 0; padding: 0; }
+.lista-cortita li {
+  position: relative; padding-left: 26px; margin-bottom: 10px;
+  color: var(--tinta-suave); font-size: .95rem;
+}
+.lista-cortita li::before {
+  content: ''; position: absolute; left: 0; top: .55em;
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--velo-acento); border: 2px solid var(--acento);
+}
+/* Micro-interacción de las capturas: el marco se levanta al pasar por encima
+   o al llegar con el tabulador. Es el mismo gesto que el mosaico. */
+@media (prefers-reduced-motion: no-preference) {
+  .captura__marco { transition: transform .2s ease, border-color .2s ease; }
+  .captura:hover .captura__marco { transform: translateY(-4px); border-color: var(--acento); }
+}
+
+/* ⚠️ El mosaico y el teléfono de 320 px. Una pista `1fr` no baja del
+   min-content de lo que lleva adentro, y «Multiempresa» —una palabra de doce
+   letras a .98 rem— medía 113 px: con dos columnas y el relleno de la ficha,
+   la reja se estiraba a 304 px dentro de una ventana de 320 y arrastraba la
+   página entera a un desplazamiento horizontal. Se arregla por los tres
+   lados: la ficha puede encogerse (`min-width: 0`), la palabra puede partirse
+   si no queda otra, y en pantalla angosta la ficha aprieta un poco su
+   tipografía y su relleno. Medido: 320 px sin desborde. */
+.mosaico li { min-width: 0; }
+.mosaico h3, .mosaico p { overflow-wrap: break-word; }
+@media (max-width: 420px) {
+  .mosaico { gap: 10px; }
+  .mosaico li { padding: 18px 10px; }
+  .mosaico h3 { font-size: .88rem; }
+  .mosaico p { font-size: .78rem; }
+  .mosaico .icono { width: 38px; height: 38px; margin-bottom: 10px; }
+}

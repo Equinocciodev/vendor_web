@@ -85,6 +85,52 @@ menú y el pie de las cinco páginas, el `sitemap.xml` y el `BreadcrumbList`.
 **Términos y privacidad NO están en el menú** (decisión del dueño): viven en el
 pie y en la página de contacto.
 
+### Cómo está compuesta la portada
+
+Encargo del dueño (2-sep-2026): **«menos texto, más infografías y
+animaciones; ponle corazón a la página»**, con Odoo y Salesforce como
+referencias de *composición* (no de contenido: no se copió ni un texto, ni un
+logo, ni una ilustración de ellos).
+
+De ahí salen cinco reglas que conviene no deshacer:
+
+1. **Una idea por sección.** Rótulo, titular corto, **una** frase de apoyo y un
+   dibujo que cuente el resto. Si algo se puede mostrar, no se escribe: la
+   portada tiene hoy la mitad del texto que tenía y dice más.
+2. **Claro por defecto**, con mucho blanco y secciones alternadas
+   (`.seccion--velo`). El oscuro sigue existiendo y sigue habiendo tres
+   estados: claro, oscuro y seguir al sistema.
+3. **Mosaico de aplicaciones** para las capacidades: doce fichas con su ícono
+   propio y dos palabras (`.mosaico`). Es lo que reemplazó a doce tarjetas con
+   un párrafo cada una.
+4. **Producto a la vista**: la ilustración del vendedor con el teléfono, las
+   capturas en marcos, las cifras que cuentan al entrar. Pantallas, no
+   párrafos.
+5. **Corazón**: la tira de los tres latidos —el sol, la señal que se va, el
+   cliente que espera— y un acento **cálido** (`--calido`) para los momentos
+   buenos. No es `--alerta`: eso avisa, esto celebra.
+
+#### Las infografías, y qué cuenta cada una
+
+Todas están **dibujadas a mano en SVG en línea**, con los tokens del tema y
+sin una sola librería. Las informativas llevan `role="img"` con `<title>` y
+`<desc>`; las decorativas, `aria-hidden="true"`.
+
+| Sección | Infografía | Qué muestra |
+|---|---|---|
+| Portada | La escena de la calle | El vendedor con su teléfono frente a una bodega, y la app al lado con la visita en curso. Los pasos se completan en bucle lento. |
+| La ruta | Mapa esquemático | El recorrido se dibuja y las paradas se marcan con su hora; la última queda pendiente. |
+| La visita | Línea de tiempo | Los ocho pasos con un riel que se llena y los números que se encienden en orden. |
+| Sin señal | La cola | Tres envíos guardados en el teléfono viajan al ERP cuando vuelve la red, y el ERP confirma. |
+| La regla de fondo | Dos papeles | El total del teléfono y el del ERP, uno al lado del otro: lo que se firma contra lo que se recalcula. |
+| Integraciones | Teléfono ↔ Vendoo ↔ ERP | El dato va y vuelve; el ERP con Odoo nativo y SAP u otros a medida. |
+| Seguridad | Tres capas | PIN por fuera, base cifrada en el medio, sesión del ERP adentro. |
+
+⚠️ **Las infografías llevan tope de ancho** (`.info`, 620 px; `.info--ancha`,
+780 px). Un `<svg>` con `width: 100%` y un `viewBox` de 460 se estira a los
+1.120 px de la envoltura **y escala su texto con él**: el «3 en cola» de 11 px
+terminaba dibujado a 28 px, como un cartel de la calle.
+
 ### De dónde sale la identidad visual
 
 Nada de esto se inventó acá: todo viene de `../vendoo_app`.
@@ -159,6 +205,42 @@ porque son marcadores.
 
 ---
 
+## Las animaciones, y por qué la página se ve igual sin ellas
+
+Tres cosas se mueven al hacer scroll: las secciones **aparecen una vez** al
+entrar en pantalla, las **cifras cuentan** desde cero y cada infografía
+**arranca cuando se la ve** (y no antes, corriendo en vano arriba del todo).
+Lo maneja un `IntersectionObserver` en `assets/js/sitio.js`, con
+`unobserve` en cuanto dispara: no vuelve a animar al subir.
+
+⚠️ **Nada queda en `opacity: 0` si el JavaScript no corre**, y el mecanismo es
+el punto delicado:
+
+- El script **en línea del `<head>`** pone `data-anim` en el `<html>` antes del
+  primer pintado. Todas las reglas que esconden algo cuelgan de ese atributo.
+  Si estuviera en `sitio.js` —que va con `defer`— lo que va a aparecer se
+  vería un instante antes de esconderse.
+- Ese mismo script arma una **red de seguridad**: a los dos segundos quita
+  `data-anim` **si `sitio.js` no llegó a marcar `data-listo`**. O sea que un
+  script bloqueado, un error de red o un navegador viejo dejan la página
+  entera visible, quieta y completa.
+- Con `prefers-reduced-motion: reduce` **no se anima nada**: `sitio.js` quita
+  `data-anim` y se va. No es una animación más rápida, es ninguna. Las cifras
+  se quedan en el valor que ya está escrito en el HTML — que es además lo que
+  lee un buscador.
+
+**El escalonado va por clase** (`.revelar--b`, `--c`, `--d`) y no por
+`style="--i:2"`: un atributo `style` obligaría a abrir `style-src` a
+`'unsafe-inline'` y tirar abajo la política de seguridad de contenido. El
+verificador rechaza cualquier `style=`.
+
+⚠️ **Para revisar una animación con capturas, `--virtual-time-budget` no
+alcanza**: el reloj virtual no lleva las animaciones CSS hasta el final y la
+captura sale a mitad de camino (se ve un trazo dibujado por la mitad y las
+paradas todavía invisibles). Para ver el **estado final** —que es el que
+importa— hay que renderizar la página **sin los `<script>`**: es el mismo
+estado de reposo que ve quien tenga el JavaScript apagado.
+
 ## Probarlo en tu máquina
 
 ```bash
@@ -232,6 +314,20 @@ Se comprueba con el navegador, contando las columnas que de verdad calculó
 y leyendo `getComputedStyle(reja).gridTemplateColumns` desde el padre, junto
 con `children.length`. Si `elementos % columnas === 1`, hay una huérfana.
 Medido así de 320 a 1440 px en las tres páginas con rejas: ninguna.
+
+### El desborde que no se ve venir: `1fr` no baja del min-content
+
+Una pista `1fr` de CSS Grid **no se encoge por debajo del `min-content` de lo
+que lleva adentro**. En el mosaico de capacidades, «Multiempresa» —una sola
+palabra de doce letras— medía 113 px, y con dos columnas y el relleno de la
+ficha la reja se estiraba a 304 px dentro de una ventana de 320: la página
+entera se iba al desplazamiento horizontal por una palabra.
+
+Se arregla por los tres lados a la vez, y los tres importan: la ficha puede
+encogerse (`min-width: 0`), la palabra puede partirse si no queda otra
+(`overflow-wrap: break-word`) y en pantalla angosta la ficha aprieta un poco
+su tipografía y su relleno. **Si agregás una palabra larga a un mosaico,
+medí a 320 px.**
 
 ### Medir que no haya desplazamiento horizontal
 
