@@ -142,6 +142,12 @@ mano.
 sitio **no se toca el comodín ni ningún subdominio existente**: sólo la raíz y
 `www`.
 
+> **El primer despliegue falla, y está bien.** Mientras los dos secretos no
+> estén cargados, el trabajo `Verificar el sitio` pasa y `Publicar en
+> Cloudflare Pages` se cae con *«it's necessary to set a CLOUDFLARE_API_TOKEN
+> environment variable»*. Es exactamente ese mensaje el que confirma que el
+> flujo está bien cableado y que lo único que falta son las credenciales.
+
 ### 4. Comprobar
 
 ```bash
