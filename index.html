@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="es-VE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vendoo — la app de campo de Grupo Leiros</title>
+<meta name="description" content="Vendoo es la aplicación Android con la que los vendedores de campo de Grupo Leiros arman su ruta, levantan pedidos, cobran y registran cada visita. Funciona sin señal.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://vendooapp.com/">
+<meta name="theme-color" content="#F4F5F9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E0E10" media="(prefers-color-scheme: dark)">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vendoo">
+<meta property="og:locale" content="es_VE">
+<meta property="og:url" content="https://vendooapp.com/">
+<meta property="og:title" content="Vendoo — la app de campo de Grupo Leiros">
+<meta property="og:description" content="Vendoo es la aplicación Android con la que los vendedores de campo de Grupo Leiros arman su ruta, levantan pedidos, cobran y registran cada visita. Funciona sin señal.">
+<meta property="og:image" content="https://vendooapp.com/assets/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Vendoo — la app de campo de Grupo Leiros.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Vendoo — la app de campo de Grupo Leiros">
+<meta name="twitter:description" content="Vendoo es la aplicación Android con la que los vendedores de campo de Grupo Leiros arman su ruta, levantan pedidos, cobran y registran cada visita. Funciona sin señal.">
+<meta name="twitter:image" content="https://vendooapp.com/assets/img/og.png">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/img/icono-180.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-400.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-600.woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/estilo.css">
+<script>/* El tema elegido, ANTES del primer pintado: con `defer` la pagina
+   parpadearia en claro. Los tres valores estan explicados en sitio.js. */
+try{var t=localStorage.getItem('vendoo-tema');
+if(t==='claro'||t==='oscuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}</script>
+<script src="/assets/js/sitio.js" defer></script>
+</head>
+<body>
+<a class="saltar" href="#principal">Saltar al contenido</a>
+<header class="cabecera">
+  <div class="envoltura cabecera__fila">
+    <a class="marca" href="/" aria-label="Vendoo, ir al inicio">
+      <svg class="isotipo" viewBox="0 0 1024 1024" aria-hidden="true" focusable="false">
+        <rect width="1024" height="1024" rx="232" fill="#0E0E10"/>
+        <path d="M246.8,512 A265.2,265.2 0 1 0 777.2,512 A265.2,265.2 0 1 0 246.8,512" fill="none" stroke="#FFFFFF" stroke-width="149.6"/>
+        <circle cx="512" cy="512" r="104.7" fill="#9B5DE5"/>
+      </svg>
+      <svg class="marca__palabra" viewBox="0 0 3806 926" role="img" aria-label="vendoo">
+        <g transform="translate(66,0)" fill="none" stroke="currentColor" stroke-width="132" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M66,326 L256,794 L446,326"/>
+          <path transform="translate(546,0)" d="M424,758.4 A234,234 0 1 1 534,560 L66,560"/>
+          <path transform="translate(1186,0)" d="M66,794 L66,538 A212,212 0 0 1 490,538 L490,794"/>
+          <path transform="translate(1782,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path transform="translate(1782,0)" d="M534,66 L534,794"/>
+          <path transform="translate(2428,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path transform="translate(3074,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path d="M3281.6,560 A92.4,92.4 0 1 0 3466.4,560 A92.4,92.4 0 1 0 3281.6,560 Z" fill="currentColor" stroke="none"/>
+        </g>
+      </svg>
+    </a>
+    <nav class="nav" aria-label="Navegacion principal">
+        <a href="/" aria-current="page">Inicio</a>
+        <a href="/contacto.html">Contacto</a>
+        <a href="/terminos.html">Términos</a>
+        <a href="/privacidad.html">Privacidad</a>
+    </nav>
+    <button class="tema" type="button" aria-label="Cambiar de tema">
+      <svg class="sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="principal">
+<section class="portada">
+  <div class="envoltura portada__reja">
+    <div>
+      <ul class="chips">
+        <li><span class="chip chip--acento"><span class="chip__punto"></span>Aplicación interna</span></li>
+        <li><span class="chip">Solo Android</span></li>
+        <li><span class="chip">Funciona sin señal</span></li>
+      </ul>
+      <h1>El trabajo de campo, <em>de punta a punta</em>.</h1>
+      <p class="entrada">Vendoo es la aplicación con la que los vendedores de Grupo Leiros arman su ruta, levantan pedidos, cobran y dejan constancia de cada visita. Está hecha para el campo venezolano, no para una oficina con fibra: todo se guarda primero en el teléfono y se sincroniza solo cuando vuelve la conexión.</p>
+      <div class="botones">
+        <a class="boton boton--lleno" href="#como">Cómo funciona
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="boton boton--hueco" href="/contacto.html">Contacto</a>
+      </div>
+    </div>
+    <div>
+      <svg class="ilu telefono" viewBox="0 0 320 640" role="img" aria-labelledby="tel-t tel-d">
+        <title id="tel-t">La pantalla de visita de Vendoo</title>
+        <desc id="tel-d">Un teléfono con una visita en curso: el check-in y el inventario ya cerrados, el pedido en el paso 3 de 8 con su total cotizado, un aviso de que no hay señal y tres envíos esperando a que vuelva la red.</desc>
+        <rect class="i-marco" x="3" y="3" width="314" height="634" rx="44" stroke-width="2"/>
+        <rect class="i-pantalla" x="13" y="13" width="294" height="614" rx="36"/>
+        <rect class="i-linea" x="128" y="26" width="64" height="7" rx="3.5"/>
+
+        <text class="i-tinta i-neg" x="32" y="66" font-size="15">Bodegón La Esquina</text>
+        <text class="i-suave i-chico" x="32" y="84">Visita en curso &middot; 09:14</text>
+        <rect class="i-alerta-b" x="214" y="50" width="74" height="23" rx="11.5" stroke-width="1.3"/>
+        <text class="i-alerta" x="251" y="66" font-size="9.5" text-anchor="middle">Sin señal</text>
+
+        <rect class="i-linea" x="32" y="106" width="256" height="6" rx="3"/>
+        <rect class="i-acento" x="32" y="106" width="96" height="6" rx="3"/>
+        <text class="i-suave i-chico" x="32" y="130">Paso 3 de 8 &middot; Pedido</text>
+
+        <rect class="i-tarjeta" x="24" y="144" width="272" height="58" rx="14" stroke-width="1.3"/>
+        <text class="i-tinta i-neg" x="42" y="170">Check-in</text>
+        <text class="i-suave i-chico" x="42" y="187">09:14 &middot; llegada registrada</text>
+        <circle class="i-exito" cx="270" cy="173" r="11"/>
+        <path class="i-check" d="M265,173.5 l3.6,3.6 l6.4,-7.4"/>
+
+        <rect class="i-tarjeta" x="24" y="212" width="272" height="58" rx="14" stroke-width="1.3"/>
+        <text class="i-tinta i-neg" x="42" y="238">Inventario</text>
+        <text class="i-suave i-chico" x="42" y="255">12 renglones contados</text>
+        <circle class="i-exito" cx="270" cy="241" r="11"/>
+        <path class="i-check" d="M265,241.5 l3.6,3.6 l6.4,-7.4"/>
+
+        <rect class="i-tarjeta" x="24" y="280" width="272" height="104" rx="14" stroke-width="1.3"/>
+        <text class="i-tinta i-neg" x="42" y="306">Pedido</text>
+        <rect class="i-linea" x="42" y="320" width="118" height="7" rx="3.5"/>
+        <rect class="i-linea" x="214" y="320" width="64" height="7" rx="3.5"/>
+        <rect class="i-linea" x="42" y="342" width="96" height="7" rx="3.5"/>
+        <rect class="i-linea" x="226" y="342" width="52" height="7" rx="3.5"/>
+        <rect class="i-linea" x="42" y="364" width="132" height="7" rx="3.5"/>
+        <rect class="i-linea" x="206" y="364" width="72" height="7" rx="3.5"/>
+
+        <rect class="i-tarjeta" x="24" y="394" width="272" height="98" rx="14" stroke-width="1.3"/>
+        <text class="i-suave i-chico" x="42" y="420">Base imponible</text>
+        <rect class="i-linea" x="214" y="412" width="64" height="7" rx="3.5"/>
+        <text class="i-suave i-chico" x="42" y="442">Impuestos</text>
+        <rect class="i-linea" x="234" y="434" width="44" height="7" rx="3.5"/>
+        <rect class="i-linea" x="42" y="454" width="236" height="1.3"/>
+        <text class="i-tinta i-neg" x="42" y="478">Total cotizado</text>
+        <rect class="i-acento" x="196" y="469" width="82" height="10" rx="5"/>
+
+        <rect class="i-acento" x="24" y="504" width="272" height="48" rx="14"/>
+        <text class="i-sobre i-neg" x="160" y="533" font-size="13" text-anchor="middle">Continuar</text>
+
+        <text class="i-suave i-chico" x="160" y="576" text-anchor="middle">3 envíos esperando a que vuelva la red</text>
+        <rect class="i-linea" x="125" y="600" width="70" height="5" rx="2.5"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="seccion">
+  <div class="envoltura">
+    <div class="encabezado">
+      <span class="rotulo">Para quién es</span>
+      <h2>Una herramienta de trabajo, no una app de tienda.</h2>
+      <p>Vendoo no se instala por decisión propia y no se puede crear una cuenta desde la aplicación: el acceso se hace con las credenciales que la empresa le entrega a cada vendedor. Si no formas parte del equipo comercial de Grupo Leiros, esta aplicación no te va a servir de nada.</p>
+    </div>
+    <div class="reja">
+      <article class="tarjeta">
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg></div>
+        <h3>Vendedores de campo</h3>
+        <p>Los que salen a la calle todos los días con la cartera de clientes de su empresa. Hoy son alrededor de ciento veinte.</p>
+      </article>
+      <article class="tarjeta">
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M7 8V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3"/><path d="M3 13h18"/></svg></div>
+        <h3>Varias empresas del grupo</h3>
+        <p>Un mismo vendedor trabaja con más de una empresa y más de un almacén. La empresa activa manda: de ella salen los precios, el stock y los impuestos con los que se cotiza.</p>
+      </article>
+      <article class="tarjeta">
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/><path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></svg></div>
+        <h3>Un solo backend</h3>
+        <p>La aplicación habla directo con el Odoo de la empresa. No hay datos de demostración: todo lo que el vendedor ve en la pantalla vino de ahí y vuelve para allá.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="seccion" id="como">
+  <div class="envoltura">
+    <div class="encabezado">
+      <span class="rotulo">La visita</span>
+      <h2>Ocho pasos, desde que llega hasta que se va.</h2>
+      <p>El flujo de visita es el corazón de la aplicación. Guía al vendedor de la llegada al cliente hasta el cierre, y sólo el primer paso es obligatorio: los demás se llenan si hay algo que registrar.</p>
+    </div>
+    <div class="reja reja--2">
+      <ol class="pasos">
+        <li><div><b>Check-in</b> <span>La llegada al cliente, con su hora y su punto. Es el único paso obligatorio.</span></div></li>
+        <li><div><b>Inventario</b> <span>El conteo de lo que hay en el anaquel, para saber qué reponer.</span></div></li>
+        <li><div><b>Pedido</b> <span>Las líneas, con el precio que le toca a ese cliente, el stock del almacén y el crédito disponible.</span></div></li>
+        <li><div><b>Fotos</b> <span>La evidencia del punto de venta. Se toman con la cámara, en el momento.</span></div></li>
+        <li><div><b>Devoluciones</b> <span>Lo que el cliente devuelve, con su motivo.</span></div></li>
+        <li><div><b>Notas</b> <span>Lo que no entra en ningún campo y hace falta que quede escrito.</span></div></li>
+        <li><div><b>Firma</b> <span>La conformidad del cliente sobre la nota de pedido.</span></div></li>
+        <li><div><b>Check-out</b> <span>El cierre. La visita queda con su duración y su documento.</span></div></li>
+      </ol>
+      <div>
+        <div class="nota">
+          <p><strong>La foto no es obligatoria, y es a propósito.</strong> Hay teléfonos a los que el sistema les mata la aplicación al abrir la cámara. La visita cierra igual, y el pedido, el inventario y la firma se guardan lo mismo: si eso pasa, la aplicación se lo dice al vendedor en vez de dejarlo reintentando.</p>
+        </div>
+        <div class="nota mt-sm">
+          <p><strong>El check-in no espera al GPS.</strong> Bajo techo el aparato puede tardar en fijar la posición, y eso no puede frenar una visita: el paso se cierra igual y la coordenada se agrega si llega.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="seccion">
+  <div class="envoltura">
+    <div class="encabezado">
+      <span class="rotulo">Lo que hace</span>
+      <h2>Todo lo que el vendedor necesita en la calle.</h2>
+    </div>
+    <div class="reja">
+      <article class="tarjeta">
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z M9 3v15 M15 6v15"/></svg></div>
+        <h3>Ruta del día</h3>
+        <p>La lista de clientes a visitar la arma el teléfono, no el servidor. El vendedor ordena sus paradas, saca la que hoy no toca y vuelve a acomodarla: todo eso anda sin conexión, y ninguna sincronización le revierte lo que hizo en su día.</p>
+      </article>
+      <article class="tarjeta">
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7l-8-4-8 4 8 4 8-4z M4 12l8 4 8-4 M4 17l8 4 8-4"/></svg></div>
+        <h3>Catálogo y precios</h3>
+        <p>El catálogo completo con la lista de precios que le corresponde a cada cliente, el stock del almacén de su empresa y un buscador con lector de código de barras.</p>
+      </article>
+      <article class="tarjeta">
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2 M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2 M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2 M9 13l2 2 4-4"/></svg></div>
+        <h3>Pedido con cotización</h3>
+        <p>Se arma con validación de stock y de crédito, con los impuestos ya sumados en el total, y sale como nota de pedido en PDF para que el cliente la firme. Lo que se le muestra antes de enviar es una cotización, y el papel lo dice así.</p>
+      </article>
+      <article class="tarjeta">
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8h20v11a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z M2 8l2-4h16l2 4 M12 12v5 M9.5 14.5h5"/></svg></div>
+        <h3>Cobros</h3>
+        <p>Solicitudes de pago contra las facturas pendientes del cliente, con el comprobante adjunto y el seguimiento de la aprobación. «Enviada» nunca quiere decir «Aprobada», y la pantalla lo distingue con esas palabras.</p>
+      </article>
+      <article class="tarjeta">
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z M8 9h8 M8 13h5"/></svg></div>
+        <h3>Avisos y conversación</h3>
+        <p>Cuando un pedido se confirma o una solicitud se aprueba, el aviso llega al teléfono y abre ese documento. Y cada documento tiene su conversación: el vendedor pregunta y le responden ahí mismo.</p>
+      </article>
+      <article class="tarjeta">
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20 M17 6.5C17 4.6 14.8 3.5 12 3.5S7 4.6 7 6.5s2.2 3 5 3.5 5 1.6 5 3.5-2.2 3-5 3-5-1.1-5-3"/></svg></div>
+        <h3>Tasa de cambio</h3>
+        <p>La referencia del día siempre a mano, para conversar el precio con el cliente sin salir de la aplicación.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="seccion">
+  <div class="envoltura">
+    <div class="encabezado">
+      <span class="rotulo">Sin señal</span>
+      <h2>El pedido no espera a que haya red.</h2>
+      <p>Nada se escribe contra el servidor en el momento. El hecho se acuña en el teléfono cuando ocurre, se guarda y se despacha después. Es lo que hace que un pedido armado en un local sin cobertura no sea un pedido perdido.</p>
+    </div>
+    <ol class="cadena">
+      <li><b>El hecho ocurre</b><span>El vendedor hace el check-in, arma el pedido o registra un cobro. Ahí mismo se le pone su hora, su empresa y un identificador propio.</span></li>
+      <li><b>Se guarda en el teléfono</b><span>Queda en una base cifrada que no sale del aparato: ni a la copia de seguridad en la nube ni al teléfono nuevo cuando se cambia de equipo.</span></li>
+      <li><b>Sale solo</b><span>Cuando vuelve la señal, la cola se drena. También con la aplicación cerrada, cada quince minutos, si el sistema la despierta.</span></li>
+      <li><b>Odoo confirma</b><span>Reintentar no cobra dos veces: el servidor reconoce el identificador que trae el envío y devuelve el documento original en vez de crear otro.</span></li>
+    </ol>
+    <div class="nota mt-md">
+      <p><strong>Y lo que no se pudo enviar se dice con esas palabras.</strong> «Por enviar» y «No se pudo enviar» son estados visibles en la pantalla, con su motivo. Lo que está en el teléfono no es lo que está en Odoo, y la aplicación no las mezcla nunca.</p>
+    </div>
+  </div>
+</section>
+
+<section class="seccion">
+  <div class="envoltura">
+    <div class="reja reja--2">
+      <div>
+        <span class="rotulo">La regla de fondo</span>
+        <h2>El teléfono propone, Odoo dispone.</h2>
+        <p class="apagado">Lo que la aplicación muestra antes de enviar es una <strong>cotización</strong>. El precio, el impuesto y el total los vuelve a calcular Odoo cuando recibe el pedido, con la tarifa del día en que cae. El teléfono lleva una copia que pudo quedar vieja por sincronizar tarde; Odoo no puede estar desactualizado respecto de sí mismo.</p>
+        <p class="apagado">Por eso el total que el cliente firmó viaja igual con el pedido, pero se guarda aparte y no se aplica: sirve para arbitrar un reclamo y para avisarle al vendedor si el número cambió al aterrizar.</p>
+      </div>
+      <div>
+        <blockquote class="cita">
+          <p>Vos tratás de tener la realidad, la verdad, pero Odoo es quien realmente la tiene.</p>
+          <footer>Regla del proyecto, en palabras del dueño del producto.</footer>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="seccion seccion--fina">
+  <div class="envoltura">
+    <div class="llamado">
+      <div>
+        <h2>Registra el trabajo de campo, y se lo dice al vendedor.</h2>
+        <p>Dónde y a qué hora empieza y cierra cada visita, el recorrido de la jornada, las fotos y las notas que agrega, la firma del cliente y los fallos de la aplicación para poder arreglarlos. Ese aviso está dentro de la propia aplicación, antes de que se pida ningún permiso, y no es un consentimiento: es información.</p>
+      </div>
+      <div class="botones">
+        <a class="boton boton--lleno" href="/privacidad.html">Leer la política</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="seccion seccion--fina">
+  <div class="envoltura centrado estrecho">
+    <h2>¿Necesitas ayuda con la aplicación?</h2>
+    <p class="apagado">Si eres vendedor de Grupo Leiros y algo no te está funcionando, o si trabajas en la empresa y quieres saber más de Vendoo, escríbenos por el canal que te quede más cómodo.</p>
+    <div class="botones botones--centro">
+      <a class="boton boton--lleno" href="/contacto.html">Ver los canales de contacto</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="pie">
+  <div class="envoltura">
+    <div class="pie__reja">
+      <div>
+        <a class="marca" href="/" aria-label="Vendoo, ir al inicio">
+      <svg class="isotipo" viewBox="0 0 1024 1024" aria-hidden="true" focusable="false">
+        <rect width="1024" height="1024" rx="232" fill="#0E0E10"/>
+        <path d="M246.8,512 A265.2,265.2 0 1 0 777.2,512 A265.2,265.2 0 1 0 246.8,512" fill="none" stroke="#FFFFFF" stroke-width="149.6"/>
+        <circle cx="512" cy="512" r="104.7" fill="#9B5DE5"/>
+      </svg>
+      <svg class="marca__palabra" viewBox="0 0 3806 926" role="img" aria-label="vendoo">
+        <g transform="translate(66,0)" fill="none" stroke="currentColor" stroke-width="132" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M66,326 L256,794 L446,326"/>
+          <path transform="translate(546,0)" d="M424,758.4 A234,234 0 1 1 534,560 L66,560"/>
+          <path transform="translate(1186,0)" d="M66,794 L66,538 A212,212 0 0 1 490,538 L490,794"/>
+          <path transform="translate(1782,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path transform="translate(1782,0)" d="M534,66 L534,794"/>
+          <path transform="translate(2428,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path transform="translate(3074,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path d="M3281.6,560 A92.4,92.4 0 1 0 3466.4,560 A92.4,92.4 0 1 0 3281.6,560 Z" fill="currentColor" stroke="none"/>
+        </g>
+      </svg>
+    </a>
+        <p class="pie__nota">La herramienta de trabajo de los vendedores de campo de Grupo Leiros. Aplicación Android de uso interno: no está dirigida al público general.</p>
+      </div>
+      <div>
+        <h4>Sitio</h4>
+        <ul>
+          <li><a href="/">Inicio</a></li>
+          <li><a href="/#como">Cómo funciona</a></li>
+          <li><a href="/contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/privacidad.html">Política de privacidad</a></li>
+          <li><a href="/terminos.html">Términos de servicio</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pie__base">
+      <p>&copy; 2026 Grupo Leiros.</p>
+      <p>Vendoo &middot; <code>com.leiros.vendoo</code> &middot; solo Android</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "Vendoo",
+  "short_name": "Vendoo",
+  "description": "La aplicación de campo de los vendedores de Grupo Leiros.",
+  "lang": "es-VE",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#0E0E10",
+  "theme_color": "#6D28D9",
+  "icons": [
+    { "src": "/assets/img/favicon-32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/assets/img/icono-180.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/assets/img/icono-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

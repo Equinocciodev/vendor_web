@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Vendoo — isotipo, con su teja #0E0E10.
+  Copiado tal cual de vendoo_app/assets/logo_vendoo.svg. NO se edita acá:
+  si el dibujo cambia, cambia en la app y se vuelve a copiar.
+  Las dos razones que lo definen: trazo/diámetro 0,220 y disco/contraforma 0,550.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <rect width="1024" height="1024" rx="232" fill="#0E0E10"/>
+  <path d="M246.8,512 A265.2,265.2 0 1 0 777.2,512 A265.2,265.2 0 1 0 246.8,512" fill="none" stroke="#FFFFFF" stroke-width="149.6"/>
+  <circle cx="512" cy="512" r="104.7" fill="#9B5DE5"/>
+</svg>

@@ -1,0 +1,85 @@
+# Publicación del sitio de Vendoo en Cloudflare Pages.
+#
+# Dos trabajos y en este orden: primero se verifica, y sólo si pasa se publica.
+# Un sitio con un enlace roto o una página que no cierra sus etiquetas no llega
+# a producción.
+#
+# Secretos que hay que cargar en el repositorio (Settings › Secrets and
+# variables › Actions):
+#   CLOUDFLARE_API_TOKEN   — token con el permiso «Cloudflare Pages: Edit»
+#   CLOUDFLARE_ACCOUNT_ID  — el id de la cuenta de Cloudflare
+# Están explicados paso a paso en el README.
+
+name: Publicar
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publicar-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verificar:
+    name: Verificar el sitio
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Que estén las cuatro páginas
+        run: |
+          faltan=0
+          for f in index.html contacto.html terminos.html privacidad.html; do
+            if [ ! -f "$f" ]; then echo "falta $f"; faltan=1; fi
+          done
+          exit $faltan
+
+      # HTML bien formado, metadatos mínimos, enlaces internos y anclas,
+      # y que no haya ni un recurso externo. Sin dependencias: solo Python.
+      - name: Chequeo del HTML y de los enlaces
+        run: python3 tool/verificar.py
+
+      # Segunda opinión, con una herramienta de verdad. Es informativa: tidy
+      # se queja de cosas que no son errores, así que no tumba la publicación.
+      - name: Segunda opinión con tidy (informativa)
+        continue-on-error: true
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq tidy
+          for f in *.html; do
+            echo "--- $f"
+            tidy -quiet -errors --gnu-emacs yes "$f" || true
+          done
+
+  publicar:
+    name: Publicar en Cloudflare Pages
+    needs: verificar
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: produccion
+      url: https://vendooapp.com
+    steps:
+      - uses: actions/checkout@v4
+
+      # Se sube una carpeta armada a mano y no el repositorio entero: así
+      # `tool/`, `.github/` y el README no terminan servidos como parte del
+      # sitio. Es copiar archivos, no compilar nada.
+      - name: Armar la carpeta que se sube
+        run: |
+          mkdir -p _sitio
+          cp -R assets _sitio/
+          cp *.html robots.txt sitemap.xml favicon.svg site.webmanifest _headers _sitio/
+          ls -la _sitio
+
+      - name: Desplegar
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy _sitio --project-name vendoo-web --branch main

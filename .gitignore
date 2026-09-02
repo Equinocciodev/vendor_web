@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+._*
+
+# Editores
+.vscode/
+.idea/
+*.swp
+
+# Nada de dependencias: este sitio no tiene build ni paquetes.
+node_modules/
+.wrangler/
