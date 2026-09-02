@@ -128,3 +128,133 @@
   var candidatos = document.querySelectorAll('.revelar, [data-cifra]');
   Array.prototype.forEach.call(candidatos, function (n) { mirador.observe(n); });
 })();
+
+
+/* ==========================================================================
+   El marcador del menú (2-sep-2026)
+
+   Defecto reportado por el dueño: «el indicador de seleccionado de los links
+   del menú principal no funciona, siempre queda Inicio». Y era literal: los
+   cuatro del medio —Producto, Cómo funciona, Integraciones, Seguridad— son
+   ANCLAS de la portada, así que el `aria-current="page"` escrito a mano en el
+   HTML se quedaba pegado en «Inicio» todo el recorrido.
+
+   Lo que hace este bloque es mover esa marca según lo que se está mirando.
+   Cuatro cosas que conviene no deshacer:
+
+   1. **El marcado estático del HTML es la verdad sin JavaScript.** Cada
+      página trae su `aria-current` escrito (Inicio en la portada, Contacto en
+      contacto.html, ninguno en las dos legales, que no están en el menú). Si
+      este archivo no corre, esa marca queda y es correcta.
+   2. **Se observan TODAS las secciones, no sólo las cuatro del menú.** Cada
+      una hereda el ítem de la última ancla que la precede, así que mientras
+      se lee «Sin señal» o «Pantalla por pantalla» —que no tienen entrada
+      propia— sigue encendido «Cómo funciona». Observar sólo las cuatro dejaba
+      encendida la SIGUIENTE, que es peor que no marcar nada.
+   3. **La marca nunca retrocede por sorpresa**: la sección activa es la
+      primera que sigue cruzando la línea de la cabecera, o sea la que se está
+      leyendo. No hay porcentajes de viewport ni umbrales que peleen entre sí.
+   4. **Al hacer clic se marca en el acto.** El sitio tiene
+      `scroll-behavior: smooth`, y durante ese viaje el observador iría
+      encendiendo cada sección intermedia. Por eso el clic fija el ítem y
+      calla al observador hasta que el desplazamiento aterriza.
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var nav = document.querySelector('.nav');
+  var cabecera = document.querySelector('.cabecera');
+  if (!nav || !('IntersectionObserver' in window)) return;
+
+  var secciones = Array.prototype.slice.call(
+    document.querySelectorAll('#principal > section'));
+  if (!secciones.length) return;
+
+  var enlaces = Array.prototype.slice.call(nav.querySelectorAll('a'));
+  var inicio = null;
+  var porAncla = {};
+  enlaces.forEach(function (a) {
+    var href = a.getAttribute('href') || '';
+    var corte = href.indexOf('#');
+    if (href === '/' ) { inicio = a; return; }
+    // Sólo las anclas de ESTA página: `/#producto`, `#producto`.
+    if (corte === -1) return;
+    if (corte > 0 && href.slice(0, corte) !== '/') return;
+    porAncla[href.slice(corte + 1)] = a;
+  });
+  if (!inicio) return;
+
+  // Cada sección hereda el ítem de la última ancla que la precede: las que no
+  // tienen entrada propia no apagan el menú ni encienden la de más abajo.
+  var deLaSeccion = [];
+  var actual = inicio;
+  var propias = 0;
+  secciones.forEach(function (s) {
+    var id = s.getAttribute('id');
+    if (id && porAncla[id]) { actual = porAncla[id]; propias++; }
+    deLaSeccion.push(actual);
+  });
+  // Las anclas del menú son de la PORTADA. En contacto.html o en las legales
+  // ninguna sección responde a ellas, y sin esta salida el marcador les
+  // encendería «Inicio» encima del `aria-current` que ya traen escrito.
+  if (!propias) return;
+
+  var cruzando = secciones.map(function () { return false; });
+  var mudo = 0;
+
+  function marcar(enlace) {
+    enlaces.forEach(function (a) {
+      if (a === enlace) a.setAttribute('aria-current', 'page');
+      else a.removeAttribute('aria-current');
+    });
+  }
+
+  function calcular() {
+    for (var i = 0; i < cruzando.length; i++) {
+      if (cruzando[i]) return deLaSeccion[i];
+    }
+    return deLaSeccion[deLaSeccion.length - 1];
+  }
+
+  function repintar() {
+    if (Date.now() < mudo) return;
+    marcar(calcular());
+  }
+
+  var mirador = null;
+  function observar() {
+    if (mirador) mirador.disconnect();
+    // La línea de detección va DEBAJO del `scroll-margin-top` de las secciones
+    // (84 px, 104 en pantalla angosta). Si quedara por encima, al saltar a
+    // `/#integraciones` la sección de arriba seguiría cruzándola y el menú
+    // encendería la ANTERIOR — que es medio arreglo y se ve como el defecto
+    // original. Medido: con `+6` fallaba por diez píxeles.
+    var alto = (cabecera ? cabecera.offsetHeight : 68) + 28;
+    mirador = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (e) {
+        var i = secciones.indexOf(e.target);
+        if (i >= 0) cruzando[i] = e.isIntersecting;
+      });
+      repintar();
+    }, { rootMargin: (-alto) + 'px 0px 0px 0px', threshold: 0 });
+    secciones.forEach(function (s) { mirador.observe(s); });
+  }
+  observar();
+
+  // El clic manda mientras dura el desplazamiento suave.
+  nav.addEventListener('click', function (ev) {
+    var a = ev.target.closest && ev.target.closest('a');
+    if (!a || enlaces.indexOf(a) === -1) return;
+    var href = a.getAttribute('href') || '';
+    if (href.indexOf('#') === -1) return;      // Contacto: se va a otra página
+    marcar(a);
+    mudo = Date.now() + 900;
+    setTimeout(function () { mudo = 0; repintar(); }, 950);
+  });
+
+  var reloj;
+  window.addEventListener('resize', function () {
+    clearTimeout(reloj);
+    reloj = setTimeout(observar, 200);
+  });
+})();

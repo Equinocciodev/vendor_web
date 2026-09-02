@@ -85,6 +85,48 @@ menú y el pie de las cinco páginas, el `sitemap.xml` y el `BreadcrumbList`.
 **Términos y privacidad NO están en el menú** (decisión del dueño): viven en el
 pie y en la página de contacto.
 
+#### El marcador del ítem activo, y por qué necesita JavaScript
+
+Defecto reportado por el dueño el **2-sep-2026**: «el indicador de seleccionado
+de los links del menú principal no funciona, siempre queda Inicio». Era literal
+y era estructural: cuatro de los seis ítems son **anclas de la portada**, así
+que el `aria-current="page"` escrito en el HTML se quedaba clavado en «Inicio»
+durante todo el recorrido.
+
+Lo resuelve un **scroll-spy** al final de `assets/js/sitio.js`. Cuatro reglas:
+
+1. **El marcado estático del HTML es la verdad sin JavaScript**, y es correcto:
+   «Inicio» en la portada, «Contacto» en `contacto.html`, y **ninguno** en
+   términos y privacidad —no están en el menú, y encender «Inicio» ahí sería
+   decir que estás en otra página—. `404.html` tampoco marca ninguno.
+2. **Se observan TODAS las secciones de la portada, no sólo las cuatro del
+   menú.** Cada una hereda el ítem de la última ancla que la precede, así que
+   mientras se lee «Sin señal» o «Pantalla por pantalla» sigue encendido «Cómo
+   funciona». Observar sólo las cuatro dejaba encendida la **siguiente**, que
+   es peor que no marcar nada.
+3. **La línea de detección va DEBAJO del `scroll-margin-top` de las secciones**
+   (84 px, 104 en pantalla angosta; la línea es la altura de la cabecera + 28).
+   Si quedara por encima, al saltar a `/#integraciones` la sección de arriba
+   seguiría cruzándola y el menú encendería la **anterior** — medido: con +6
+   fallaba por diez píxeles, que es un arreglo a medias y se ve igual que el
+   defecto original.
+4. **Al hacer clic se marca en el acto.** El sitio tiene `scroll-behavior:
+   smooth` y durante ese viaje el observador iría encendiendo cada sección
+   intermedia; por eso el clic fija el ítem y calla al observador hasta que el
+   desplazamiento aterriza.
+
+El `scroll-margin-top` de `.seccion[id]` entró con esto y arregla de paso otra
+cosa: sin él, saltar a un ancla dejaba el titular **debajo** de la barra fija.
+
+⚠️ **Esto no se puede probar con `--virtual-time-budget`.** Está medido: el
+reloj virtual entrega la primera tanda del `IntersectionObserver` y después no
+vuelve a entregar ninguna, así que el menú «no se mueve» y el revelado de las
+secciones se queda en dos. Hace falta un Chrome con reloj de verdad, manejado
+por CDP (`--remote-debugging-port` + `--remote-allow-origins=*`), scrolleando
+con `window.scrollTo` y leyendo `.nav a[aria-current="page"]`. Así se verificó
+el recorrido entero, la carga con `#hash` en las seis secciones, el clic en el
+menú, 390 px y las otras cuatro páginas.
+
 ### Cómo está compuesta la portada
 
 Encargo del dueño (2-sep-2026): **«menos texto, más infografías y
@@ -123,13 +165,28 @@ sin una sola librería. Las informativas llevan `role="img"` con `<title>` y
 | La visita | Línea de tiempo | Los ocho pasos con un riel que se llena y los números que se encienden en orden. |
 | Sin señal | La cola | Tres envíos guardados en el teléfono viajan al ERP cuando vuelve la red, y el ERP confirma. |
 | La regla de fondo | Dos papeles | El total del teléfono y el del ERP, uno al lado del otro: lo que se firma contra lo que se recalcula. |
-| Integraciones | Teléfono ↔ Vendoo ↔ ERP | El dato va y vuelve; abajo, el muro de doce ERP y el trío de qué sube, qué baja y quién tiene la verdad. |
+| Integraciones | Vendedor ↔ Vendoo ↔ ERP | El vendedor en la calle, Vendoo con su nube y su cola, y el ERP como servidor. Paquetes que viajan en los dos sentidos, rotulados con lo que llevan; en el medio, la cola que se llena sin señal y se vacía cuando la red vuelve. |
 | Seguridad | Tres capas | PIN por fuera, base cifrada en el medio, sesión del ERP adentro. |
 
 ⚠️ **Las infografías llevan tope de ancho** (`.info`, 620 px; `.info--ancha`,
 780 px). Un `<svg>` con `width: 100%` y un `viewBox` de 460 se estira a los
 1.120 px de la envoltura **y escala su texto con él**: el «3 en cola» de 11 px
 terminaba dibujado a 28 px, como un cartel de la calle.
+
+⚠️ **Y el problema tiene un espejo hacia abajo, que se resolvió el 2-sep-2026
+en el diagrama de integraciones** (`.info--flujo`, 880 px, `viewBox` de 700).
+En un teléfono de 320 px ese dibujo se pinta a 0,4 de escala: un rótulo de
+10,5 px termina en 4 px, que no es texto sino un rayón. Por eso ahí **los tres
+tamaños de texto son clases y no atributos `font-size`** (`.d-eti`, `.d-nodo`,
+`.d-mini`) y **suben en dos escalones** (≤ 620 px y ≤ 420 px), y por eso las
+listas largas —«pedidos · cobranzas · visitas · clientes nuevos»— llevan clase
+`.d-lista` y **se esconden** por debajo de 620 px, donde en su lugar sale un
+rótulo corto (`.d-corto`: «Al ERP», «Del ERP»). Agrandar el texto sin acortarlo
+lo hace chocar; acortarlo sin agrandarlo no lo hace legible. **Si agregás un
+rótulo a ese diagrama, medilo a 320 px antes de darlo por bueno.**
+
+⚠️ Los selectores de esas clases llevan `.info--flujo` **delante a propósito**:
+`.info text` ya fija 13 px y le gana por especificidad a una clase sola.
 
 ### El muro de ERP, y por qué no hay ni un logotipo
 
@@ -144,6 +201,22 @@ que ninguno— y no se descargan de su servidor —sería un recurso externo, y
 casi todas exigen aceptar antes su guía de marca—. Nombrar una marca por
 escrito para decir con qué sistemas trabaja el producto es un uso nominativo;
 poner su logotipo ya es usar su identidad visual.
+
+Desde el **2-sep-2026** cada ficha lleva además **un ícono dibujado por
+nosotros** (`.erp__icono`, monoline de 24×24, del mismo juego que el mosaico de
+capacidades) que dice **de qué tipo de sistema se trata**: módulos para Odoo,
+torres corporativas para S/4HANA, un local con toldo para Business One, una
+nube con datos para NetSuite, un cubo para Business Central, una calculadora
+para QuickBooks, un libro mayor para Sage, una cuadrícula de aplicaciones para
+Zoho, dos personas para el CRM de Salesforce, una factura para Siigo, un
+billete para Alegra y monedas para CONTPAQi.
+
+⚠️ **El ícono NO es un logotipo, y por eso puede llevar el acento del sitio.**
+Dice una categoría, no una marca. Lo que sigue apareciendo **sólo al pasar el
+cursor** es el color de la marca —ahora sobre el ícono *y* sobre la palabra—,
+que es la regla de abajo y no cambió. Si algún día llegan los SVG oficiales, el
+ícono de categoría se queda: el que se reemplaza es el `<span
+class="erp__marca">`.
 
 El color de cada marca aparece **sólo al pasar el cursor** (`--erp-c` y su
 variante para fondo oscuro). Las tres latinoamericanas no tienen color

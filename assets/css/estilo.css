@@ -178,6 +178,11 @@ a:hover { text-decoration-thickness: 2px; }
 .seccion { padding-block: clamp(56px, 8vw, 104px); }
 .seccion--fina { padding-block: clamp(40px, 5vw, 64px); }
 .seccion + .seccion { border-top: 1px solid var(--borde-suave); }
+/* La cabecera es pegajosa: sin esto, saltar a `/#integraciones` deja el
+   titular escondido DEBAJO de la barra. Es además la línea con la que el
+   marcador del menú decide en qué sección estás. */
+.seccion[id] { scroll-margin-top: 84px; }
+@media (max-width: 1000px) { .seccion[id] { scroll-margin-top: 104px; } }
 
 .saltar {
   position: absolute; left: -9999px; top: 0; z-index: 100;
@@ -881,10 +886,78 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
 @keyframes brotar { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: none; } }
 .parada { transform-box: fill-box; transform-origin: center; }
 
-/* El diagrama de integración: el dato va y vuelve. */
-[data-anim] .visible .flecha-ida   { animation: correr 3.2s ease-in-out infinite; }
-[data-anim] .visible .flecha-vuelta{ animation: correr 3.2s 1.6s ease-in-out infinite; }
-@keyframes correr { 0% { opacity: .15; } 40% { opacity: 1; } 100% { opacity: .15; } }
+/* ==========================================================================
+   El diagrama de integraciones: vendedor → Vendoo → tu ERP  (2-sep-2026)
+
+   Tres nodos y dos canales, con paquetes que viajan. Dos cosas que conviene
+   saber antes de tocarlo:
+
+   ⚠️ EL TAMAÑO DEL TEXTO SUBE CUANDO LA PANTALLA BAJA. El viewBox mide 700
+   unidades y en un teléfono de 320 px se dibuja a 0,4 de escala: un rótulo
+   de 10,5 px terminaría en 4 px, que no es texto sino un rayón. Por eso los
+   tres tamaños (`.d-eti`, `.d-nodo`, `.d-mini`) son clases y no atributos
+   `font-size`, y suben en dos escalones. Y por eso las listas largas
+   (`.d-lista`) se esconden por debajo de 620 px y en su lugar sale un rótulo
+   corto (`.d-corto`): agrandar el texto sin acortarlo lo haría chocar.
+
+   ⚠️ Los selectores llevan `.info--flujo` DELANTE a propósito: `.info text`
+   ya fija 13 px y le gana por especificidad a una clase sola.
+
+   El estado de reposo —sin JavaScript, o con `prefers-reduced-motion`— es el
+   legible: los paquetes quietos al principio de su canal, los tres envíos en
+   la cola y los dos rótulos de estado a plena opacidad. */
+.info--flujo { max-width: 880px; }
+.d-panel  { fill: var(--superficie); stroke: var(--acento); }
+.d-flecha { fill: none; stroke: var(--acento); stroke-linecap: round; stroke-linejoin: round; opacity: .45; }
+.d-paq    { fill: var(--acento); }
+.d-logo   { color: var(--acento); }
+.d-chip   { fill: var(--acento); }
+.info--flujo .d-eti  { fill: var(--tinta-suave); font-size: 10.5px; }
+.info--flujo .d-nodo { fill: var(--tinta); font-size: 12px; font-weight: 600; }
+.info--flujo .d-mini { font-size: 9px; font-weight: 600; }
+
+@media (min-width: 621px) { .info--flujo .d-corto { display: none; } }
+@media (max-width: 620px) {
+  .info--flujo .d-lista { display: none; }
+  .info--flujo .d-eti  { font-size: 15px; }
+  .info--flujo .d-nodo { font-size: 17px; }
+  .info--flujo .d-mini { font-size: 12px; }
+}
+@media (max-width: 420px) {
+  .info--flujo .d-eti  { font-size: 21px; }
+  .info--flujo .d-nodo { font-size: 24px; }
+  .info--flujo .d-mini { font-size: 17px; }
+}
+
+/* Los paquetes que viajan. Dos por canal, el segundo a medio ciclo. */
+[data-anim] .visible .d-der   { animation: d-der 3.4s linear infinite; }
+[data-anim] .visible .d-izq   { animation: d-izq 3.4s linear infinite; }
+[data-anim] .visible .d-tarde { animation-delay: 1.7s; }
+@keyframes d-der {
+  0%        { transform: translateX(0);     opacity: 0; }
+  12%, 78%  { opacity: 1; }
+  100%      { transform: translateX(104px); opacity: 0; }
+}
+@keyframes d-izq {
+  0%        { transform: translateX(0);      opacity: 0; }
+  12%, 78%  { opacity: 1; }
+  100%      { transform: translateX(-104px); opacity: 0; }
+}
+
+/* La cola: se llena de a uno mientras no hay señal y se vacía cuando vuelve.
+   Es el mismo bucle de la sección «Sin señal», en pequeño. */
+[data-anim] .visible .d-chip     { animation: d-cola 5.4s ease-in-out infinite; }
+[data-anim] .visible .d-chip--b  { animation-delay: .45s; }
+[data-anim] .visible .d-chip--c  { animation-delay: .9s; }
+@keyframes d-cola {
+  0%        { opacity: 0; transform: translateX(0); }
+  10%, 55%  { opacity: 1; transform: translateX(0); }
+  72%, 100% { opacity: 0; transform: translateX(24px); }
+}
+[data-anim] .visible .d-est-a { animation: d-est-a 5.4s ease-in-out infinite; }
+[data-anim] .visible .d-est-b { animation: d-est-b 5.4s ease-in-out infinite; }
+@keyframes d-est-a { 0%, 50% { opacity: 1; }   62%, 100% { opacity: .25; } }
+@keyframes d-est-b { 0%, 50% { opacity: .25; } 62%, 100% { opacity: 1; } }
 
 /* Las capas de seguridad. */
 [data-anim] .visible .capa { animation: brotar .5s both; }
@@ -925,6 +998,9 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
 /* --- Cita con más presencia -------------------------------------------- */
 .cita--grande { font-size: clamp(1.15rem, 1rem + .9vw, 1.5rem); border-left-width: 4px; }
 .e-brazo    { fill: none; stroke: #C68A63; stroke-width: 13; stroke-linecap: round; }
+/* La misma manga, para la escena chica del diagrama de integraciones: allí
+   el vendedor mide un tercio y un trazo de 13 le tapaba el torso. */
+.e-brazo--fino { stroke-width: 8; }
 .e-pantalon { fill: var(--tinta-suave); }
 .e-sombra   { fill: rgba(20, 20, 30, .10); }
 :root[data-tema="oscuro"] .e-sombra { fill: rgba(0, 0, 0, .35); }
@@ -1021,6 +1097,25 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
   padding: 20px 12px 16px;
   color: var(--tinta-suave);
 }
+/* El ÍCONO de la ficha lo dibujamos nosotros y dice de qué tipo de sistema
+   se trata (ERP corporativo, contabilidad, CRM, facturación…). No es un
+   logotipo ajeno, así que puede llevar el acento del sitio; lo que sigue
+   apareciendo sólo al pasar por encima es el color de la MARCA. */
+.erp__icono {
+  width: 26px; height: 26px; display: block; flex: none;
+  margin-bottom: 9px; color: var(--tinta-suave);
+}
+.erp--nativo .erp__icono { color: var(--acento); }
+@media (prefers-reduced-motion: no-preference) {
+  .erp__icono { transition: color .18s ease, transform .22s ease; }
+  .erp:hover .erp__icono, .erp:focus-within .erp__icono { transform: translateY(-2px) scale(1.07); }
+}
+.erp:hover .erp__icono, .erp:focus-within .erp__icono { color: var(--erp-c, var(--acento)); }
+:root[data-tema="oscuro"] .erp:hover .erp__icono, :root[data-tema="oscuro"] .erp:focus-within .erp__icono { color: var(--erp-c-osc, var(--acento)); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) .erp:hover .erp__icono,
+  :root:not([data-tema="claro"]) .erp:focus-within .erp__icono { color: var(--erp-c-osc, var(--acento)); }
+}
 .erp__marca {
   font-weight: 700; font-size: 1.02rem; letter-spacing: -.02em;
   color: var(--tinta); overflow-wrap: break-word;
@@ -1085,8 +1180,12 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
 @media (min-width: 760px) { .trio { grid-template-columns: repeat(3, 1fr); } }
 .trio li {
   border: var(--grosor) solid var(--borde-suave); border-radius: var(--r-tarjeta);
-  background: var(--superficie); padding: 20px 22px;
+  background: var(--superficie); padding: 24px 22px;
 }
-.trio b { display: flex; align-items: center; gap: 9px; font-weight: 600; margin-bottom: 6px; }
-.trio svg { width: 19px; height: 19px; flex: none; color: var(--acento); }
-.trio span { color: var(--tinta-suave); font-size: .93rem; }
+.trio .icono { margin-bottom: 14px; }
+.trio h3 { font-size: 1.04rem; margin-bottom: .3em; }
+.trio p { color: var(--tinta-suave); font-size: .93rem; margin: 0; line-height: 1.6; }
+@media (prefers-reduced-motion: no-preference) {
+  .trio li { transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+  .trio li:hover { transform: translateY(-3px); border-color: var(--acento); box-shadow: var(--sombra); }
+}

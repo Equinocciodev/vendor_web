@@ -652,135 +652,247 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
       <h2>Vendoo lleva la calle hasta tu ERP.</h2>
       <p>No es un sistema aparte con su propia verdad: es la boca de campo del que ya usas.</p>
     </div>
+
+    <!-- ⚠️ EL DIAGRAMA. Tres nodos y dos canales, dibujado a mano con los
+         tokens del tema. Los rótulos largos («pedidos · cobranzas · …») son
+         `.d-lista` y se ESCONDEN por debajo de 620 px, donde un viewBox de
+         700 los dibujaría a 4 px; en su lugar sale `.d-corto`, y las tres
+         medidas de texto suben con el ancho. Si agregás un rótulo, medí a
+         320 px antes de darlo por bueno. -->
     <div class="revelar">
-      <svg class="info info--ancha" viewBox="0 0 560 214" role="img" aria-labelledby="dia-t dia-d">
-        <title id="dia-t">Cómo se conecta Vendoo con tu sistema</title>
-        <desc id="dia-d">El teléfono del vendedor habla con Vendoo, y Vendoo con tu ERP: baja cartera, catálogo, tarifas y facturas abiertas, y sube visitas, pedidos y cobros. Con Odoo 19 la integración es nativa; con SAP y otros sistemas se construye a medida.</desc>
-        <rect class="i-tarjeta" x="8" y="56" width="126" height="100" rx="16" stroke-width="1.3"/>
-        <rect class="i-marco" x="49" y="72" width="44" height="68" rx="8" stroke-width="1.4"/>
-        <rect class="i-acento" x="55" y="80" width="32" height="6" rx="3"/>
-        <rect class="i-linea" x="55" y="94" width="32" height="5" rx="2.5"/>
-        <rect class="i-linea" x="55" y="105" width="22" height="5" rx="2.5"/>
-        <text class="i-suave chico" x="71" y="176" text-anchor="middle">El vendedor</text>
+      <svg class="info info--flujo" viewBox="0 0 700 230" role="img" aria-labelledby="flujo-t flujo-d">
+        <title id="flujo-t">Del vendedor en la calle a tu ERP, y de vuelta</title>
+        <desc id="flujo-d">Diagrama en tres partes. A la izquierda, el vendedor de pie frente a una bodega con el teléfono en la mano. En el centro, Vendoo: su logotipo y una nube con la cola de sincronización, que se llena cuando no hay señal y se vacía cuando la red vuelve. A la derecha, tu ERP dibujado como un servidor. Entre ellos, dos canales con paquetes que viajan: hacia el ERP suben pedidos, cobranzas, visitas y clientes nuevos; desde el ERP baja el catálogo, los precios, el stock, el crédito y las facturas abiertas.</desc>
 
-        <path class="i-borde flecha-ida" d="M142,94 H196" stroke-width="2.4" stroke-linecap="round"/>
-        <path class="i-borde flecha-ida" d="M188,88 l8,6 l-8,6" stroke-width="2.4" stroke-linecap="round"/>
-        <path class="i-borde flecha-vuelta" d="M196,122 H142" stroke-width="2.4" stroke-linecap="round"/>
-        <path class="i-borde flecha-vuelta" d="M150,116 l-8,6 l8,6" stroke-width="2.4" stroke-linecap="round"/>
+        <!-- ============ El vendedor, en la calle ============ -->
+        <g class="e-sol">
+          <circle cx="22" cy="40" r="9"/>
+          <rect x="19" y="22" width="6" height="8" rx="3"/>
+          <rect x="19" y="50" width="6" height="8" rx="3"/>
+          <rect x="4" y="37" width="8" height="6" rx="3"/>
+          <rect x="32" y="37" width="8" height="6" rx="3"/>
+        </g>
+        <rect class="e-local" x="6" y="70" width="50" height="92" rx="8"/>
+        <rect class="e-toldo" x="2" y="70" width="58" height="12" rx="6"/>
+        <rect class="e-toldo2" x="12" y="70" width="6" height="12"/>
+        <rect class="e-toldo2" x="28" y="70" width="6" height="12"/>
+        <rect class="e-toldo2" x="44" y="70" width="6" height="12"/>
+        <rect class="e-piso" x="13" y="92" width="36" height="5" rx="2.5"/>
+        <rect class="e-piso" x="13" y="104" width="26" height="5" rx="2.5"/>
+        <rect class="e-local" x="19" y="124" width="24" height="38" rx="5"/>
+        <path class="e-linea" d="M19,124 L19,162 M43,124 L43,162 M19,124 L43,124"/>
+        <rect class="e-piso" x="0" y="162" width="124" height="5" rx="2.5"/>
+        <ellipse class="e-sombra" cx="78" cy="164" rx="26" ry="4"/>
+        <!-- Sin cara: no es una persona en particular. -->
+        <rect class="e-pantalon" x="68" y="130" width="8" height="34" rx="4"/>
+        <rect class="e-pantalon" x="80" y="130" width="8" height="34" rx="4"/>
+        <path class="e-ropa" d="M64,98 a14,14 0 0 1 28,0 l0,30 a5,5 0 0 1 -5,5 l-18,0 a5,5 0 0 1 -5,-5 z"/>
+        <path class="e-brazo e-brazo--fino" d="M88,106 L101,98"/>
+        <circle class="e-piel" cx="78" cy="86" r="11"/>
+        <path class="e-ropa" d="M67,82 a11,11 0 0 1 22,0 z"/>
+        <rect class="e-ropa" x="65" y="80" width="27" height="4" rx="2"/>
+        <g class="i-sombra">
+          <rect class="i-marco" x="95" y="84" width="24" height="40" rx="6" stroke-width="1.4"/>
+          <rect class="i-pantalla" x="98" y="87" width="18" height="34" rx="4"/>
+          <rect class="i-acento" x="101" y="92" width="12" height="4" rx="2"/>
+          <rect class="i-linea" x="101" y="100" width="12" height="3" rx="1.5"/>
+          <rect class="i-linea" x="101" y="106" width="8" height="3" rx="1.5"/>
+          <rect class="i-acento" x="101" y="112" width="12" height="6" rx="3"/>
+        </g>
 
-        <rect class="i-acento" x="204" y="66" width="152" height="84" rx="18"/>
-        <text class="i-sobre neg" x="280" y="102" font-size="15" text-anchor="middle">Vendoo</text>
-        <text class="i-sobre" x="280" y="122" font-size="9.5" text-anchor="middle">la cola y la evidencia</text>
+        <!-- ============ Canal de subida: hacia el ERP ============ -->
+        <path class="d-flecha" d="M132,70 H268" stroke-width="2"/>
+        <path class="d-flecha" d="M262,64 l6,6 l-6,6" stroke-width="2"/>
+        <path class="d-flecha" d="M432,70 H568" stroke-width="2"/>
+        <path class="d-flecha" d="M562,64 l6,6 l-6,6" stroke-width="2"/>
+        <rect class="d-paq d-der" x="138" y="65" width="14" height="10" rx="3"/>
+        <rect class="d-paq d-der d-tarde" x="138" y="65" width="14" height="10" rx="3"/>
+        <rect class="d-paq d-der" x="440" y="65" width="14" height="10" rx="3"/>
+        <rect class="d-paq d-der d-tarde" x="440" y="65" width="14" height="10" rx="3"/>
+        <text class="d-eti d-lista" x="200" y="45" text-anchor="middle">la visita entera</text>
+        <text class="d-eti d-lista" x="200" y="56" text-anchor="middle">en el momento</text>
+        <text class="d-eti d-lista" x="500" y="23" text-anchor="middle">pedidos</text>
+        <text class="d-eti d-lista" x="500" y="34" text-anchor="middle">cobranzas</text>
+        <text class="d-eti d-lista" x="500" y="45" text-anchor="middle">visitas</text>
+        <text class="d-eti d-lista" x="500" y="56" text-anchor="middle">clientes nuevos</text>
+        <text class="d-eti d-corto" x="500" y="56" text-anchor="middle">Al ERP</text>
 
-        <path class="i-borde flecha-ida" d="M364,94 H414" stroke-width="2.4" stroke-linecap="round"/>
-        <path class="i-borde flecha-ida" d="M406,88 l8,6 l-8,6" stroke-width="2.4" stroke-linecap="round"/>
-        <path class="i-borde flecha-vuelta" d="M414,122 H364" stroke-width="2.4" stroke-linecap="round"/>
-        <path class="i-borde flecha-vuelta" d="M372,116 l-8,6 l8,6" stroke-width="2.4" stroke-linecap="round"/>
+        <!-- ============ Canal de bajada: desde el ERP ============ -->
+        <path class="d-flecha" d="M268,150 H132" stroke-width="2"/>
+        <path class="d-flecha" d="M138,144 l-6,6 l6,6" stroke-width="2"/>
+        <path class="d-flecha" d="M568,150 H432" stroke-width="2"/>
+        <path class="d-flecha" d="M438,144 l-6,6 l6,6" stroke-width="2"/>
+        <rect class="d-paq d-izq" x="244" y="145" width="14" height="10" rx="3"/>
+        <rect class="d-paq d-izq d-tarde" x="244" y="145" width="14" height="10" rx="3"/>
+        <rect class="d-paq d-izq" x="544" y="145" width="14" height="10" rx="3"/>
+        <rect class="d-paq d-izq d-tarde" x="544" y="145" width="14" height="10" rx="3"/>
+        <text class="d-eti d-lista" x="200" y="167" text-anchor="middle">lo que necesita</text>
+        <text class="d-eti d-lista" x="200" y="178" text-anchor="middle">para vender hoy</text>
+        <text class="d-eti d-lista" x="500" y="167" text-anchor="middle">catálogo</text>
+        <text class="d-eti d-lista" x="500" y="178" text-anchor="middle">precios</text>
+        <text class="d-eti d-lista" x="500" y="189" text-anchor="middle">stock y crédito</text>
+        <text class="d-eti d-lista" x="500" y="200" text-anchor="middle">facturas</text>
+        <text class="d-eti d-corto" x="500" y="168" text-anchor="middle">Del ERP</text>
 
-        <rect class="i-tarjeta" x="422" y="34" width="132" height="146" rx="16" stroke-width="1.3"/>
-        <text class="i-tinta neg" x="488" y="60" font-size="12" text-anchor="middle">Tu ERP</text>
-        <rect class="i-velo" x="432" y="72" width="112" height="26" rx="13"/>
-        <rect class="i-borde" x="432" y="72" width="112" height="26" rx="13" stroke-width="1.2"/>
-        <text class="i-acento neg" x="488" y="89" font-size="9.5" text-anchor="middle">Odoo 19 · nativo</text>
-        <rect class="i-linea" x="432" y="106" width="112" height="26" rx="13"/>
-        <text class="i-suave" x="488" y="123" font-size="9" text-anchor="middle">SAP · a medida</text>
-        <rect class="i-linea" x="432" y="140" width="112" height="26" rx="13"/>
-        <text class="i-suave" x="488" y="157" font-size="9" text-anchor="middle">Otros · a medida</text>
+        <!-- ============ Vendoo: el logotipo, la nube y la cola ============ -->
+        <g class="i-sombra">
+          <rect class="i-velo" x="276" y="22" width="148" height="168" rx="20"/>
+          <rect class="d-panel" x="276" y="22" width="148" height="168" rx="20" stroke-width="1.6"/>
+        </g>
+        <svg class="d-logo" x="304" y="38" width="92" height="22.4" viewBox="0 0 3806 926" aria-hidden="true" focusable="false">
+          <g transform="translate(66,0)" fill="none" stroke="currentColor" stroke-width="132" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M66,326 L256,794 L446,326"/>
+            <path transform="translate(546,0)" d="M424,758.4 A234,234 0 1 1 534,560 L66,560"/>
+            <path transform="translate(1186,0)" d="M66,794 L66,538 A212,212 0 0 1 490,538 L490,794"/>
+            <path transform="translate(1782,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+            <path transform="translate(1782,0)" d="M534,66 L534,794"/>
+            <path transform="translate(2428,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+            <path transform="translate(3074,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+            <path class="marca__disco" d="M3281.6,560 A92.4,92.4 0 1 0 3466.4,560 A92.4,92.4 0 1 0 3281.6,560 Z" stroke="none"/>
+          </g>
+        </svg>
+        <g transform="translate(289,70)">
+          <path class="i-velo" d="M18,52 A16,16 0 0 1 21,21 A19,19 0 0 1 57,13 A16,16 0 0 1 88,20 A18,18 0 0 1 104,52 Z"/>
+          <path class="i-borde" d="M18,52 A16,16 0 0 1 21,21 A19,19 0 0 1 57,13 A16,16 0 0 1 88,20 A18,18 0 0 1 104,52 Z" stroke-width="1.4"/>
+        </g>
+        <rect class="d-chip" x="316" y="100" width="20" height="8" rx="4"/>
+        <rect class="d-chip d-chip--b" x="340" y="100" width="20" height="8" rx="4"/>
+        <rect class="d-chip d-chip--c" x="364" y="100" width="20" height="8" rx="4"/>
+        <g class="d-est-a">
+          <rect class="i-alerta-b" x="292" y="132" width="116" height="20" rx="10" stroke-width="1.2"/>
+          <text class="i-alerta d-mini" x="350" y="146" text-anchor="middle">sin señal</text>
+        </g>
+        <g class="d-est-b">
+          <rect class="i-exito-b" x="292" y="158" width="116" height="20" rx="10" stroke-width="1.2"/>
+          <text class="i-exito d-mini" x="350" y="172" text-anchor="middle">vuelve la red</text>
+        </g>
+
+        <!-- ============ Tu ERP: el servidor ============ -->
+        <rect class="i-tarjeta" x="580" y="22" width="112" height="168" rx="16" stroke-width="1.3"/>
+        <rect class="i-velo" x="592" y="40" width="88" height="30" rx="9"/>
+        <rect class="i-borde" x="592" y="40" width="88" height="30" rx="9" stroke-width="1.2"/>
+        <circle class="i-acento" cx="608" cy="55" r="4"/>
+        <rect class="i-linea" x="622" y="52" width="44" height="6" rx="3"/>
+        <rect class="i-velo" x="592" y="78" width="88" height="30" rx="9"/>
+        <rect class="i-borde" x="592" y="78" width="88" height="30" rx="9" stroke-width="1.2"/>
+        <circle class="i-exito" cx="608" cy="93" r="4"/>
+        <rect class="i-linea" x="622" y="90" width="44" height="6" rx="3"/>
+        <rect class="i-velo" x="592" y="116" width="88" height="30" rx="9"/>
+        <rect class="i-borde" x="592" y="116" width="88" height="30" rx="9" stroke-width="1.2"/>
+        <circle class="i-suave" cx="608" cy="131" r="4"/>
+        <rect class="i-linea" x="622" y="128" width="34" height="6" rx="3"/>
+        <rect class="i-linea" x="600" y="160" width="72" height="6" rx="3"/>
+
+        <text class="d-nodo" x="64" y="219" text-anchor="middle">Vendedor</text>
+        <text class="d-nodo" x="350" y="219" text-anchor="middle">Vendoo</text>
+        <text class="d-nodo" x="636" y="219" text-anchor="middle">Tu ERP</text>
       </svg>
     </div>
-    <!-- ⚠️ MURO DE ERP. Cada ficha es la marca ESCRITA, no su logotipo: son
-         marcas registradas de terceros, no se dibujan de memoria ni se
-         descargan. Cuando exista el SVG oficial de alguna, se le agrega la
-         clase `con-logo` a su <li> y se cambia el <span class="erp__marca">
-         por un <img class="erp__logo">. El paso a paso, con el HTML listo
-         para copiar, está en assets/img/erp/README.md. -->
+
+    <ul class="trio mt-xl revelar">
+      <li>
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V5"/><path d="M6 11l6-6 6 6"/><path d="M4 21h16"/></svg></div>
+        <h3>Sube al ERP</h3>
+        <p>Pedidos, cobranzas, visitas con su evidencia y solicitudes de clientes nuevos.</p>
+      </li>
+      <li>
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v15"/><path d="M6 13l6 6 6-6"/><path d="M4 3h16"/></svg></div>
+        <h3>Baja del ERP</h3>
+        <p>Catálogo, precios por cliente, stock, crédito disponible y facturas abiertas.</p>
+      </li>
+      <li>
+        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.4-3.2 8.3-8 9.5C7.2 20.3 4 16.4 4 12V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h3>La verdad la tiene el ERP</h3>
+        <p>El teléfono propone; el número que vale lo recalcula tu sistema al recibir el pedido.</p>
+      </li>
+    </ul>
+
+    <h3 class="centrado mt-xl revelar">Con qué sistemas trabaja</h3>
+
+    <!-- ⚠️ MURO DE ERP. Cada ficha lleva un ícono DIBUJADO POR NOSOTROS que
+         dice de qué categoría es el sistema (ERP corporativo, contabilidad,
+         CRM, facturación…) y la marca ESCRITA — nunca su logotipo: son marcas
+         registradas de terceros, no se dibujan de memoria ni se descargan.
+         El ícono no es un logotipo y por eso puede llevar el acento del sitio;
+         el color de la MARCA sigue apareciendo sólo al pasar por encima.
+         Cuando exista el SVG oficial de alguna, se le agrega la clase
+         `con-logo` a su <li> y se cambia el <span class="erp__marca"> por un
+         <img class="erp__logo">. El paso a paso está en assets/img/erp/README.md. -->
     <ul class="erps mt-lg revelar">
       <li class="erp erp--nativo erp--odoo">
+        <svg class="erp__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><path d="M17.25 13.5v7.5M13.5 17.25h7.5"/></svg>
         <span class="erp__marca">Odoo</span>
         <span class="erp__linea">17, 18 y 19</span>
         <span class="erp__sello">Integración nativa</span>
       </li>
       <li class="erp erp--sap">
+        <svg class="erp__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V8l6-3 6 3v13"/><path d="M15 21V11h6v10"/><path d="M2 21h20"/><path d="M6.5 10.5h1.5M10.5 10.5h1.5M6.5 14h1.5M10.5 14h1.5M17.5 14.5h1.5M17.5 18h1.5"/></svg>
         <span class="erp__marca">SAP</span>
         <span class="erp__linea">S/4HANA</span>
         <span class="erp__sello">A medida</span>
       </li>
       <li class="erp erp--sap">
+        <svg class="erp__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 9.5 5 4h14l1.5 5.5"/><path d="M5 9.5V20h14V9.5"/><path d="M3.5 9.5a2.55 2.55 0 0 0 5.1 0 2.55 2.55 0 0 0 5.1 0 2.55 2.55 0 0 0 5.1 0"/><path d="M9.5 20v-5.5h5V20"/></svg>
         <span class="erp__marca">SAP</span>
         <span class="erp__linea">Business One</span>
         <span class="erp__sello">A medida</span>
       </li>
       <li class="erp erp--oracle">
+        <svg class="erp__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.6 19.5h10.6a3.9 3.9 0 0 0 .5-7.77A5.5 5.5 0 0 0 7.3 10.4a4.55 4.55 0 0 0-.7 9.1z"/><path d="M9.6 15.6h5M9.6 12.9h5"/></svg>
         <span class="erp__marca">NetSuite</span>
         <span class="erp__linea">Oracle</span>
         <span class="erp__sello">A medida</span>
       </li>
       <li class="erp erp--microsoft">
+        <svg class="erp__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8 21 7.4v9.2L12 21.2 3 16.6V7.4z"/><path d="M3 7.4 12 12l9-4.6"/><path d="M12 12v9.2"/></svg>
         <span class="erp__marca">Dynamics 365</span>
         <span class="erp__linea">Business Central</span>
         <span class="erp__sello">A medida</span>
       </li>
       <li class="erp erp--intuit">
+        <svg class="erp__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2.5" width="16" height="19" rx="2.5"/><rect x="7" y="5.5" width="10" height="4" rx="1"/><path d="M7.6 13h.01M12 13h.01M16.4 13h.01M7.6 17h.01M12 17h.01M16.4 17h.01"/></svg>
         <span class="erp__marca">QuickBooks</span>
         <span class="erp__linea">Online y Desktop</span>
         <span class="erp__sello">A medida</span>
       </li>
       <li class="erp erp--sage">
+        <svg class="erp__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5S10 4.5 3.5 4.5v13C10 17.5 12 19.5 12 19.5s2-2 8.5-2v-13C14 4.5 12 6.5 12 6.5z"/><path d="M12 6.5v13"/></svg>
         <span class="erp__marca">Sage</span>
         <span class="erp__linea">300 y X3</span>
         <span class="erp__sello">A medida</span>
       </li>
       <li class="erp erp--zoho">
+        <svg class="erp__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="5.2" height="5.2" rx="1.6"/><rect x="9.4" y="3" width="5.2" height="5.2" rx="1.6"/><rect x="15.8" y="3" width="5.2" height="5.2" rx="1.6"/><rect x="3" y="9.4" width="5.2" height="5.2" rx="1.6"/><rect x="9.4" y="9.4" width="5.2" height="5.2" rx="1.6"/><rect x="15.8" y="9.4" width="5.2" height="5.2" rx="1.6"/><rect x="3" y="15.8" width="5.2" height="5.2" rx="1.6"/><rect x="9.4" y="15.8" width="5.2" height="5.2" rx="1.6"/><rect x="15.8" y="15.8" width="5.2" height="5.2" rx="1.6"/></svg>
         <span class="erp__marca">Zoho</span>
         <span class="erp__linea">Books e Inventory</span>
         <span class="erp__sello">A medida</span>
       </li>
       <li class="erp erp--sf">
+        <svg class="erp__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.2 20.5v-1.8a4 4 0 0 0-4-4h-4a4 4 0 0 0-4 4v1.8"/><circle cx="9.2" cy="7.6" r="3.4"/><path d="M21.5 20.5v-1.8a4 4 0 0 0-3-3.87"/><path d="M15.5 4.4a4 4 0 0 1 0 7.3"/></svg>
         <span class="erp__marca">Salesforce</span>
         <span class="erp__linea">CRM</span>
         <span class="erp__sello">A medida</span>
       </li>
       <li class="erp">
+        <svg class="erp__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 2.5h13v18.2l-2.2-1.4-2.2 1.4-2.2-1.4-2.2 1.4-2.2-1.4z"/><path d="M9 7.5h6M9 11h6M9 14.5h3.5"/></svg>
         <span class="erp__marca">Siigo</span>
         <span class="erp__linea">Colombia</span>
         <span class="erp__sello">A medida</span>
       </li>
       <li class="erp">
+        <svg class="erp__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.8"/><path d="M6 12h.01M18 12h.01"/></svg>
         <span class="erp__marca">Alegra</span>
         <span class="erp__linea">Latinoamérica</span>
         <span class="erp__sello">A medida</span>
       </li>
       <li class="erp">
+        <svg class="erp__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="7.5" ry="3"/><path d="M4.5 6v5c0 1.66 3.36 3 7.5 3s7.5-1.34 7.5-3V6"/><path d="M4.5 11v5c0 1.66 3.36 3 7.5 3s7.5-1.34 7.5-3v-5"/></svg>
         <span class="erp__marca">CONTPAQi</span>
         <span class="erp__linea">México</span>
         <span class="erp__sello">A medida</span>
       </li>
     </ul>
-    <p class="marca-ajena mt-sm revelar">Sólo Odoo tiene hoy integración construida y en producción. Con el resto la conexión se define y se construye para cada operación: nombrarlos acá no significa que exista un conector hecho. Todas las marcas mencionadas pertenecen a sus respectivos titulares y se nombran para decir con qué sistemas trabaja el cliente.</p>
-
-    <ul class="trio mt-xl revelar">
-      <li>
-        <b>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V5"/><path d="M6 11l6-6 6 6"/></svg>
-          Sube al ERP
-        </b>
-        <span>Pedidos, cobranzas, visitas con su evidencia y solicitudes de clientes nuevos.</span>
-      </li>
-      <li>
-        <b>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v15"/><path d="M6 13l6 6 6-6"/></svg>
-          Baja del ERP
-        </b>
-        <span>Catálogo, precios por cliente, stock, crédito disponible y facturas abiertas.</span>
-      </li>
-      <li>
-        <b>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.4-3.2 8.3-8 9.5C7.2 20.3 4 16.4 4 12V6z"/><path d="M9 12l2 2 4-4"/></svg>
-          La verdad la tiene el ERP
-        </b>
-        <span>El teléfono propone; el número que vale lo recalcula tu sistema al recibir el pedido.</span>
-      </li>
-    </ul>
+    <p class="marca-ajena mt-sm revelar">Sólo Odoo tiene hoy integración construida y en producción. Con el resto la conexión se define y se construye para cada operación: nombrarlos acá no significa que exista un conector hecho. Los íconos son nuestros y dicen de qué tipo de sistema se trata; no son logotipos. Todas las marcas mencionadas pertenecen a sus respectivos titulares y se nombran para decir con qué sistemas trabaja el cliente.</p>
 
     <div class="nota mt-lg revelar">
       <p><strong>«Nativa» quiere decir esto:</strong> con Odoo, Vendoo habla directo con su API, sin pasarela ni base intermedia. La sesión es la del propio Odoo y el pedido nace como un documento de Odoo, con su recálculo de precios e impuestos al recibirlo. Con los demás, esa capa es la que se construye.</p>
