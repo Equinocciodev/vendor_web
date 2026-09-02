@@ -331,6 +331,11 @@ a:hover { text-decoration-thickness: 2px; }
 .reja--4 { grid-template-columns: 1fr; }
 @media (min-width: 620px)  { .reja--4 { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1080px) { .reja--4 { grid-template-columns: repeat(4, 1fr); } }
+/* Tres columnas para rejas de 6: 6 divide exacto por 3, 2 y 1, así que
+   ninguna fila queda con una sola tarjeta en ningún ancho. */
+.reja--3 { grid-template-columns: 1fr; }
+@media (min-width: 620px)  { .reja--3 { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .reja--3 { grid-template-columns: repeat(3, 1fr); } }
 
 .tarjeta {
   background: var(--superficie);
