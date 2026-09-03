@@ -116,14 +116,45 @@
     requestAnimationFrame(paso);
   }
 
+  /* ⚠️ El umbral es DOBLE, y el segundo es el que importa en un teléfono.
+     Reportado por el dueño desde su iPhone el 3-sep-2026: la reja de las
+     seis capturas (#pantallas) se veía como «un espacio largo vacío». Con
+     `threshold: 0.18` el observer avisa cuando el 18 % DEL ELEMENTO está en
+     pantalla a la vez, y esa reja mide ~5.000 px a 390 px de ancho (una
+     columna, seis teléfonos de 740 px): el 18 % son ~900 px, más que el alto
+     del visor (844). La condición era imposible de cumplir, `.visible` no
+     llegaba nunca y la lista entera se quedaba en `opacity: 0` — en
+     CUALQUIER navegador; en Chrome de escritorio la reja es 3 + 3, mide
+     1.700 px y sí cabe, por eso allá se veía. Medido con Chrome emulando el
+     iPhone: recorrida entera, cero veces visible.
+
+     La regla ahora: se da por visto lo que muestra el 18 % de sí mismo O lo
+     que ya ocupa el 35 % del visor, lo primero que pase. Un elemento más alto
+     que la pantalla nunca va a cumplir la primera, y la segunda es lo que un
+     ojo llama «lo estoy viendo». Los umbrales van de 0,02 en 0,02 para que el
+     callback corra mientras el elemento va entrando y la segunda condición
+     tenga cuándo evaluarse: con `[0, .18]` sólo se enteraría al asomar (0 px)
+     y al 18 %. */
+  var UMBRAL_ELEMENTO = 0.18;
+  var UMBRAL_VISOR = 0.35;
+  var umbrales = [];
+  for (var u = 0; u <= UMBRAL_ELEMENTO + 1e-9; u += 0.02) umbrales.push(Math.round(u * 100) / 100);
+
+  function seVe(e) {
+    if (!e.isIntersecting) return false;
+    if (e.intersectionRatio >= UMBRAL_ELEMENTO) return true;
+    var visor = e.rootBounds ? e.rootBounds.height : window.innerHeight;
+    return e.intersectionRect.height >= visor * UMBRAL_VISOR;
+  }
+
   var mirador = new IntersectionObserver(function (entradas) {
     entradas.forEach(function (e) {
-      if (!e.isIntersecting) return;
+      if (!seVe(e)) return;
       e.target.classList.add('visible');
       if (e.target.hasAttribute('data-cifra')) contar(e.target);
       mirador.unobserve(e.target);        // una sola vez, nunca al volver
     });
-  }, { threshold: 0.18, rootMargin: '0px 0px -6% 0px' });
+  }, { threshold: umbrales, rootMargin: '0px 0px -6% 0px' });
 
   var candidatos = document.querySelectorAll('.revelar, [data-cifra]');
   Array.prototype.forEach.call(candidatos, function (n) { mirador.observe(n); });

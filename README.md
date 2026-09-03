@@ -415,6 +415,20 @@ el punto delicado:
   se quedan en el valor que ya está escrito en el HTML — que es además lo que
   lee un buscador.
 
+⚠️ **El umbral del observer es doble, y no se vuelve a uno solo** (3-sep-2026).
+El dueño reportó desde su iPhone que la reja de capturas de `#pantallas` era
+«un espacio largo vacío». Con `threshold: 0.18` el observer avisa cuando el
+18 % **del elemento** está en pantalla a la vez; esa `<ul>` mide ~5.000 px a
+390 px de ancho (una columna de seis teléfonos), el 18 % son ~900 px y el
+visor tiene 844: la condición era imposible, `.visible` no llegaba nunca y la
+lista entera se quedaba en `opacity: 0`. En Chrome de escritorio la reja es
+3 + 3 y cabe, por eso allá se veía — no era Safari, era cualquier teléfono.
+Hoy se da por visto lo que muestra el 18 % de sí mismo **o** lo que ya ocupa
+el 35 % del visor, y los umbrales van de 0,02 en 0,02 para que la segunda
+condición tenga cuándo evaluarse. Si agregás un bloque `.revelar` alto,
+probalo a 390 px recorriéndolo entero; el script que lo mide está descrito
+en el comentario de `sitio.js`.
+
 **El escalonado va por clase** (`.revelar--b`, `--c`, `--d`) y no por
 `style="--i:2"`: un atributo `style` obligaría a abrir `style-src` a
 `'unsafe-inline'` y tirar abajo la política de seguridad de contenido. El

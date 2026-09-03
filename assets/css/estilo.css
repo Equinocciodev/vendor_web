@@ -164,7 +164,10 @@ body {
 }
 
 img, svg { max-width: 100%; }
-img { height: auto; }
+/* `display: block`: una imagen en línea reserva el hueco del descendente de la
+   línea y en WebKit ese hueco se ve como un renglón vacío bajo cada captura.
+   El sitio no tiene imágenes en línea (los íconos son SVG inline). */
+img { height: auto; display: block; }
 
 h1, h2, h3, h4 { line-height: 1.18; letter-spacing: -.018em; margin: 0 0 .5em; font-weight: 700; }
 h1 { font-size: clamp(2.05rem, 1.4rem + 2.3vw, 3.2rem); letter-spacing: -.03em; }
@@ -681,9 +684,13 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
   box-shadow: var(--sombra);
   margin-bottom: 12px;
 }
+/* La proporción la dan los `width="1080" height="2400"` del propio <img>
+   (el navegador deriva `aspect-ratio: auto 1080 / 2400` de ahí), así que el
+   hueco se reserva antes de que la imagen llegue y sin repetirlo acá. Un
+   `aspect-ratio` explícito más `object-fit: cover` encima era redundante y es
+   una cosa menos que WebKit pueda calcular distinto. */
 .captura__marco img {
   display: block; width: 100%; height: auto;
-  aspect-ratio: 1080 / 2400; object-fit: cover;
   border-radius: 19px; background: var(--fondo);
 }
 .captura h3 { font-size: 1rem; margin-bottom: .2em; }
