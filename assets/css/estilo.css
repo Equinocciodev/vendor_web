@@ -1326,3 +1326,12 @@ button.boton:disabled { opacity: .6; cursor: progress; }
 /* El número de WhatsApp del pie no se parte en dos líneas: un teléfono a
    medias no se marca. Entre los dos enlaces sí puede cortar. */
 .sin-corte { white-space: nowrap; }
+
+/* ==========================================================================
+   AGREGADO 2-sep-2026 (copy conciso) — la reja de «La visita» centra sus
+   dos columnas: los ocho pasos son altos y las tres notas de al lado,
+   ahora de un renglón, quedaban pegadas arriba con medio metro de aire
+   debajo. No se aplica a las otras rejas de dos: ahí las columnas son
+   parejas y `stretch` está bien.
+   ========================================================================== */
+.reja--centro { align-items: center; }
