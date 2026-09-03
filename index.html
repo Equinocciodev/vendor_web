@@ -2,11 +2,12 @@
 <html lang="es-VE">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sBSmF0cvqwH9q89LN1kE6J363Sy1ybqC0YQqLHqJ1RI=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sBSmF0cvqwH9q89LN1kE6J363Sy1ybqC0YQqLHqJ1RI=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vendoo — la app de fuerza de ventas de campo</title>
-<meta name="description" content="Vendoo es la app Android para fuerzas de venta de campo: ruta del día, pedidos con impuestos, cobranza y evidencia de cada visita. Funciona sin señal y se integra con tu ERP.">
+<title>Vendoo: app para vendedores de campo y preventa, integrada con Odoo</title>
+<meta name="description" content="App de fuerza de ventas de campo para distribuidoras: ruta del día, pedidos con impuestos, cobranza y evidencia de cada visita. Funciona sin señal y se integra con Odoo.">
 <meta name="robots" content="index, follow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="canonical" href="https://vendooapp.com/">
 <link rel="alternate" hreflang="es" href="https://vendooapp.com/">
 <link rel="alternate" hreflang="x-default" href="https://vendooapp.com/">
@@ -20,7 +21,7 @@
 <meta property="og:locale" content="es_VE">
 <meta property="og:url" content="https://vendooapp.com/">
 <meta property="og:title" content="Vendoo — la fuerza de ventas de campo, de punta a punta">
-<meta property="og:description" content="Vendoo es la app Android para fuerzas de venta de campo: ruta del día, pedidos con impuestos, cobranza y evidencia de cada visita. Funciona sin señal y se integra con tu ERP.">
+<meta property="og:description" content="App de fuerza de ventas de campo para distribuidoras: ruta del día, pedidos con impuestos, cobranza y evidencia de cada visita. Funciona sin señal y se integra con Odoo.">
 <meta property="og:image" content="https://vendooapp.com/assets/img/og.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
@@ -28,7 +29,7 @@
 <meta property="og:image:alt" content="Vendoo — la fuerza de ventas de campo, de punta a punta.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Vendoo — la fuerza de ventas de campo, de punta a punta">
-<meta name="twitter:description" content="Vendoo es la app Android para fuerzas de venta de campo: ruta del día, pedidos con impuestos, cobranza y evidencia de cada visita. Funciona sin señal y se integra con tu ERP.">
+<meta name="twitter:description" content="App de fuerza de ventas de campo para distribuidoras: ruta del día, pedidos con impuestos, cobranza y evidencia de cada visita. Funciona sin señal y se integra con Odoo.">
 <meta name="twitter:image" content="https://vendooapp.com/assets/img/og.png">
 <meta name="twitter:image:alt" content="Vendoo — la fuerza de ventas de campo, de punta a punta.">
 
@@ -37,8 +38,19 @@
 <link rel="apple-touch-icon" href="/assets/img/icono-180.png">
 <link rel="manifest" href="/site.webmanifest">
 
+<!-- Las cuatro Poppins van precargadas (~9 KB cada una): el titular es 700, el
+     menú 500, los botones 600 y el texto 400, y todas están en el primer
+     pliegue. Medido con Lighthouse el 2-sep-2026: con sólo 400 y 600
+     precargadas, la 700 llegaba tarde y el titular saltaba (CLS 0,29). -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-700.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-400.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-600.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-500.woff2" crossorigin>
+<!-- Sólo la resolución de DNS, no la conexión: la analítica se carga después
+     del evento load (ver assets/js/analitica.js), así que abrir la conexión
+     antes competiría con la hoja de estilo y las fuentes por nada. -->
+<link rel="dns-prefetch" href="https://www.gstatic.com">
+<link rel="dns-prefetch" href="https://www.googletagmanager.com">
 <link rel="stylesheet" href="/assets/css/estilo.css">
 <script>/* Dos cosas que tienen que pasar ANTES del primer pintado.
 
@@ -80,11 +92,15 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
   "url": "https://vendooapp.com/",
   "logo": "https://vendooapp.com/assets/img/icono-512.png",
   "email": "hola@vendooapp.com",
-  "description": "GUUAO LLC desarrolla y provee Vendoo, la aplicación Android de fuerza de ventas de campo para distribuidoras.",
+  "sameAs": [
+    "https://play.google.com/store/apps/details?id=com.leiros.vendoo"
+  ],
+  "description": "GUUAO LLC desarrolla y provee Vendoo, la aplicación de fuerza de ventas de campo para distribuidoras.",
   "contactPoint": [
     {
       "@type": "ContactPoint",
       "email": "hola@vendooapp.com",
+      "telephone": "+58-412-346-9712",
       "contactType": "sales",
       "availableLanguage": [
         "es"
@@ -101,10 +117,19 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
     "MobileApplication"
   ],
   "name": "Vendoo",
-  "description": "Aplicación Android de fuerza de ventas de campo: ruta del día, visita en ocho pasos, pedido con impuestos, cobranza contra facturas abiertas y evidencia de cada visita. Funciona sin conexión y sincroniza sola.",
+  "description": "Aplicación de fuerza de ventas de campo para vendedores y preventa: ruta del día, visita en ocho pasos, pedido con impuestos, cobranza contra facturas abiertas y evidencia de cada visita. Funciona sin conexión y sincroniza sola.",
   "url": "https://vendooapp.com/",
   "downloadUrl": "https://play.google.com/store/apps/details?id=com.leiros.vendoo",
   "installUrl": "https://play.google.com/store/apps/details?id=com.leiros.vendoo",
+  "sameAs": "https://play.google.com/store/apps/details?id=com.leiros.vendoo",
+  "screenshot": [
+    "https://vendooapp.com/assets/img/capturas/inicio.png",
+    "https://vendooapp.com/assets/img/capturas/ruta.png",
+    "https://vendooapp.com/assets/img/capturas/visita.png",
+    "https://vendooapp.com/assets/img/capturas/pedido.png",
+    "https://vendooapp.com/assets/img/capturas/cobranza.png",
+    "https://vendooapp.com/assets/img/capturas/conversacion.png"
+  ],
   "applicationCategory": "BusinessApplication",
   "applicationSubCategory": "Sales Force Automation",
   "operatingSystem": "Android 7.0+",
@@ -442,42 +467,60 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
     <ul class="capturas revelar">
       <li class="captura">
         <div class="captura__marco">
-          <img src="/assets/img/capturas/inicio.png" width="1080" height="2400" loading="lazy" decoding="async" alt="Pantalla de inicio de Vendoo: el objetivo del mes con su semáforo, los indicadores del día y el selector de empresa.">
+          <picture>
+            <source type="image/webp" srcset="/assets/img/capturas/inicio-360.webp 360w, /assets/img/capturas/inicio-720.webp 720w, /assets/img/capturas/inicio-1080.webp 1080w" sizes="(min-width: 1000px) 360px, (min-width: 620px) 46vw, 90vw">
+            <img src="/assets/img/capturas/inicio.png" width="1080" height="2400" loading="lazy" decoding="async" alt="Pantalla de inicio de Vendoo: el objetivo del mes con su semáforo, los indicadores del día y el selector de empresa.">
+          </picture>
         </div>
         <h3>Inicio</h3>
         <p>Lo de hoy y el objetivo del mes.</p>
       </li>
       <li class="captura">
         <div class="captura__marco">
-          <img src="/assets/img/capturas/ruta.png" width="1080" height="2400" loading="lazy" decoding="async" alt="Pantalla de ruta del día de Vendoo: la lista de paradas del vendedor con su progreso y la fecha en que se bajó la cartera.">
+          <picture>
+            <source type="image/webp" srcset="/assets/img/capturas/ruta-360.webp 360w, /assets/img/capturas/ruta-720.webp 720w, /assets/img/capturas/ruta-1080.webp 1080w" sizes="(min-width: 1000px) 360px, (min-width: 620px) 46vw, 90vw">
+            <img src="/assets/img/capturas/ruta.png" width="1080" height="2400" loading="lazy" decoding="async" alt="Pantalla de ruta del día de Vendoo: la lista de paradas del vendedor con su progreso y la fecha en que se bajó la cartera.">
+          </picture>
         </div>
         <h3>Ruta del día</h3>
         <p>Paradas, saldos y navegación.</p>
       </li>
       <li class="captura">
         <div class="captura__marco">
-          <img src="/assets/img/capturas/visita.png" width="1080" height="2400" loading="lazy" decoding="async" alt="Pantalla de visita de Vendoo: los ocho pasos de la visita con el check-in y el inventario ya cerrados.">
+          <picture>
+            <source type="image/webp" srcset="/assets/img/capturas/visita-360.webp 360w, /assets/img/capturas/visita-720.webp 720w, /assets/img/capturas/visita-1080.webp 1080w" sizes="(min-width: 1000px) 360px, (min-width: 620px) 46vw, 90vw">
+            <img src="/assets/img/capturas/visita.png" width="1080" height="2400" loading="lazy" decoding="async" alt="Pantalla de visita de Vendoo: los ocho pasos de la visita con el check-in y el inventario ya cerrados.">
+          </picture>
         </div>
         <h3>La visita</h3>
         <p>Ocho pasos, lo hecho marcado.</p>
       </li>
       <li class="captura">
         <div class="captura__marco">
-          <img src="/assets/img/capturas/pedido.png" width="1080" height="2400" loading="lazy" decoding="async" alt="Pantalla de pedido de Vendoo: las líneas del pedido con su precio y stock, y el total en dólares y bolívares.">
+          <picture>
+            <source type="image/webp" srcset="/assets/img/capturas/pedido-360.webp 360w, /assets/img/capturas/pedido-720.webp 720w, /assets/img/capturas/pedido-1080.webp 1080w" sizes="(min-width: 1000px) 360px, (min-width: 620px) 46vw, 90vw">
+            <img src="/assets/img/capturas/pedido.png" width="1080" height="2400" loading="lazy" decoding="async" alt="Pantalla de pedido de Vendoo: las líneas del pedido con su precio y stock, y el total en dólares y bolívares.">
+          </picture>
         </div>
         <h3>Pedido</h3>
         <p>Precio, stock y total en dos monedas.</p>
       </li>
       <li class="captura">
         <div class="captura__marco">
-          <img src="/assets/img/capturas/cobranza.png" width="1080" height="2400" loading="lazy" decoding="async" alt="Pantalla de cobranza de Vendoo: el monto recibido con su tasa, el comprobante y las facturas pendientes del cliente.">
+          <picture>
+            <source type="image/webp" srcset="/assets/img/capturas/cobranza-360.webp 360w, /assets/img/capturas/cobranza-720.webp 720w, /assets/img/capturas/cobranza-1080.webp 1080w" sizes="(min-width: 1000px) 360px, (min-width: 620px) 46vw, 90vw">
+            <img src="/assets/img/capturas/cobranza.png" width="1080" height="2400" loading="lazy" decoding="async" alt="Pantalla de cobranza de Vendoo: el monto recibido con su tasa, el comprobante y las facturas pendientes del cliente.">
+          </picture>
         </div>
         <h3>Cobranza</h3>
         <p>Monto, tasa y facturas pendientes.</p>
       </li>
       <li class="captura">
         <div class="captura__marco">
-          <img src="/assets/img/capturas/conversacion.png" width="1080" height="2400" loading="lazy" decoding="async" alt="Pantalla de conversación de Vendoo: el hilo de mensajes entre el vendedor y la oficina sobre un documento.">
+          <picture>
+            <source type="image/webp" srcset="/assets/img/capturas/conversacion-360.webp 360w, /assets/img/capturas/conversacion-720.webp 720w, /assets/img/capturas/conversacion-1080.webp 1080w" sizes="(min-width: 1000px) 360px, (min-width: 620px) 46vw, 90vw">
+            <img src="/assets/img/capturas/conversacion.png" width="1080" height="2400" loading="lazy" decoding="async" alt="Pantalla de conversación de Vendoo: el hilo de mensajes entre el vendedor y la oficina sobre un documento.">
+          </picture>
         </div>
         <h3>Conversación</h3>
         <p>El hilo con la oficina.</p>

@@ -34,6 +34,22 @@
   src: url('../fonts/poppins-700.woff2') format('woff2');
   font-weight: 700; font-style: normal; font-display: swap;
 }
+/* El respaldo con las métricas de Poppins: mientras la fuente baja, el texto
+   se pinta con Arial (o Roboto en Android) ESTIRADA a las medidas de Poppins
+   —`size-adjust` y los tres `*-override`—, así que cuando la de verdad llega
+   las líneas caen en el mismo sitio y la página no salta. Sin esto, el
+   titular en 700 reflowaba al cambiar de fuente (CLS 0,29, medido con
+   Lighthouse el 2-sep-2026). Los porcentajes son los de la tabla de
+   métricas de Poppins contra Arial (unitsPerEm 1000, ascender 1050,
+   descender 350, lineGap 100). */
+@font-face {
+  font-family: 'Poppins Respaldo';
+  src: local('Arial'), local('Roboto'), local('Helvetica Neue');
+  size-adjust: 112.16%;
+  ascent-override: 93.62%;
+  descent-override: 31.21%;
+  line-gap-override: 8.92%;
+}
 
 /* --- Tokens: modo CLARO como base -------------------------------------- */
 :root {
@@ -139,7 +155,7 @@ body {
   margin: 0;
   background: var(--fondo);
   color: var(--tinta);
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Poppins', 'Poppins Respaldo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 16px;
   line-height: 1.65;
   font-weight: 400;
@@ -258,7 +274,13 @@ a:hover { text-decoration-thickness: 2px; }
 }
 @media (max-width: 420px) {
   .nav a { padding: 8px 5px; font-size: .78rem; }
-  .boton--mini span { display: none; }
+  /* El texto «Descargar» se esconde sólo a la vista: con `display: none` el
+     enlace se quedaba sin nombre accesible (Lighthouse, 2-sep-2026) y un lector
+     de pantalla anunciaba «enlace» a secas. */
+  .boton--mini span {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  }
   .boton--mini { padding: 0 12px; }
 }
 
@@ -467,7 +489,7 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
 .pie { border-top: 1px solid var(--borde-suave); background: var(--superficie-2); padding-block: 44px 34px; }
 .pie__reja { display: grid; gap: 30px; grid-template-columns: 1fr; }
 @media (min-width: 720px) { .pie__reja { grid-template-columns: 1.5fr 1fr 1fr; } }
-.pie h4 { font-size: .78rem; letter-spacing: .11em; text-transform: uppercase; color: var(--tinta-suave); margin-bottom: 12px; font-weight: 600; }
+.pie h3, .pie h4 { font-size: .78rem; letter-spacing: .11em; text-transform: uppercase; color: var(--tinta-suave); margin-bottom: 12px; font-weight: 600; }
 .pie ul { list-style: none; margin: 0; padding: 0; }
 .pie li { margin-bottom: 8px; }
 .pie a { color: var(--tinta-suave); text-decoration: none; font-size: .93rem; }
@@ -743,6 +765,12 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
 [data-anim] .revelar--b.visible { transition-delay: .09s; }
 [data-anim] .revelar--c.visible { transition-delay: .18s; }
 [data-anim] .revelar--d.visible { transition-delay: .27s; }
+/* Lo que está en el primer pliegue NO se revela: ya se ve. La portada no lo
+   hace, y la entrada de contacto tampoco desde el 2-sep-2026: con el titular
+   en opacity 0 hasta que sitio.js corre y la transición termina, el LCP de
+   esa página se iba a 5,4 s en Lighthouse (móvil, simulado) por un texto que
+   estaba ahí desde el primer byte. Medido: 80 → 99 de rendimiento. */
+[data-anim] .contacto__intro.revelar { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
   [data-anim] .revelar { opacity: 1; transform: none; }
 }

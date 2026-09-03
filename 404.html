@@ -2,14 +2,13 @@
 <html lang="es-VE">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sBSmF0cvqwH9q89LN1kE6J363Sy1ybqC0YQqLHqJ1RI=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sBSmF0cvqwH9q89LN1kE6J363Sy1ybqC0YQqLHqJ1RI=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Página no encontrada — Vendoo</title>
 <meta name="description" content="La página que buscabas no existe en el sitio de Vendoo. Desde el inicio se llega a todo: qué hace la aplicación, cómo funciona, integraciones y contacto.">
 <meta name="robots" content="noindex, follow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="canonical" href="https://vendooapp.com/404.html">
-<link rel="alternate" hreflang="es" href="https://vendooapp.com/404.html">
-<link rel="alternate" hreflang="x-default" href="https://vendooapp.com/404.html">
 <meta name="theme-color" content="#F4F5F9" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0E0E10" media="(prefers-color-scheme: dark)">
 <meta name="author" content="GUUAO LLC">
@@ -37,8 +36,19 @@
 <link rel="apple-touch-icon" href="/assets/img/icono-180.png">
 <link rel="manifest" href="/site.webmanifest">
 
+<!-- Las cuatro Poppins van precargadas (~9 KB cada una): el titular es 700, el
+     menú 500, los botones 600 y el texto 400, y todas están en el primer
+     pliegue. Medido con Lighthouse el 2-sep-2026: con sólo 400 y 600
+     precargadas, la 700 llegaba tarde y el titular saltaba (CLS 0,29). -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-700.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-400.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-600.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-500.woff2" crossorigin>
+<!-- Sólo la resolución de DNS, no la conexión: la analítica se carga después
+     del evento load (ver assets/js/analitica.js), así que abrir la conexión
+     antes competiría con la hoja de estilo y las fuentes por nada. -->
+<link rel="dns-prefetch" href="https://www.gstatic.com">
+<link rel="dns-prefetch" href="https://www.googletagmanager.com">
 <link rel="stylesheet" href="/assets/css/estilo.css">
 <script>/* Dos cosas que tienen que pasar ANTES del primer pintado.
 
@@ -169,12 +179,12 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
         </g>
       </svg>
     </a>
-        <p class="pie__nota">La aplicación Android con la que una fuerza de ventas de campo arma su ruta, levanta pedidos, cobra y deja constancia de cada visita — con señal o sin ella. Un producto de GUUAO LLC.</p>
+        <p class="pie__nota">La aplicación de fuerza de ventas de campo: ruta, pedidos, cobranza y evidencia, con o sin señal.</p>
         <div class="botones mt-sm">
         </div>
       </div>
       <div>
-        <h4>Producto</h4>
+        <h3>Producto</h3>
         <ul>
           <li><a href="/#producto">Qué hace Vendoo</a></li>
           <li><a href="/#como">Cómo funciona</a></li>
@@ -184,7 +194,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
         </ul>
       </div>
       <div>
-        <h4>Sitio</h4>
+        <h3>Sitio</h3>
         <ul>
           <li><a href="/">Inicio</a></li>
           <li><a href="/contacto.html">Contacto</a></li>

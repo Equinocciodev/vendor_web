@@ -41,17 +41,20 @@ consumo**.
 ├── robots.txt
 ├── sitemap.xml
 ├── site.webmanifest
-├── _headers              Referencia de cabeceras (Pages no las sirve; la CSP va en <meta>)
+├── _headers              Referencia de cabeceras: Pages NO las sirve (ver «Lo que Pages no puede hacer»)
 ├── CNAME                 El dominio que sirve GitHub Pages
 ├── assets/
 │   ├── css/estilo.css    TODO el estilo del sitio, en un solo archivo
 │   ├── js/sitio.js       Tema, animaciones, marcador del menú y el formulario de contacto
+│   ├── js/analitica.js   GA4 por Firebase, cargado después de `load` y sin señales de anuncios
 │   ├── fonts/            Poppins 400/500/600/700, subconjunto latino (~9 KB c/u)
 │   └── img/
 │       ├── og.png        Imagen social 1200×630 — se genera con tool/og.html
-│       ├── isotipo.svg, favicon-32.png, icono-180.png, icono-512.png
-│       └── capturas/     Las seis capturas de la app (ver su README)
+│       ├── isotipo.svg, favicon-32.png, icono-180.png, icono-192.png,
+│       │   icono-512.png, icono-512-maskable.png   (los PNG salen de tool/imagenes.py)
+│       └── capturas/     Las seis capturas (PNG maestras + WebP derivadas + derivadas.json)
 ├── tool/verificar.py     El chequeo que corre en CI y también en tu máquina
+├── tool/imagenes.py      Deriva los WebP de las capturas y los íconos. Se corre a mano.
 ├── tool/og.html          El molde de la imagen social. NO se publica.
 └── .github/workflows/publicar.yml
 ```
@@ -362,19 +365,29 @@ decirlo.**
 ## Las capturas de la aplicación
 
 La sección «Pantalla por pantalla» (`index.html`, `#pantallas`) muestra seis
-imágenes de `assets/img/capturas/`, a 1080 × 2400 y con `loading="lazy"`.
+imágenes de `assets/img/capturas/`, con `loading="lazy"`, `width`/`height`
+para que la página no salte, y **desde el 2-sep-2026 son las reales**: las
+mismas de la ficha de Play, con el vendedor ficticio «Victor S» y datos
+inventados. Las reglas —qué muestra cada una, y que van anonimizadas— están
+en `assets/img/capturas/README.md`. Van también en el `screenshot` del
+JSON-LD `SoftwareApplication` de la portada y una de ellas, el Inicio, es la
+pantalla del teléfono de la imagen social.
 
-⚠️ **Hoy las seis son marcadores de posición** generados con Python, con el
-cartel «Captura pendiente» adentro. Están versionadas a propósito: el
-verificador comprueba que todo recurso exista, y un `<img>` roto en producción
-es peor que un marcador honesto. **Para reemplazarlas alcanza con dejar los
-archivos reales con el mismo nombre y la misma medida.** Las reglas —qué tiene
-que mostrar cada una, y que van anonimizadas— están en
-`assets/img/capturas/README.md`.
+**Cada captura se sirve en tres anchos y en WebP** (`<picture>` con un
+`<source type="image/webp" srcset="…-360.webp 360w, …-720.webp 720w,
+…-1080.webp 1080w">` y la maestra PNG de 1080 como respaldo). La caja mide de
+280 a 360 px: mandar la maestra de 1080 a un teléfono de 2× era servir cuatro
+veces los bytes que se ven. Medido: el WebP de 360 pesa entre 13 y 24 KB
+contra 200–285 KB de la maestra.
 
-Cuando lleguen las de verdad, conviene además **agregarlas al `screenshot` del
-JSON-LD `SoftwareApplication`** de `index.html`: hoy no están puestas justamente
-porque son marcadores.
+⚠️ **Cambiar una captura son dos pasos, no uno**: dejar el PNG nuevo con el
+mismo nombre y la misma medida, y correr `python3 tool/imagenes.py`, que
+vuelve a derivar los WebP y anota la huella de cada maestra en
+`derivadas.json`. **Si te olvidás del segundo, `tool/verificar.py` se pone
+rojo** («cambió y sus derivadas WebP son de la versión anterior»): sin esa
+huella la portada serviría la pantalla vieja en WebP y la nueva sólo a los
+navegadores sin WebP, que no existen. Y si la que cambió es la del Inicio,
+regenerá también la imagen social (abajo).
 
 ---
 
@@ -456,11 +469,25 @@ Lo que eso abrió en la CSP de las cinco páginas y de `_headers` —y nada más
 | Directiva | Hosts | Por qué |
 |---|---|---|
 | `script-src` | `www.gstatic.com`, `www.googletagmanager.com` | los módulos de Firebase, y el `gtag.js` que `firebase-analytics` carga solo |
-| `connect-src` | `*.google-analytics.com`, `*.analytics.google.com`, `www.googletagmanager.com`, `firebase.googleapis.com`, `firebaseinstallations.googleapis.com` | los hits, la configuración web de la app y el registro de la instalación |
+| `connect-src` | `*.google-analytics.com`, `analytics.google.com`, `*.analytics.google.com`, `www.googletagmanager.com`, `firebase.googleapis.com`, `firebaseinstallations.googleapis.com` | los hits, la configuración web de la app y el registro de la instalación |
 | `img-src` | `*.google-analytics.com`, `www.googletagmanager.com` | el píxel de respaldo cuando no hay `sendBeacon` |
 
 Está comprobado contra Chrome sin interfaz con la consola abierta: cero
 violaciones de CSP. Si se sube la versión del SDK, hay que repetir esa prueba.
+
+⚠️ **Esa frase fue falsa durante unas horas el 2-sep-2026**, y conviene saber
+por qué. Lighthouse encontró **cinco errores de consola** por visita: gtag
+mandaba el hit de la visita a `analytics.google.com` —**el apex, que el
+comodín `*.analytics.google.com` no cubre**— y dos hits de publicidad a
+`stats.g.doubleclick.net` y `www.google.com` que la CSP bloqueaba a propósito.
+Lo primero significaba que **esa visita no se contaba**. Se abrió el apex en
+`connect-src` (cinco páginas, `_headers` y `HOSTS_ANALITICA` del verificador) y
+las señales de anuncios se **apagaron en el código** (`initializeAnalytics`
+con `allow_google_signals: false` y `allow_ad_personalization_signals:
+false`), que es decir en gtag lo que ya decía la CSP. Y el SDK **se carga
+después del evento `load`** con `import()` dinámico: con los `import`
+estáticos de la consola de Firebase, los ~100 KB del SDK competían con la
+hoja de estilo y las fuentes que pintan el titular.
 El script en línea del `<head>` **no cambió**, así que el hash de la CSP es el
 mismo. `tool/verificar.py` exige que la analítica esté **en las cinco páginas
 o en ninguna** y que cada página que la carga tenga los hosts en su CSP: una
@@ -554,7 +581,23 @@ Lo que hay puesto, para no repetirlo ni olvidarlo:
 
 - `lang="es-VE"`, `hreflang="es"` y `x-default` en las cinco páginas.
 - `title` y `description` **únicos por página**, `canonical` propio, `robots`
-  (`404.html` va con `noindex, follow`).
+  (`404.html` va con `noindex, follow` y **sin `hreflang`**: no hay nada que
+  indexar en otra lengua). Los títulos llevan la palabra clave por la que se
+  busca —«app para vendedores de campo», «fuerza de ventas de campo»,
+  «preventa», «Odoo»— y no sólo la marca: «Vendoo: app para vendedores de
+  campo y preventa, integrada con Odoo», «Pedí una demo de Vendoo — app de
+  fuerza de ventas de campo», y las dos legales con «Vendoo, app de fuerza de
+  ventas de campo» detrás del nombre del documento.
+- ⚠️ **«La aplicación», nunca «la app Android»** (regla del dueño,
+  2-sep-2026: pronto habrá iOS). Vale para títulos, descripciones, Open
+  Graph, JSON-LD y el copy. Android queda en tres sitios: `operatingSystem`
+  del JSON-LD (dato técnico), el botón de descarga y el «Android 7.0 o
+  superior» del pie de la portada y de la ficha de las legales.
+  `tool/verificar.py` se pone rojo si la cabeza de una página dice «app
+  Android» o «aplicación Android».
+- `<meta name="referrer" content="strict-origin-when-cross-origin">`: es la
+  única cabecera de seguridad que se puede poner **desde el HTML**, y por eso
+  está. Las demás van en Cloudflare (abajo).
 - Open Graph y Twitter Card completos, con `og:image` de **1200 × 630 en PNG**
   (OpenGraph no acepta SVG) más `og:image:alt`.
 - JSON-LD: `WebSite`, `Organization` y `SoftwareApplication` en la portada;
@@ -565,7 +608,40 @@ Lo que hay puesto, para no repetirlo ni olvidarlo:
   hay que cambiarlo.
 - `robots.txt` con `Sitemap:`, y `sitemap.xml` con `lastmod` real.
 - Un solo `h1` por página, jerarquía en orden, `alt` en todas las imágenes,
-  `theme-color` por tema y `apple-touch-icon` + manifiesto coherentes.
+  `theme-color` por tema y `apple-touch-icon` + manifiesto coherentes, con un
+  ícono de 192 y uno **maskable** de 512 (la teja a sangre y el anillo
+  encogido a la zona segura, porque el lanzador de Android recorta con la
+  forma que quiere). Los PNG de los íconos salen de `tool/imagenes.py`, que
+  pinta las tres figuras del isotipo con sus proporciones.
+  ⚠️ **Los títulos del pie son `<h3>` en `404.html` y en las dos legales**
+  (Lighthouse marcaba «heading-order»: un `<h4>` después de un `<h2>`); en
+  `index.html` y `contacto.html` siguen siendo `<h4>` porque esas dos páginas
+  las cuida otro frente, y la regla `.pie h3, .pie h4` los pinta igual. Cuando
+  se toquen esas dos, van a `<h3>` también.
+- **Rendimiento, medido con Lighthouse 12 en móvil el 2-sep-2026** (servidor
+  local, sin gzip; en Pages es mejor porque sí comprime). Portada:
+  rendimiento **83 → 98** (CLS **0,29 → 0**), accesibilidad 95 → 98,
+  buenas prácticas **93 → 100** (los cinco errores de consola de la
+  analítica, arriba); contacto: 99 / 94 / 93 → 99 / 98 / 100; términos
+  99 / 100 / 100 / 100. Los dos puntos de accesibilidad que faltan en la
+  portada y en contacto son el `<h4>` del pie (arriba). Lo que lo movió:
+  - **Las cuatro Poppins van precargadas** (700 para el titular, 500 para el
+    menú, 600 para los botones, 400 para el texto: ~9 KB cada una) y hay una
+    `@font-face` de **respaldo con las métricas de Poppins** (`'Poppins
+    Respaldo'`: Arial o Roboto con `size-adjust` y los tres `*-override`).
+    El salto de 0,29 era el titular en 700 reflowando cuando la fuente
+    llegaba tarde; con el respaldo a la misma medida, el cambio no mueve
+    nada.
+  - El «Descargar» del botón compacto de la cabecera se esconde con `clip`
+    y no con `display: none`, así que el enlace **conserva su nombre**
+    accesible.
+  - Las capturas en WebP y tres anchos (arriba), y la analítica después de
+    `load`.
+  - Lo que Lighthouse sigue marcando y **no se va a arreglar acá**: la hoja
+    de estilo bloquea el pintado (es una sola, de 67 KB sin minificar: el
+    repo se sirve tal cual, y minificarla en CI rompería «lo que está en el
+    repositorio es lo que se sirve»); y la caché de 10 minutos de Pages, que
+    se resuelve en Cloudflare (abajo).
 - **Nada externo, con UNA excepción**: ni Google Fonts, ni píxeles, ni CDN.
   Lo único que la página le pide a un tercero es la analítica de visitas
   (abajo, «La analítica del sitio»), por decisión del dueño del 2-sep-2026.
@@ -583,9 +659,12 @@ python3 -m http.server 8000
   http://localhost:8000/tool/og.html
 ```
 
-El molde usa el logotipo dibujado (no un texto tecleado con Poppins) y la misma
-fuente autohospedada del sitio. Si cambia el claim de la portada, cambialo
-también ahí: son las dos frases que la gente ve antes de entrar.
+El molde usa el logotipo dibujado (no un texto tecleado con Poppins), la
+misma fuente autohospedada del sitio y, desde el 2-sep-2026, **un teléfono
+con la captura real del Inicio** (`assets/img/capturas/inicio.png`) a la
+derecha. Ni un logotipo ajeno: el triángulo de Play va dibujado. Si cambia el
+claim de la portada o esa captura, regenerala: son lo primero que la gente ve
+antes de entrar. `tool/verificar.py` comprueba que mida 1200 × 630.
 
 ---
 
@@ -627,13 +706,90 @@ la página de inicio; `https://vendooapp.com/robots.txt` tiene que existir. El
 estado de cada publicación está en la pestaña **Actions** y en **Settings →
 Pages**.
 
-### Cabeceras de seguridad
+El workflow arma `_sitio/` a mano (HTML, `assets/`, `robots.txt`,
+`sitemap.xml`, `favicon.svg`, `site.webmanifest`, `CNAME` y un `.nojekyll`),
+borra los `README.md` de `assets/` y **falla si `_headers`, `tool/` o
+`.github/` terminaron adentro**. La publicación en curso **no se cancela**
+(`cancel-in-progress: false`): un `deploy-pages` cortado a la mitad deja el
+sitio en un estado que GitHub no promete.
 
-GitHub Pages no permite cabeceras propias, así que la política de seguridad
-de contenido va como `<meta http-equiv="Content-Security-Policy">` en cada
-página (sin `frame-ancestors`, que no se admite en `<meta>`). El archivo
-`_headers` se conserva solo como referencia de lo que se serviría con un
-CDN que sí las admita.
+### Lo que Pages NO puede hacer, y lo que se resuelve en Cloudflare
+
+Medido con `curl -sI https://vendooapp.com/` el 2-sep-2026: el sitio responde
+**directo desde GitHub** (`server: GitHub.com`, sin `cf-ray`), o sea que hoy
+Cloudflare es sólo el DNS. Lo que GitHub ya hace solo: `http://` → `https://`
+(301), `www` → apex (301), HTTP/2, gzip/brotli y `cache-control: max-age=600`
+en **todo**. Lo que **no** hace y **no se puede configurar** en Pages:
+
+| No se puede en Pages | Por qué | Dónde se resuelve |
+|---|---|---|
+| Cabeceras HTTP propias (`_headers`, `.htaccess`, `netlify.toml`) | Pages sirve archivos y nada más | Cloudflare → Transform Rules |
+| `Strict-Transport-Security` | Pages **no lo manda** en dominios propios (medido) | Cloudflare → SSL/TLS → HSTS |
+| `Content-Security-Policy: frame-ancestors` | no se admite en `<meta>`; el resto de la CSP sí va en `<meta>` y ahí está | Cloudflare → Transform Rules |
+| Caché por ruta (fuentes un año, imágenes una semana) | Pages pone 10 minutos a todo | Cloudflare → Cache Rules |
+| Redirecciones del servidor (301 a medida, reescrituras) | sólo hay `404.html` | Cloudflare → Redirect Rules |
+| Compresión o formato de imagen negociado en el borde | no hay servidor | ya está resuelto en el HTML (`<picture>` + WebP) |
+
+⚠️ **El archivo `_headers` de la raíz lo ignora Pages** y ni siquiera se copia
+a `_sitio/`: es la **referencia** de lo que hay que reproducir en Cloudflare,
+y se mantiene al día con la CSP de las cinco páginas (el verificador no lo
+lee; es a mano). Nada de esto está aplicado —hace falta la cuenta de
+Cloudflare—, y es el dueño quien lo hace. **Antes de todo, la nube naranja**:
+las reglas de abajo sólo actúan con el proxy activo en `@` y `www`
+(SSL/TLS en **Full (strict)**; el certificado de GitHub para el dominio ya
+está emitido, que era la razón de tenerlo en «DNS only»).
+
+**1. SSL/TLS → Edge Certificates → HSTS.** `max-age` 31536000
+(un año), **sin** `includeSubDomains` —`<slug>.vendooapp.com` son los Odoo de
+los clientes y ese bit los obligaría a todos—, sin `preload` hasta que Legal
+lo pida.
+
+**2. Rules → Transform Rules → Modify Response Header**, para
+`(http.host eq "vendooapp.com")`, **Set static**:
+
+| Cabecera | Valor |
+|---|---|
+| `X-Content-Type-Options` | `nosniff` |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` |
+| `Permissions-Policy` | `geolocation=(), microphone=(), camera=(), interest-cohort=()` |
+| `X-Frame-Options` | `DENY` |
+| `Content-Security-Policy` | `frame-ancestors 'none'` |
+
+Sólo `frame-ancestors` en la cabecera, **no la política entera**: una segunda
+CSP se suma a la del `<meta>` (se aplican las dos, y gana la más estricta), y
+tenerla copiada en dos sitios es tenerla desincronizada en uno. El `<meta>`
+sigue siendo la fuente.
+
+**3. Rules → Cache Rules**, tres reglas:
+
+| Ruta (`http.request.uri.path`) | Edge TTL | Browser TTL |
+|---|---|---|
+| `starts_with "/assets/fonts/"` | 1 año | 1 año |
+| `starts_with "/assets/img/"` | 1 semana | 1 semana |
+| `starts_with "/assets/css/"` o `"/assets/js/"` | respetar el origen | respetar el origen (10 min) |
+
+CSS y JS **no** se alargan: sus URL no llevan versión, y una hoja cacheada un
+mes pintaría el HTML nuevo con el estilo viejo durante un mes en vez de
+diez minutos. Las fuentes y las imágenes no cambian sin cambiar de nombre o
+de dibujo.
+
+**4. Lo que hay que dejar APAGADO en Cloudflare**, porque cada una inyecta un
+`<script>` en el HTML y la CSP lo bloquea —o peor, rompe el hash del script
+del tema—: **Rocket Loader**, **Auto Minify** (reescribe el script en línea y
+el hash deja de coincidir), **Email Address Obfuscation**, **Web Analytics /
+Browser Insights** (ya hay GA4) y **Mirage**. **Polish** se puede dejar en
+«Lossless»: no toca el HTML.
+
+**5. Redirecciones**: `www` → apex y `http` → `https` ya las hace GitHub. Una
+Redirect Rule en Cloudflare las ahorra un salto y no hace falta. Si algún día
+cambia una URL del sitio (por ejemplo `/#integraciones` → `/integraciones.html`),
+la 301 va acá: Pages no tiene dónde ponerla.
+
+Después de aplicarlo, comprobar con `curl -sI https://vendooapp.com/` que
+aparecen `cf-ray`, `strict-transport-security` y las cinco cabeceras, y con
+`curl -sI https://vendooapp.com/assets/fonts/poppins-700.woff2` que
+`cache-control` dice un año. Y volver a mirar la consola del navegador: si
+alguna función de Cloudflare inyectó algo, la CSP lo dice ahí.
 
 **Los bloques JSON-LD no necesitan hash.** Están comprobados contra Chrome:
 `<script type="application/ld+json">` no se ejecuta, así que `script-src` no lo
@@ -646,7 +802,7 @@ tema, que va en línea en el `<head>`.
 
 | Qué | Dónde | Quién |
 |---|---|---|
-| **Las seis capturas reales** de la aplicación | `assets/img/capturas/` | Dueño |
+| Las reglas de Cloudflare de arriba (HSTS, cabeceras, caché) | panel de Cloudflare | Dueño |
 | Teléfono y horario de atención públicos, si se quieren | `contacto.html` | Dueño |
 | Revisión de abogado venezolano de las cláusulas 15 y 17 de los términos | `terminos.html` | Legal |
 
@@ -735,6 +891,7 @@ print('sha256-' + base64.b64encode(hashlib.sha256(c.encode()).digest()).decode()
 EOF
 ```
 
-y pegar el resultado en el `script-src` de las cinco páginas y de `_headers`. El
+y pegar el resultado en el `script-src` de las cinco páginas y de `_headers`
+(que sigue siendo la referencia para Cloudflare aunque Pages lo ignore). El
 script tiene que ser **idéntico en las cinco**, o el hash sólo servirá para una.
 `tool/verificar.py` comprueba justamente eso y te imprime el hash correcto.

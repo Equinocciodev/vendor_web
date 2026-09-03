@@ -3,9 +3,9 @@
   Molde de la imagen de OpenGraph (assets/img/og.png), 1200 × 630.
 
   NO se publica: `tool/` no entra en la carpeta que se sube a Pages. Está acá
-  para que la imagen se pueda volver a generar cuando cambie el claim, en vez
-  de ser un PNG que nadie sabe de dónde salió. Se genera así, desde la raíz
-  del repositorio:
+  para que la imagen se pueda volver a generar cuando cambie el claim o la
+  captura, en vez de ser un PNG que nadie sabe de dónde salió. Se genera así,
+  desde la raíz del repositorio:
 
       python3 -m http.server 8000
       "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
@@ -14,8 +14,12 @@
         http://localhost:8000/tool/og.html
 
   OpenGraph no acepta SVG: tiene que ser PNG o JPG, y por eso hay un paso de
-  rasterizado. La tipografía es la misma Poppins autohospedada del sitio y la
-  marca es el logotipo dibujado, no un texto tecleado con la fuente.
+  rasterizado. La tipografía es la misma Poppins autohospedada del sitio, la
+  marca es el logotipo dibujado (no un texto tecleado con la fuente) y la
+  pantalla del teléfono es la captura real del Inicio
+  (`assets/img/capturas/inicio.png`, la misma de la portada y de la ficha de
+  Play): si se cambian las capturas, se vuelve a generar esto también. No hay
+  ni un logotipo ajeno: el triángulo de Play va dibujado, como en el sitio.
 -->
 <html lang="es-VE">
 <head>
@@ -23,6 +27,7 @@
 <title>Vendoo — molde de la imagen social</title>
 <style>
   @font-face { font-family: 'Poppins'; src: url('/assets/fonts/poppins-400.woff2') format('woff2'); font-weight: 400; }
+  @font-face { font-family: 'Poppins'; src: url('/assets/fonts/poppins-500.woff2') format('woff2'); font-weight: 500; }
   @font-face { font-family: 'Poppins'; src: url('/assets/fonts/poppins-600.woff2') format('woff2'); font-weight: 600; }
   @font-face { font-family: 'Poppins'; src: url('/assets/fonts/poppins-700.woff2') format('woff2'); font-weight: 700; }
   * { box-sizing: border-box; margin: 0; }
@@ -33,55 +38,76 @@
       radial-gradient(46% 52% at 6% 92%, rgba(109, 40, 217, .26), transparent 70%),
       #0E0E10;
     color: #fff; font-family: 'Poppins', sans-serif;
-    padding: 74px 78px; display: flex; flex-direction: column; justify-content: space-between;
+    padding: 66px 0 0 72px; position: relative;
     border-bottom: 8px solid #9B5DE5;
   }
+  .texto { width: 720px; height: 556px; display: flex; flex-direction: column; justify-content: space-between; padding-bottom: 58px; }
   /* El ancho va explícito: un <svg> con `width:auto` se estira al 100 %
      del contenedor y `preserveAspectRatio` lo centra — el logotipo quedaba
      en el medio de la imagen en vez de arriba a la izquierda. 3806/926. */
-  .marca { height: 62px; width: 255px; display: block; }
-  h1 { font-size: 62px; line-height: 1.1; letter-spacing: -.032em; font-weight: 700; max-width: 20ch; }
+  .marca { height: 58px; width: 238px; display: block; }
+  h1 { font-size: 56px; line-height: 1.1; letter-spacing: -.032em; font-weight: 700; max-width: 22ch; }
   h1 em { font-style: normal; color: #B57BFF; }
-  p { font-size: 25px; color: #A5A5B0; margin-top: 22px; max-width: 30ch; line-height: 1.45; }
-  .pie { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  p { font-size: 23px; color: #A5A5B0; margin-top: 20px; max-width: 32ch; line-height: 1.45; }
+  .pie { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .chip {
-    border: 1.6px solid #646472; border-radius: 999px; padding: 9px 20px;
-    font-size: 20px; color: #D5D5DE; font-weight: 500;
+    border: 1.6px solid #646472; border-radius: 999px; padding: 8px 18px;
+    font-size: 19px; color: #D5D5DE; font-weight: 500; white-space: nowrap;
   }
   .chip--play { background: #fff; color: #0E0E10; border-color: #fff; display: flex; align-items: center; gap: 10px; font-weight: 600; }
   .chip--play svg { width: 22px; height: 22px; }
+
+  /* El teléfono: un marco oscuro con la captura adentro, inclinado apenas
+     y saliendo por abajo, como en la portada. 1080 × 2400 → 300 × 667. */
+  .telefono {
+    position: absolute; right: 88px; top: 96px;
+    width: 316px; height: 683px; padding: 8px;
+    border-radius: 42px; background: #1C1C22;
+    border: 1.6px solid #3A3A44;
+    box-shadow: 0 40px 90px rgba(0, 0, 0, .6), 0 0 0 1px rgba(255, 255, 255, .04);
+    transform: rotate(-4deg);
+  }
+  .telefono img { display: block; width: 300px; height: 667px; border-radius: 34px; object-fit: cover; object-position: top; }
+  .telefono::after {
+    /* la muesca de la cámara, para que se lea como teléfono y no como foto */
+    content: ''; position: absolute; top: 18px; left: 50%; width: 88px; height: 8px;
+    transform: translateX(-50%); border-radius: 999px; background: #0E0E10;
+  }
 </style>
 </head>
 <body>
-  <svg class="marca" viewBox="0 0 3806 926" role="img" aria-label="vendoo">
-    <g transform="translate(66,0)" fill="none" stroke="#FFFFFF" stroke-width="132" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M66,326 L256,794 L446,326"/>
-      <path transform="translate(546,0)" d="M424,758.4 A234,234 0 1 1 534,560 L66,560"/>
-      <path transform="translate(1186,0)" d="M66,794 L66,538 A212,212 0 0 1 490,538 L490,794"/>
-      <path transform="translate(1782,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
-      <path transform="translate(1782,0)" d="M534,66 L534,794"/>
-      <path transform="translate(2428,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
-      <path transform="translate(3074,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
-      <path d="M3281.6,560 A92.4,92.4 0 1 0 3466.4,560 A92.4,92.4 0 1 0 3281.6,560 Z" fill="#9B5DE5" stroke="none"/>
-    </g>
-  </svg>
-  <div>
-    <h1>La fuerza de ventas de campo, <em>de punta a punta</em>.</h1>
-    <p>Ruta, pedidos con impuestos, cobranza y evidencia de cada visita. Funciona sin señal.</p>
+  <div class="texto">
+    <svg class="marca" viewBox="0 0 3806 926" role="img" aria-label="vendoo">
+      <g transform="translate(66,0)" fill="none" stroke="#FFFFFF" stroke-width="132" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M66,326 L256,794 L446,326"/>
+        <path transform="translate(546,0)" d="M424,758.4 A234,234 0 1 1 534,560 L66,560"/>
+        <path transform="translate(1186,0)" d="M66,794 L66,538 A212,212 0 0 1 490,538 L490,794"/>
+        <path transform="translate(1782,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+        <path transform="translate(1782,0)" d="M534,66 L534,794"/>
+        <path transform="translate(2428,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+        <path transform="translate(3074,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+        <path d="M3281.6,560 A92.4,92.4 0 1 0 3466.4,560 A92.4,92.4 0 1 0 3281.6,560 Z" fill="#9B5DE5" stroke="none"/>
+      </g>
+    </svg>
+    <div>
+      <h1>La fuerza de ventas de campo, <em>de punta a punta</em>.</h1>
+      <p>Ruta, pedidos con impuestos, cobranza y evidencia de cada visita. Funciona sin señal.</p>
+    </div>
+    <div class="pie">
+      <span class="chip chip--play">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M1.3 1.2C1.1 1.4 1 1.7 1 2.1v19.8c0 .4.1.7.3.9l.1.1L12.4 12v-.2L1.3 1.2z" fill="#00A0FF"/>
+          <path d="M16.1 15.7l-3.7-3.7v-.2l3.7-3.7.1.1 4.4 2.5c1.2.7 1.2 1.8 0 2.5l-4.4 2.5z" fill="#FFCE00"/>
+          <path d="M16.2 15.6L12.4 11.8 1.3 22.9c.4.4 1.1.5 1.8.1l13.1-7.4" fill="#FF3A44"/>
+          <path d="M16.2 8.4L3.1 1c-.7-.4-1.4-.4-1.8.1l11.1 11.1 3.8-3.8z" fill="#00E676"/>
+        </svg>
+        Google Play
+      </span>
+      <span class="chip">Sin señal</span>
+      <span class="chip">Multiempresa</span>
+      <span class="chip">Odoo y tu ERP</span>
+    </div>
   </div>
-  <div class="pie">
-    <span class="chip chip--play">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M1.3 1.2C1.1 1.4 1 1.7 1 2.1v19.8c0 .4.1.7.3.9l.1.1L12.4 12v-.2L1.3 1.2z" fill="#00A0FF"/>
-        <path d="M16.1 15.7l-3.7-3.7v-.2l3.7-3.7.1.1 4.4 2.5c1.2.7 1.2 1.8 0 2.5l-4.4 2.5z" fill="#FFCE00"/>
-        <path d="M16.2 15.6L12.4 11.8 1.3 22.9c.4.4 1.1.5 1.8.1l13.1-7.4" fill="#FF3A44"/>
-        <path d="M16.2 8.4L3.1 1c-.7-.4-1.4-.4-1.8.1l11.1 11.1 3.8-3.8z" fill="#00E676"/>
-      </svg>
-      Google Play
-    </span>
-    <span class="chip">Android</span>
-    <span class="chip">Multiempresa</span>
-    <span class="chip">Se integra con tu ERP</span>
-  </div>
+  <div class="telefono"><img src="/assets/img/capturas/inicio.png" alt=""></div>
 </body>
 </html>

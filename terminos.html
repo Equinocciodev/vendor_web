@@ -2,11 +2,12 @@
 <html lang="es-VE">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sBSmF0cvqwH9q89LN1kE6J363Sy1ybqC0YQqLHqJ1RI=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sBSmF0cvqwH9q89LN1kE6J363Sy1ybqC0YQqLHqJ1RI=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Términos de servicio — Vendoo</title>
+<title>Términos de servicio — Vendoo, app de fuerza de ventas de campo</title>
 <meta name="description" content="Condiciones de uso de Vendoo, la aplicación de fuerza de ventas de campo de GUUAO LLC: cuenta, uso permitido, cotización de pedidos, cobros y disponibilidad.">
 <meta name="robots" content="index, follow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="canonical" href="https://vendooapp.com/terminos.html">
 <link rel="alternate" hreflang="es" href="https://vendooapp.com/terminos.html">
 <link rel="alternate" hreflang="x-default" href="https://vendooapp.com/terminos.html">
@@ -19,7 +20,7 @@
 <meta property="og:site_name" content="Vendoo">
 <meta property="og:locale" content="es_VE">
 <meta property="og:url" content="https://vendooapp.com/terminos.html">
-<meta property="og:title" content="Términos de servicio — Vendoo">
+<meta property="og:title" content="Términos de servicio — Vendoo, app de fuerza de ventas de campo">
 <meta property="og:description" content="Condiciones de uso de Vendoo, la aplicación de fuerza de ventas de campo de GUUAO LLC: cuenta, uso permitido, cotización de pedidos, cobros y disponibilidad.">
 <meta property="og:image" content="https://vendooapp.com/assets/img/og.png">
 <meta property="og:image:type" content="image/png">
@@ -27,7 +28,7 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Vendoo — la fuerza de ventas de campo, de punta a punta.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Términos de servicio — Vendoo">
+<meta name="twitter:title" content="Términos de servicio — Vendoo, app de fuerza de ventas de campo">
 <meta name="twitter:description" content="Condiciones de uso de Vendoo, la aplicación de fuerza de ventas de campo de GUUAO LLC: cuenta, uso permitido, cotización de pedidos, cobros y disponibilidad.">
 <meta name="twitter:image" content="https://vendooapp.com/assets/img/og.png">
 <meta name="twitter:image:alt" content="Vendoo — la fuerza de ventas de campo, de punta a punta.">
@@ -37,8 +38,19 @@
 <link rel="apple-touch-icon" href="/assets/img/icono-180.png">
 <link rel="manifest" href="/site.webmanifest">
 
+<!-- Las cuatro Poppins van precargadas (~9 KB cada una): el titular es 700, el
+     menú 500, los botones 600 y el texto 400, y todas están en el primer
+     pliegue. Medido con Lighthouse el 2-sep-2026: con sólo 400 y 600
+     precargadas, la 700 llegaba tarde y el titular saltaba (CLS 0,29). -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-700.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-400.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-600.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-500.woff2" crossorigin>
+<!-- Sólo la resolución de DNS, no la conexión: la analítica se carga después
+     del evento load (ver assets/js/analitica.js), así que abrir la conexión
+     antes competiría con la hoja de estilo y las fuentes por nada. -->
+<link rel="dns-prefetch" href="https://www.gstatic.com">
+<link rel="dns-prefetch" href="https://www.googletagmanager.com">
 <link rel="stylesheet" href="/assets/css/estilo.css">
 <script>/* Dos cosas que tienen que pasar ANTES del primer pintado.
 
@@ -141,7 +153,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
       <div class="ficha">
         <dl>
           <dt>Aplicación</dt>
-          <dd>Vendoo (<code>com.leiros.vendoo</code>), solo Android.</dd>
+          <dd>Vendoo (<code>com.leiros.vendoo</code>), Android 7.0 o superior.</dd>
           <dt>Titular</dt>
           <dd>GUUAO LLC</dd>
           <dt>Descarga</dt>
@@ -180,7 +192,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
       </div>
 
       <h2 id="t1">1. Objeto y alcance</h2>
-      <p>Estos términos rigen el uso de <strong>Vendoo</strong>, la aplicación Android que <strong>GUUAO LLC</strong> (en adelante, «GUUAO» o «el proveedor») desarrolla y distribuye a través de <a href="https://play.google.com/store/apps/details?id=com.leiros.vendoo" target="_blank" rel="noopener">Google Play</a>.</p>
+      <p>Estos términos rigen el uso de <strong>Vendoo</strong>, la aplicación que <strong>GUUAO LLC</strong> (en adelante, «GUUAO» o «el proveedor») desarrolla y distribuye a través de <a href="https://play.google.com/store/apps/details?id=com.leiros.vendoo" target="_blank" rel="noopener">Google Play</a>.</p>
       <p>Vendoo es una <strong>herramienta de trabajo para fuerzas de venta de campo</strong>. La contrata una distribuidora o cualquier otra organización con vendedores en la calle (en adelante, «la empresa») para su personal comercial, y quien la usa cada día es cada uno de sus vendedores (en adelante, «el vendedor»). Al iniciar sesión, el vendedor reconoce haber leído este documento y la <a href="/privacidad.html">política de privacidad</a>.</p>
       <p><strong>Cualquiera puede descargarla, pero sin cuenta no hace nada.</strong> La aplicación <strong>no permite crear cuentas ni registrarse</strong>: las credenciales las crea y las entrega la empresa que contrató el servicio. Vendoo no es una aplicación de consumo, y su uso por parte del vendedor forma parte de sus funciones: no constituye una relación de consumo entre el vendedor y GUUAO.</p>
       <p>La relación comercial entre GUUAO y la empresa que contrata Vendoo se rige por el acuerdo que ambas suscriban. Este documento rige el <strong>uso de la aplicación</strong>.</p>
@@ -291,12 +303,12 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
         </g>
       </svg>
     </a>
-        <p class="pie__nota">La aplicación Android con la que una fuerza de ventas de campo arma su ruta, levanta pedidos, cobra y deja constancia de cada visita — con señal o sin ella. Un producto de GUUAO LLC.</p>
+        <p class="pie__nota">La aplicación de fuerza de ventas de campo: ruta, pedidos, cobranza y evidencia, con o sin señal.</p>
         <div class="botones mt-sm">
         </div>
       </div>
       <div>
-        <h4>Producto</h4>
+        <h3>Producto</h3>
         <ul>
           <li><a href="/#producto">Qué hace Vendoo</a></li>
           <li><a href="/#como">Cómo funciona</a></li>
@@ -306,7 +318,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
         </ul>
       </div>
       <div>
-        <h4>Sitio</h4>
+        <h3>Sitio</h3>
         <ul>
           <li><a href="/">Inicio</a></li>
           <li><a href="/contacto.html">Contacto</a></li>

@@ -2,11 +2,12 @@
 <html lang="es-VE">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sBSmF0cvqwH9q89LN1kE6J363Sy1ybqC0YQqLHqJ1RI=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sBSmF0cvqwH9q89LN1kE6J363Sy1ybqC0YQqLHqJ1RI=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Contacto y demo — Vendoo</title>
-<meta name="description" content="Contanos cómo vende hoy tu equipo y te mostramos Vendoo funcionando con tus datos. Correo y WhatsApp a la vista; respondemos en menos de un día hábil.">
+<title>Pedí una demo de Vendoo — app de fuerza de ventas de campo</title>
+<meta name="description" content="Contanos cómo vende hoy tu equipo de campo o de preventa y te mostramos Vendoo funcionando con tus datos. Correo y WhatsApp a la vista; respondemos en menos de un día hábil.">
 <meta name="robots" content="index, follow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="canonical" href="https://vendooapp.com/contacto.html">
 <link rel="alternate" hreflang="es" href="https://vendooapp.com/contacto.html">
 <link rel="alternate" hreflang="x-default" href="https://vendooapp.com/contacto.html">
@@ -19,16 +20,16 @@
 <meta property="og:site_name" content="Vendoo">
 <meta property="og:locale" content="es_VE">
 <meta property="og:url" content="https://vendooapp.com/contacto.html">
-<meta property="og:title" content="Contacto y demo — Vendoo">
-<meta property="og:description" content="Contanos cómo vende hoy tu equipo y te mostramos Vendoo funcionando con tus datos. Correo y WhatsApp a la vista; respondemos en menos de un día hábil.">
+<meta property="og:title" content="Pedí una demo de Vendoo — app de fuerza de ventas de campo">
+<meta property="og:description" content="Contanos cómo vende hoy tu equipo de campo o de preventa y te mostramos Vendoo funcionando con tus datos. Correo y WhatsApp a la vista; respondemos en menos de un día hábil.">
 <meta property="og:image" content="https://vendooapp.com/assets/img/og.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Vendoo — la fuerza de ventas de campo, de punta a punta.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Contacto y demo — Vendoo">
-<meta name="twitter:description" content="Contanos cómo vende hoy tu equipo y te mostramos Vendoo funcionando con tus datos. Correo y WhatsApp a la vista; respondemos en menos de un día hábil.">
+<meta name="twitter:title" content="Pedí una demo de Vendoo — app de fuerza de ventas de campo">
+<meta name="twitter:description" content="Contanos cómo vende hoy tu equipo de campo o de preventa y te mostramos Vendoo funcionando con tus datos. Correo y WhatsApp a la vista; respondemos en menos de un día hábil.">
 <meta name="twitter:image" content="https://vendooapp.com/assets/img/og.png">
 <meta name="twitter:image:alt" content="Vendoo — la fuerza de ventas de campo, de punta a punta.">
 
@@ -37,8 +38,19 @@
 <link rel="apple-touch-icon" href="/assets/img/icono-180.png">
 <link rel="manifest" href="/site.webmanifest">
 
+<!-- Las cuatro Poppins van precargadas (~9 KB cada una): el titular es 700, el
+     menú 500, los botones 600 y el texto 400, y todas están en el primer
+     pliegue. Medido con Lighthouse el 2-sep-2026: con sólo 400 y 600
+     precargadas, la 700 llegaba tarde y el titular saltaba (CLS 0,29). -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-700.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-400.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-600.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-500.woff2" crossorigin>
+<!-- Sólo la resolución de DNS, no la conexión: la analítica se carga después
+     del evento load (ver assets/js/analitica.js), así que abrir la conexión
+     antes competiría con la hoja de estilo y las fuentes por nada. -->
+<link rel="dns-prefetch" href="https://www.gstatic.com">
+<link rel="dns-prefetch" href="https://www.googletagmanager.com">
 <link rel="stylesheet" href="/assets/css/estilo.css">
 <script>/* Dos cosas que tienen que pasar ANTES del primer pintado.
 

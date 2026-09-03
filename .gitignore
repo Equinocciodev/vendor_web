@@ -10,3 +10,6 @@
 # Nada de dependencias: este sitio no tiene build ni paquetes.
 node_modules/
 .wrangler/
+
+# Python
+__pycache__/

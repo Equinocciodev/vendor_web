@@ -26,13 +26,24 @@ pantalla»** (`index.html`, `#pantallas`).
 - Modo claro u oscuro, pero **el mismo en las seis**: puestas en fila se ven
   juntas.
 
+## Cómo se sirven
+
+De cada maestra PNG salen tres WebP (`<nombre>-360.webp`, `-720.webp`,
+`-1080.webp`) que la portada nombra con `<picture>` y `srcset`; la maestra
+queda como respaldo para un navegador sin WebP. Los genera
+`python3 tool/imagenes.py`, que además anota la huella SHA-256 de cada
+maestra en `derivadas.json`.
+
+**Reemplazar una captura es dejar el PNG nuevo con el mismo nombre y correr
+ese script.** Si no se corre, `tool/verificar.py` falla —«cambió y sus
+derivadas WebP son de la versión anterior»— y el sitio no se publica: es lo
+que evita servir la pantalla vieja en WebP y la nueva sólo en el respaldo.
+Si la que cambió es `inicio.png`, regenerá también la imagen social
+(`assets/img/og.png`, ver el README de la raíz): es la pantalla del teléfono
+que se ve al pegar el enlace en un chat.
+
 ## Lo que hay hoy
 
-Los seis archivos son **marcadores de posición** generados con Python
-(Pillow), con el cartel «Captura pendiente» adentro. Están versionados a
-propósito: `tool/verificar.py` comprueba que todo recurso que el HTML nombra
-exista, y un `<img>` roto en producción es peor que un marcador honesto.
-
-**Reemplazalos por las capturas reales, con el mismo nombre y la misma
-medida, y no hace falta tocar nada más.** El script que los generó quedó
-fuera del repositorio: no se van a necesitar de nuevo.
+Las seis son **reales** desde el 2-sep-2026: las mismas de la ficha de Play,
+con el vendedor ficticio «Victor S», una distribuidora inventada y datos
+sembrados a propósito. Ninguna es de un cliente.

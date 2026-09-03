@@ -22,7 +22,16 @@ chequeo *liviano* a propósito. Lo que comprueba:
      esa misma página, y
   8. que cada bloque JSON-LD sea JSON válido, y
   9. que la analítica (assets/js/analitica.js) esté en TODAS las páginas y que
-     cada página que la carga tenga en su CSP los hosts que necesita.
+     cada página que la carga tenga en su CSP los hosts que necesita;
+ 10. que cada candidato de un `srcset` (de <img> o de <source>) exista, que
+     las derivadas WebP de las capturas salgan de la maestra que está hoy en
+     el repositorio (huella en assets/img/capturas/derivadas.json, que escribe
+     tool/imagenes.py), que la imagen social mida 1200 × 630 y que el
+     manifiesto sea JSON válido con íconos que existen; y
+ 11. que ningún título, descripción, Open Graph ni JSON-LD diga «app Android»
+     o «aplicación Android» (regla del dueño, 2-sep-2026: es «la aplicación»;
+     Android queda sólo en `operatingSystem` del JSON-LD, en el botón de
+     descarga y en el «Android 7.0 o superior» del pie).
 
 ⚠️ LA ANALÍTICA ES LA ÚNICA EXCEPCIÓN A «NADA EXTERNO» (decisión del dueño,
 2-sep-2026). El <script> que ven estas comprobaciones es propio
@@ -71,7 +80,8 @@ ENLACES_EXTERNOS_PERMITIDOS = {'play.google.com', 'wa.me'}
 ANALITICA = '/assets/js/analitica.js'
 HOSTS_ANALITICA = {
     'script-src': ['https://www.gstatic.com', 'https://www.googletagmanager.com'],
-    'connect-src': ['https://*.google-analytics.com', 'https://*.analytics.google.com',
+    'connect-src': ['https://*.google-analytics.com', 'https://analytics.google.com',
+                    'https://*.analytics.google.com',
                     'https://www.googletagmanager.com', 'https://firebase.googleapis.com',
                     'https://firebaseinstallations.googleapis.com'],
     'img-src': ['https://*.google-analytics.com', 'https://www.googletagmanager.com'],
@@ -102,6 +112,9 @@ class Lector(HTMLParser):
         self.ids: set[str] = set()
         self.enlaces: list[tuple[str, int, dict]] = []
         self.recursos: list[tuple[str, int]] = []
+        self.pistas: list[tuple[str, int]] = []      # preconnect / dns-prefetch
+        self.cabeza = True                            # hasta que se cierre <head>
+        self.texto_cabeza: list[str] = []             # title/meta/JSON-LD de la cabeza
         self.h1 = 0
         self.titulo = ''
         self.en_titulo = False
@@ -148,8 +161,14 @@ class Lector(HTMLParser):
                 self.canonica = a.get('href', '')
             elif a.get('rel') == 'alternate':
                 pass                      # hreflang: apunta a URLs absolutas propias
+            elif a.get('rel') in ('preconnect', 'dns-prefetch'):
+                # Una pista de red no carga nada, pero nombra un host: tiene
+                # que ser uno que la CSP ya deje entrar (abajo).
+                self.pistas.append((a.get('href', ''), linea))
             elif a.get('href'):
                 self.recursos.append((a['href'], linea))
+        if tag == 'meta' and self.cabeza:
+            self.texto_cabeza.append(a.get('content', ''))
         elif tag == 'a' and a.get('href'):
             self.enlaces.append((a['href'], linea, a))
         elif tag == 'script':
@@ -161,6 +180,11 @@ class Lector(HTMLParser):
                 self.en_script = None
         elif tag == 'img' and a.get('src'):
             self.recursos.append((a['src'], linea))
+        if tag in ('img', 'source') and a.get('srcset'):
+            for candidato in a['srcset'].split(','):
+                url = candidato.strip().split()[0] if candidato.strip() else ''
+                if url:
+                    self.recursos.append((url, linea))
 
         if tag == 'img' and not a.get('alt') and a.get('alt') != '':
             self.imagenes_sin_alt += 1
@@ -176,6 +200,8 @@ class Lector(HTMLParser):
             error(self.archivo, f'línea {self.getpos()[0]}: atributo style= en <{tag}>')
 
     def handle_endtag(self, tag):
+        if tag == 'head':
+            self.cabeza = False
         if tag == 'script' and self.en_script is not None:
             self.guiones_de_script.append(
                 (self.en_script, self.linea_script, self.cuerpo_script))
@@ -201,8 +227,12 @@ class Lector(HTMLParser):
     def handle_data(self, datos):
         if self.en_titulo:
             self.titulo += datos
+            if self.cabeza:
+                self.texto_cabeza.append(datos)
         if self.en_script is not None:
             self.cuerpo_script += datos
+            if self.cabeza and self.en_script == 'application/ld+json':
+                self.texto_cabeza.append(datos)
 
 
 def destino(href: str) -> Path | None:
@@ -274,6 +304,15 @@ def main() -> int:
         if lector.imagenes_sin_alt:
             error(pagina.name, f'{lector.imagenes_sin_alt} <img> sin alt')
 
+        # Regla del dueño (2-sep-2026): es «la aplicación», no «la app Android».
+        # Se mira title, meta y JSON-LD de la cabeza; `operatingSystem` del
+        # JSON-LD es dato técnico y se excluye.
+        cabeza = re.sub(r'"operatingSystem"\s*:\s*"[^"]*"', '', '\n'.join(lector.texto_cabeza))
+        m_android = re.search(r'\b(app|aplicaci[oó]n)\s+Android\b', cabeza, re.I)
+        if m_android:
+            error(pagina.name, f'la cabeza dice «{m_android.group(0)}»: es «la aplicación» '
+                               '(regla del dueño, 2-sep-2026; Android sólo en operatingSystem).')
+
         # Open Graph y Twitter Card: lo que decide cómo se ve el sitio cuando
         # alguien lo pega en un chat. Si falta, no se nota hasta que se pega.
         for etiqueta in ('og:title', 'og:description', 'og:image', 'og:url',
@@ -315,6 +354,14 @@ def main() -> int:
                 if faltan:
                     error(nombre, f'la CSP no abre {", ".join(faltan)} en {directiva}, y '
                                   f'{ANALITICA} lo necesita.')
+
+        for href, linea in lector.pistas:
+            d = dominio(href)
+            abiertos = {dominio(h) for hosts in HOSTS_ANALITICA.values() for h in hosts}
+            if not href.startswith('https://') or d not in abiertos:
+                error(nombre, f'línea {linea}: preconnect/dns-prefetch a {href}, que no es '
+                              'un host de la analítica. Una pista de red a un tercero '
+                              'le cuenta quién entró aunque no cargue nada.')
 
         for href, linea, attrs in lector.enlaces:
             if href.startswith(('mailto:', 'tel:')):
@@ -372,6 +419,55 @@ def main() -> int:
                 error('sitemap.xml', f'{r} no existe en el sitio')
         if len(re.findall(r'<lastmod>', xml)) != len(urls):
             error('sitemap.xml', 'hay <url> sin <lastmod>')
+
+    # Las derivadas WebP de las capturas tienen que salir de la maestra que
+    # está hoy en el repo. tool/imagenes.py anota la huella de cada maestra;
+    # si alguien cambia una captura y no vuelve a correrlo, la portada
+    # serviría la pantalla vieja en WebP y la nueva sólo en el respaldo PNG.
+    capturas = RAIZ / 'assets' / 'img' / 'capturas'
+    huellas = capturas / 'derivadas.json'
+    if huellas.exists():
+        try:
+            anotadas = json.loads(huellas.read_text(encoding='utf-8'))
+        except Exception as exc:
+            anotadas = {}
+            error('assets/img/capturas/derivadas.json', f'no es JSON válido ({exc})')
+        for maestra in sorted(capturas.glob('*.png')):
+            if re.search(r'-\d+$', maestra.stem):
+                continue
+            actual = hashlib.sha256(maestra.read_bytes()).hexdigest()
+            if anotadas.get(maestra.name) != actual:
+                error(f'assets/img/capturas/{maestra.name}',
+                      'cambió y sus derivadas WebP son de la versión anterior: '
+                      'corré `python3 tool/imagenes.py` y versioná lo que produce.')
+    elif capturas.exists():
+        error('assets/img/capturas/derivadas.json', 'falta: corré `python3 tool/imagenes.py`.')
+
+    # La imagen social: OpenGraph pide 1200 × 630 y se lee del IHDR del PNG.
+    og = RAIZ / 'assets' / 'img' / 'og.png'
+    if og.exists():
+        cab = og.read_bytes()[:24]
+        if cab[:8] != b'\x89PNG\r\n\x1a\n':
+            error('assets/img/og.png', 'no es un PNG')
+        else:
+            ancho = int.from_bytes(cab[16:20], 'big')
+            alto = int.from_bytes(cab[20:24], 'big')
+            if (ancho, alto) != (1200, 630):
+                error('assets/img/og.png', f'mide {ancho}×{alto}; tiene que ser 1200×630')
+
+    # El manifiesto: JSON válido, y cada ícono que nombra existe.
+    manifiesto = RAIZ / 'site.webmanifest'
+    if manifiesto.exists():
+        try:
+            datos = json.loads(manifiesto.read_text(encoding='utf-8'))
+            for icono in datos.get('icons', []):
+                d = destino(icono.get('src', ''))
+                if d is not None and not d.exists():
+                    error('site.webmanifest', f'el ícono {icono.get("src")} no existe')
+            if not any('maskable' in (i.get('purpose') or '') for i in datos.get('icons', [])):
+                aviso('site.webmanifest', 'no hay ícono maskable')
+        except Exception as exc:
+            error('site.webmanifest', f'no es JSON válido ({exc})')
 
     # robots.txt tiene que declarar el sitemap, o nadie lo encuentra.
     robots = (RAIZ / 'robots.txt')

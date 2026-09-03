@@ -22,9 +22,12 @@ permissions:
   pages: write
   id-token: write
 
+# Una publicación por rama a la vez, y la que está en curso NO se cancela:
+# `actions/deploy-pages` a medio camino deja el sitio en un estado que
+# GitHub no promete, y esperar un minuto es más barato que averiguarlo.
 concurrency:
   group: publicar-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   verificar:
@@ -66,8 +69,17 @@ jobs:
           mkdir -p _sitio
           cp -R assets _sitio/
           cp *.html robots.txt sitemap.xml favicon.svg site.webmanifest CNAME _sitio/
+          # Sin Jekyll: Pages lo correría por defecto y se comería cualquier
+          # archivo o carpeta que empiece con guion bajo. Y los README de
+          # assets/ son del repositorio, no del sitio.
           touch _sitio/.nojekyll
-          ls -la _sitio
+          find _sitio -name 'README.md' -delete
+          ls -laR _sitio | head -80
+          # Lo que NO tiene que viajar: `_headers` (Pages lo ignora y se
+          # serviría como un archivo más), `tool/` y `.github/`.
+          for f in _headers tool .github README.md; do
+            if [ -e "_sitio/$f" ]; then echo "$f no va en el sitio"; exit 1; fi
+          done
 
       - name: Subir el artefacto de Pages
         uses: actions/upload-pages-artifact@v3
