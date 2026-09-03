@@ -2,7 +2,7 @@
 <html lang="es-VE">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sBSmF0cvqwH9q89LN1kE6J363Sy1ybqC0YQqLHqJ1RI='; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sBSmF0cvqwH9q89LN1kE6J363Sy1ybqC0YQqLHqJ1RI=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Términos de servicio — Vendoo</title>
 <meta name="description" content="Condiciones de uso de Vendoo, la aplicación de fuerza de ventas de campo de GUUAO LLC: cuenta, uso permitido, cotización de pedidos, cobros y disponibilidad.">
@@ -54,6 +54,10 @@ if(t==='claro'||t==='oscuro'){document.documentElement.setAttribute('data-tema',
 try{var h=document.documentElement;h.setAttribute('data-anim','1');
 setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-anim');}},2000);}catch(e){}</script>
 <script src="/assets/js/sitio.js" defer></script>
+<!-- Analítica (GA4 por Firebase), decisión del dueño del 2-sep-2026. Es la
+     única cosa externa del sitio; los hosts que necesita están en la CSP de
+     arriba y explicados en assets/js/analitica.js. -->
+<script type="module" src="/assets/js/analitica.js"></script>
 
 <script type="application/ld+json">
 {
@@ -263,7 +267,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
 
       <h2 id="t18">18. Contacto</h2>
       <p>GUUAO LLC<br><a href="mailto:hola@vendooapp.com">hola@vendooapp.com</a></p>
-      <p class="apagado"><small>Vendoo &middot; <code>com.leiros.vendoo</code> &middot; GUUAO LLC</small></p>
+      <p class="apagado"><small>Vendoo &middot; GUUAO LLC</small></p>
     </div>
   </div>
 </section>
@@ -314,7 +318,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
     </div>
     <div class="pie__base">
       <p>&copy; 2026 GUUAO LLC.</p>
-      <p>Vendoo &middot; <code>com.leiros.vendoo</code> &middot; Android 7.0 o superior</p>
+      <p>Vendoo &middot; <a href="mailto:hola@vendooapp.com">hola@vendooapp.com</a></p>
     </div>
   </div>
 </footer>

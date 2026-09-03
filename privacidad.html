@@ -2,7 +2,7 @@
 <html lang="es-VE">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sBSmF0cvqwH9q89LN1kE6J363Sy1ybqC0YQqLHqJ1RI='; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sBSmF0cvqwH9q89LN1kE6J363Sy1ybqC0YQqLHqJ1RI=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Política de privacidad — Vendoo</title>
 <meta name="description" content="Qué datos recoge Vendoo, para qué, dónde se guardan, cuánto tiempo y cómo pedir acceso, corrección o eliminación. Incluye ubicación, fotos y firma de la visita.">
@@ -54,6 +54,10 @@ if(t==='claro'||t==='oscuro'){document.documentElement.setAttribute('data-tema',
 try{var h=document.documentElement;h.setAttribute('data-anim','1');
 setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-anim');}},2000);}catch(e){}</script>
 <script src="/assets/js/sitio.js" defer></script>
+<!-- Analítica (GA4 por Firebase), decisión del dueño del 2-sep-2026. Es la
+     única cosa externa del sitio; los hosts que necesita están en la CSP de
+     arriba y explicados en assets/js/analitica.js. -->
+<script type="module" src="/assets/js/analitica.js"></script>
 
 <script type="application/ld+json">
 {
@@ -287,6 +291,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
         <li>el <strong>texto de un aviso</strong> atraviesa la infraestructura de Google, porque es la única forma de que llegue al teléfono (cláusula 2.j).</li>
       </ul>
       <p>Sólo puede cederse información a otros terceros cuando lo exija una autoridad competente en el marco de la ley venezolana.</p>
+      <p><strong>El sitio web.</strong> Esta política habla de la aplicación. El sitio <strong>vendooapp.com</strong>, desde el que probablemente la estás leyendo, usa <strong>Google Analytics</strong> (a través de Firebase, de Google LLC) para medir cuántas visitas recibe y qué páginas se leen. Es una medición de audiencia y nada más: el sitio no muestra publicidad, no crea perfiles con fines de mercadeo y no guarda por su cuenta ningún dato personal — lo único que llega a GUUAO LLC desde el sitio es lo que escribas en el formulario de contacto, que viaja como un correo.</p>
       <p><strong>Una excepción que depende del vendedor:</strong> la aplicación permite generar una nota de pedido en PDF —que incluye el nombre del cliente, las líneas del pedido, los precios, el total y, si la hubo, su firma— y enviarla desde el propio teléfono a través de las aplicaciones instaladas (por ejemplo, mensajería). Ese envío lo decide y ejecuta el vendedor, y su destino queda fuera del control de la aplicación. La empresa instruye a su personal para que sólo comparta ese documento con el cliente al que corresponde.</p>
 
       <h2 id="c7">7. Derechos: acceso, corrección y eliminación</h2>
@@ -306,7 +311,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
 
       <h2 id="c11">11. Contacto</h2>
       <p>GUUAO LLC<br><a href="mailto:hola@vendooapp.com">hola@vendooapp.com</a></p>
-      <p class="apagado"><small>Vendoo &middot; <code>com.leiros.vendoo</code> &middot; GUUAO LLC</small></p>
+      <p class="apagado"><small>Vendoo &middot; GUUAO LLC</small></p>
     </div>
   </div>
 </section>
@@ -357,7 +362,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
     </div>
     <div class="pie__base">
       <p>&copy; 2026 GUUAO LLC.</p>
-      <p>Vendoo &middot; <code>com.leiros.vendoo</code> &middot; Android 7.0 o superior</p>
+      <p>Vendoo &middot; <a href="mailto:hola@vendooapp.com">hola@vendooapp.com</a></p>
     </div>
   </div>
 </footer>

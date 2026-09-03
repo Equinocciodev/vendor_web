@@ -5,8 +5,10 @@ de **GUUAO LLC**. Cuatro páginas: inicio, contacto, términos de servicio y
 política de privacidad, más la de «no encontrado».
 
 **HTML, CSS y un poco de JavaScript. No hay framework, no hay build y no hay
-dependencias**: ni npm, ni un generador de sitios, ni un CDN. Lo que está en el
-repositorio es exactamente lo que se sirve. Eso no es minimalismo por deporte —
+dependencias**: ni npm, ni un generador de sitios, ni un CDN —con una sola
+excepción, los dos módulos de Firebase de la analítica de visitas, que se
+explica más abajo—. Lo que está en el repositorio es exactamente lo que se
+sirve. Eso no es minimalismo por deporte —
 es lo que permite que la política de seguridad de contenido sea tan cerrada como
 es (todo desde el propio origen) y que cualquiera pueda corregir una coma de la
 política de privacidad sin instalar nada.
@@ -31,7 +33,7 @@ consumo**.
 ```
 .
 ├── index.html            Inicio: la portada de producto entera
-├── contacto.html         Demo, soporte, privacidad y datos  (#demo es el ancla del CTA)
+├── contacto.html         Formulario de demo, soporte, privacidad y datos  (#demo es el ancla del CTA)
 ├── terminos.html         Términos de servicio
 ├── privacidad.html       Política de privacidad
 ├── 404.html              Página no encontrada, con enlaces a todo
@@ -43,7 +45,7 @@ consumo**.
 ├── CNAME                 El dominio que sirve GitHub Pages
 ├── assets/
 │   ├── css/estilo.css    TODO el estilo del sitio, en un solo archivo
-│   ├── js/sitio.js       Lo único que hace JavaScript: el cambio de tema
+│   ├── js/sitio.js       Tema, animaciones, marcador del menú y el formulario de contacto
 │   ├── fonts/            Poppins 400/500/600/700, subconjunto latino (~9 KB c/u)
 │   └── img/
 │       ├── og.png        Imagen social 1200×630 — se genera con tool/og.html
@@ -268,14 +270,28 @@ Tres reglas heredadas de la app que **no** hay que "arreglar":
 ## El botón de Google Play
 
 La aplicación está publicada como `com.leiros.vendoo`. El botón sale en la
-portada, en el pie de las cinco páginas, en la cabecera (versión compacta,
-«Descargar»), en contacto y en la imagen social.
+portada, en la cabecera de las cinco páginas (versión compacta, «Descargar»),
+en contacto y en la imagen social. **Del pie salió el 2-sep-2026**, y el
+paquete `com.leiros.vendoo` y el «Android 7.0 o superior» **se nombran sólo
+donde identifican la app legalmente**: la ficha de arriba de `privacidad.html`
+y de `terminos.html`, más «Android 7.0 o superior» una sola vez en el pie de
+la portada. En ningún otro texto de venta (decisión del dueño, 2-sep-2026).
+
+### El botón de App Store, que no es un botón
+
+Al lado del de Google Play, **sólo en la portada**, hay un segundo botón del
+mismo tamaño que dice «iOS · próximamente / App Store» (`.boton--pronto`). Es
+un `<span aria-disabled="true">`, no un enlace: no recibe foco, no hace nada y
+no promete fecha. **Sin logotipo de Apple**, por la misma regla del muro de
+ERP: el sitio no usa logos de terceros, y el ícono es nuestro. El día que la
+app de iOS exista, se convierte en `<a>` con su enlace y se le quita
+`boton--pronto`; el `.play__texto` ya está.
 
 **Está dibujado en SVG en línea**, con el triángulo de Play en sus cuatro
-colores. No se descarga el badge oficial de Google, y ésa es la razón: el sitio
-no le pide **un solo byte** a un tercero, ni siquiera una imagen — es lo que
-sostiene la política de seguridad de contenido y lo que evita que Google sepa
-quién visita la página antes de hacer clic.
+colores. No se descarga el badge oficial de Google, y ésa es la razón: fuera
+de la analítica de visitas, el sitio no le pide **un solo byte** a un tercero,
+ni siquiera una imagen — es lo que mantiene la política de seguridad de
+contenido corta y lo que evita abrir un host más por una imagen.
 
 > **Si Legal prefiere el badge oficial de Google**, se puede cambiar: hay que
 > descargar el PNG/SVG oficial desde el *Google Play Badge Generator*, dejarlo
@@ -289,6 +305,48 @@ son **lo único del sitio que no sale del preset «vendoo»**: re-teñirlos con 
 tokens del tema lo dejaría de hacer reconocible.
 
 ---
+
+## El formulario de contacto
+
+Desde el **2-sep-2026** `contacto.html` abre con un formulario (nombre,
+empresa, correo, teléfono opcional, tamaño del equipo opcional, mensaje) en
+vez de una lista de correos. Encargo del dueño: *«Contacto es un formulario
+que manda un correo a hola@vendooapp.com»*.
+
+**El sitio no tiene backend, así que hoy el envío es un `mailto:`.**
+`sitio.js` valida con HTML5 (`checkValidity` + `reportValidity`, o sea los
+mensajes nativos del navegador en el idioma del visitante), arma el asunto
+—`Contacto desde vendooapp.com — <empresa>`— y el cuerpo con los campos, y
+abre el cliente de correo con todo prellenado. Al lado del formulario siempre
+está el enlace «o escribinos directo a hola@vendooapp.com», que es el camino
+para quien no tiene cliente de correo configurado o tiene el JavaScript
+apagado (la CSP lleva `form-action 'none'` y sin script el `<form>` no se va
+a ningún lado; hay un `<noscript>` que lo dice).
+
+### Pasar del `mailto:` a un servicio de formularios
+
+Cuando el dueño cree la cuenta en **Formspree**, **Web3Forms** o parecido,
+alcanza con **tres** cosas:
+
+1. En `assets/js/sitio.js`, poner la URL en la constante
+   `ENDPOINT_FORMULARIO` (hoy `''`). Con la constante vacía el formulario
+   abre el correo; con una URL manda un `POST` JSON por `fetch` y muestra
+   «Recibido» sin salir de la página. Los campos viajan con los `name` del
+   HTML (`nombre`, `empresa`, `email`, `telefono`, `equipo`, `mensaje`) más
+   `_subject` con el mismo asunto del `mailto:`. `email` se llama así, y no
+   `correo`, porque es el nombre que esos servicios usan para el *reply-to*.
+2. En la CSP de `contacto.html` (`<meta http-equiv="Content-Security-Policy">`),
+   agregar el host del servicio a `connect-src`: por ejemplo
+   `connect-src 'self' https://formspree.io`. Sin eso el navegador bloquea el
+   `fetch` en silencio. **Sólo en contacto.html**: las otras cuatro páginas no
+   envían nada.
+3. Si el servicio pide un dominio autorizado, registrar `vendooapp.com`.
+
+`tool/verificar.py` no se queja de nada de esto: la constante vive en un
+script propio (no hay hash que recalcular) y `connect-src` no es ni un recurso
+ni un enlace. Si el servicio falla —red, 4xx, 5xx—, el estado del formulario
+manda al correo, que sigue a la vista: **nunca se pierde un mensaje sin
+decirlo.**
 
 ## Las capturas de la aplicación
 
@@ -366,8 +424,39 @@ Comprueba que estén las páginas, que el HTML cierre sus etiquetas, que cada
 página tenga `title`, `description`, `lang`, `canonical`, `viewport`, Open Graph,
 Twitter Card y un solo `h1`; que ningún enlace interno ni ancla apunte a algo
 que no existe; que **ningún recurso** sea externo; que no haya `style=`; que
-cada `<script>` en línea tenga su hash en la CSP de su página, y que cada
+cada `<script>` en línea tenga su hash en la CSP de su página; que la
+analítica esté en las cinco páginas con sus hosts en la CSP, y que cada
 bloque JSON-LD sea JSON válido. Es el mismo script que corre en CI.
+
+### La analítica del sitio (2-sep-2026)
+
+Decisión del dueño: el sitio mide visitas con **Google Analytics 4 a través de
+Firebase** (`assets/js/analitica.js`, un `<script type="module">` en las cinco
+páginas, con los módulos `firebase-app` y `firebase-analytics` **12.18.0**
+importados desde gstatic, tal como los entrega la consola de Firebase para un
+sitio sin empaquetador). **Es la única excepción a «nada externo»** y por eso
+está en un archivo propio con su cabecera explicando qué host necesita y para
+qué. Sólo analítica: nada de anuncios, y los hosts de publicidad que la guía
+de CSP de Google sugiere «por si acaso» (`doubleclick.net`,
+`googlesyndication.com`) **no están abiertos** a propósito.
+
+Lo que eso abrió en la CSP de las cinco páginas y de `_headers` —y nada más—:
+
+| Directiva | Hosts | Por qué |
+|---|---|---|
+| `script-src` | `www.gstatic.com`, `www.googletagmanager.com` | los módulos de Firebase, y el `gtag.js` que `firebase-analytics` carga solo |
+| `connect-src` | `*.google-analytics.com`, `*.analytics.google.com`, `www.googletagmanager.com`, `firebase.googleapis.com`, `firebaseinstallations.googleapis.com` | los hits, la configuración web de la app y el registro de la instalación |
+| `img-src` | `*.google-analytics.com`, `www.googletagmanager.com` | el píxel de respaldo cuando no hay `sendBeacon` |
+
+Está comprobado contra Chrome sin interfaz con la consola abierta: cero
+violaciones de CSP. Si se sube la versión del SDK, hay que repetir esa prueba.
+El script en línea del `<head>` **no cambió**, así que el hash de la CSP es el
+mismo. `tool/verificar.py` exige que la analítica esté **en las cinco páginas
+o en ninguna** y que cada página que la carga tenga los hosts en su CSP: una
+página sin ella se cuenta como cero visitas, y una con el script y sin los
+hosts falla en silencio. La política de privacidad lo dice en la cláusula 6
+(«El sitio web»). Si algún día se apaga, hay que sacar las tres cosas: el
+script, los hosts de la CSP y esa frase.
 
 ### Recurso externo y enlace externo no son lo mismo
 
@@ -465,8 +554,9 @@ Lo que hay puesto, para no repetirlo ni olvidarlo:
 - `robots.txt` con `Sitemap:`, y `sitemap.xml` con `lastmod` real.
 - Un solo `h1` por página, jerarquía en orden, `alt` en todas las imágenes,
   `theme-color` por tema y `apple-touch-icon` + manifiesto coherentes.
-- **Nada externo**: ni Google Fonts, ni analítica, ni píxeles. La página no
-  llama a nadie.
+- **Nada externo, con UNA excepción**: ni Google Fonts, ni píxeles, ni CDN.
+  Lo único que la página le pide a un tercero es la analítica de visitas
+  (abajo, «La analítica del sitio»), por decisión del dueño del 2-sep-2026.
 
 ### Regenerar la imagen social
 

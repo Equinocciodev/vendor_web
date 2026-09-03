@@ -20,7 +20,17 @@ chequeo *liviano* a propósito. Lo que comprueba:
      obligaría a abrir `style-src` a `unsafe-inline`;
   7. que cada `<script>` en línea tenga su hash sha256 declarado en la CSP de
      esa misma página, y
-  8. que cada bloque JSON-LD sea JSON válido.
+  8. que cada bloque JSON-LD sea JSON válido, y
+  9. que la analítica (assets/js/analitica.js) esté en TODAS las páginas y que
+     cada página que la carga tenga en su CSP los hosts que necesita.
+
+⚠️ LA ANALÍTICA ES LA ÚNICA EXCEPCIÓN A «NADA EXTERNO» (decisión del dueño,
+2-sep-2026). El <script> que ven estas comprobaciones es propio
+(`/assets/js/analitica.js`); lo externo son sus `import` a gstatic y lo que
+el SDK carga después, y eso no lo ve un lector de HTML: lo cubre la CSP. Por
+eso el chequeo 9 mira que los hosts estén en la política de CADA página —un
+script con los hosts a medias falla en silencio, y una página sin el script
+cuenta cero visitas.
 
 ⚠️ RECURSO y ENLACE no son lo mismo, y desde el 2-sep-2026 el script los
 trata distinto. Un *recurso* externo (una hoja de estilo, un script, una
@@ -53,6 +63,17 @@ ADEMAS = ['404.html', 'robots.txt', 'sitemap.xml', 'favicon.svg', 'site.webmanif
 # Los únicos dominios a los que el sitio puede ENLAZAR (nunca pedirles un
 # recurso). Uno solo, y con su razón: ahí está publicada la aplicación.
 ENLACES_EXTERNOS_PERMITIDOS = {'play.google.com'}
+
+# La analítica del sitio y los hosts que su SDK necesita en la CSP. Medido
+# contra Firebase 12.18.0; si se sube la versión, se vuelve a medir.
+ANALITICA = '/assets/js/analitica.js'
+HOSTS_ANALITICA = {
+    'script-src': ['https://www.gstatic.com', 'https://www.googletagmanager.com'],
+    'connect-src': ['https://*.google-analytics.com', 'https://*.analytics.google.com',
+                    'https://www.googletagmanager.com', 'https://firebase.googleapis.com',
+                    'https://firebaseinstallations.googleapis.com'],
+    'img-src': ['https://*.google-analytics.com', 'https://www.googletagmanager.com'],
+}
 
 VACIAS = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
           'meta', 'param', 'source', 'track', 'wbr'}
@@ -276,6 +297,23 @@ def main() -> int:
                       f'página. El que corresponde es {h!r} — ver el README.')
 
     for nombre, lector in lectores.items():
+        # La analítica: en todas las páginas, y con sus hosts en la CSP.
+        carga_analitica = any(h == ANALITICA for h, _ in lector.recursos)
+        if not carga_analitica:
+            error(nombre, f'no carga {ANALITICA}: la analítica va en las cinco páginas '
+                          'o en ninguna (ver el README).')
+        else:
+            directivas = {}
+            for trozo in lector.csp.split(';'):
+                partes = trozo.split()
+                if partes:
+                    directivas[partes[0]] = partes[1:]
+            for directiva, hosts in HOSTS_ANALITICA.items():
+                faltan = [h for h in hosts if h not in directivas.get(directiva, [])]
+                if faltan:
+                    error(nombre, f'la CSP no abre {", ".join(faltan)} en {directiva}, y '
+                                  f'{ANALITICA} lo necesita.')
+
         for href, linea, attrs in lector.enlaces:
             if href.startswith(('mailto:', 'tel:')):
                 continue

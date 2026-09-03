@@ -258,3 +258,131 @@
     reloj = setTimeout(observar, 200);
   });
 })();
+
+
+/* ==========================================================================
+   El formulario de contacto (2-sep-2026)
+
+   Encargo del dueño: «Contacto es un formulario que manda un correo a
+   hola@vendooapp.com». El sitio es estático y no tiene backend, así que hoy
+   el envío es un `mailto:`: se valida con HTML5, se arma el asunto y el
+   cuerpo con los campos, y se abre el cliente de correo del visitante con
+   todo prellenado. Al lado siempre está el enlace al correo pelado: es el
+   camino de quien no tiene cliente de correo configurado.
+
+   ⚠️ CAMINO LISTO PARA UN SERVICIO DE FORMULARIOS. El día que el dueño cree
+   la cuenta (Formspree, Web3Forms o parecido), se pone la URL en
+   `ENDPOINT_FORMULARIO` y el envío pasa a ser un POST JSON por `fetch`, sin
+   abrir el correo. Hay que agregar además el host a `connect-src` en la CSP
+   de contacto.html, o el navegador bloquea el fetch en silencio. Está en el
+   README, paso a paso. Nada más cambia: ni el HTML ni el resto de este
+   archivo.
+
+   Si algo falla —sin endpoint no hay nada que pueda fallar del lado de acá;
+   con endpoint, la red o un 4xx/5xx— se le dice al visitante y se le da el
+   correo. Nunca se pierde un mensaje sin decirlo.
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var ENDPOINT_FORMULARIO = '';            // p. ej. 'https://formspree.io/f/xxxxxxxx'
+  var CORREO = 'hola@vendooapp.com';
+
+  var form = document.querySelector('.formulario');
+  if (!form) return;                        // sólo contacto.html tiene uno
+
+  var estado = form.querySelector('.formulario__estado');
+  var enviar = form.querySelector('button[type="submit"]');
+
+  function decir(texto, tono) {
+    if (!estado) return;
+    estado.textContent = texto;
+    if (tono) estado.setAttribute('data-tono', tono);
+    else estado.removeAttribute('data-tono');
+  }
+
+  function valor(nombre) {
+    var campo = form.elements[nombre];
+    return campo ? String(campo.value || '').trim() : '';
+  }
+
+  function leer() {
+    return {
+      nombre:   valor('nombre'),
+      empresa:  valor('empresa'),
+      email:    valor('email'),
+      telefono: valor('telefono'),
+      equipo:   valor('equipo'),
+      mensaje:  valor('mensaje')
+    };
+  }
+
+  function asunto(d) {
+    return 'Contacto desde vendooapp.com — ' + d.empresa;
+  }
+
+  function cuerpo(d) {
+    var o = function (v) { return v || '—'; };
+    return [
+      'Nombre: ' + d.nombre,
+      'Empresa: ' + d.empresa,
+      'Correo: ' + d.email,
+      'Teléfono: ' + o(d.telefono),
+      'Tamaño del equipo de ventas: ' + o(d.equipo),
+      '',
+      'Mensaje:',
+      d.mensaje,
+      '',
+      '— Enviado desde el formulario de vendooapp.com'
+    ].join('\n');
+  }
+
+  function porCorreo(d) {
+    var href = 'mailto:' + CORREO +
+      '?subject=' + encodeURIComponent(asunto(d)) +
+      '&body=' + encodeURIComponent(cuerpo(d));
+    // Es una navegación, no un envío de formulario: la CSP con
+    // `form-action 'none'` no la toca, y el navegador abre el cliente de
+    // correo sin salir de la página.
+    window.location.href = href;
+    decir('Se abrió tu correo con el mensaje listo: sólo falta que lo mandes. ' +
+          'Si no se abrió nada, escribinos a ' + CORREO + ' con lo que llenaste.', '');
+  }
+
+  function porServicio(d) {
+    if (enviar) enviar.disabled = true;
+    decir('Enviando…', '');
+    var carga = {
+      _subject: asunto(d),
+      nombre: d.nombre, empresa: d.empresa, email: d.email,
+      telefono: d.telefono, equipo: d.equipo, mensaje: d.mensaje
+    };
+    fetch(ENDPOINT_FORMULARIO, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(carga)
+    }).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      form.reset();
+      decir('Recibido. Te respondemos a ' + d.email + '.', 'ok');
+    }).catch(function () {
+      decir('No se pudo enviar. Escribinos a ' + CORREO + ' y lo vemos igual.', 'error');
+    }).then(function () {
+      if (enviar) enviar.disabled = false;
+    });
+  }
+
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    // Validación HTML5: los mensajes son los nativos del navegador, en el
+    // idioma del visitante, y `reportValidity` lleva el foco al primer
+    // campo que falta.
+    if (typeof form.checkValidity === 'function' && !form.checkValidity()) {
+      if (form.reportValidity) form.reportValidity();
+      return;
+    }
+    var d = leer();
+    if (ENDPOINT_FORMULARIO && window.fetch) porServicio(d);
+    else porCorreo(d);
+  });
+})();
