@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sBSmF0cvqwH9q89LN1kE6J363Sy1ybqC0YQqLHqJ1RI=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Contacto y demo — Vendoo</title>
-<meta name="description" content="Pedí una demo de Vendoo, escribí a soporte si ya la usás en la calle o hacé una solicitud de datos personales. Vendoo es un producto de GUUAO LLC.">
+<meta name="description" content="Contanos cómo vende hoy tu equipo y te mostramos Vendoo funcionando con tus datos. Correo y WhatsApp a la vista; respondemos en menos de un día hábil.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://vendooapp.com/contacto.html">
 <link rel="alternate" hreflang="es" href="https://vendooapp.com/contacto.html">
@@ -20,7 +20,7 @@
 <meta property="og:locale" content="es_VE">
 <meta property="og:url" content="https://vendooapp.com/contacto.html">
 <meta property="og:title" content="Contacto y demo — Vendoo">
-<meta property="og:description" content="Pedí una demo de Vendoo, escribí a soporte si ya la usás en la calle o hacé una solicitud de datos personales. Vendoo es un producto de GUUAO LLC.">
+<meta property="og:description" content="Contanos cómo vende hoy tu equipo y te mostramos Vendoo funcionando con tus datos. Correo y WhatsApp a la vista; respondemos en menos de un día hábil.">
 <meta property="og:image" content="https://vendooapp.com/assets/img/og.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
@@ -28,7 +28,7 @@
 <meta property="og:image:alt" content="Vendoo — la fuerza de ventas de campo, de punta a punta.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Contacto y demo — Vendoo">
-<meta name="twitter:description" content="Pedí una demo de Vendoo, escribí a soporte si ya la usás en la calle o hacé una solicitud de datos personales. Vendoo es un producto de GUUAO LLC.">
+<meta name="twitter:description" content="Contanos cómo vende hoy tu equipo y te mostramos Vendoo funcionando con tus datos. Correo y WhatsApp a la vista; respondemos en menos de un día hábil.">
 <meta name="twitter:image" content="https://vendooapp.com/assets/img/og.png">
 <meta name="twitter:image:alt" content="Vendoo — la fuerza de ventas de campo, de punta a punta.">
 
@@ -131,120 +131,90 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
 </header>
 
 <main id="principal">
-<section class="seccion">
-  <div class="envoltura">
-    <div class="encabezado">
+<!-- CONTACTO (rehecha el 2-sep-2026). Encargo del dueño, textual: «mucho
+     texto, el formulario roto; quita los cards […] haz algo muy bonito que
+     inspire al cliente». Una sola pieza: titular, una frase, el formulario
+     como centro en su tarjeta, tres razones cortas al lado y los dos
+     canales directos a la vista. Nada de política, descarga ni soporte
+     acá: eso vive en el pie y en las legales.
+
+     El envío es un `mailto:` armado por sitio.js (ver el README, «El
+     formulario de contacto»); con `ENDPOINT_FORMULARIO` pasa a fetch. Los
+     `name` de los campos son los que un servicio de formularios recibiría.
+     Sin JavaScript no se envía —la CSP lleva `form-action 'none'`— y el
+     <noscript> manda al correo, que igual está a la vista. -->
+<section class="seccion contacto">
+  <div class="envoltura contacto__reja">
+    <div class="contacto__intro revelar">
       <span class="rotulo">Contacto</span>
-      <h1 class="titulo-pagina">Hablemos de tu fuerza de ventas.</h1>
-      <p>Vendoo es un producto de GUUAO LLC. Acá están los canales: el formulario de quien quiere ver la aplicación funcionando, el de los vendedores que ya la usan todos los días y el de las solicitudes de datos personales.</p>
+      <h1 class="titulo-pagina">Hablemos de <em>tu fuerza de ventas</em>.</h1>
+      <p class="entrada">Contanos cómo vende hoy tu equipo y te mostramos Vendoo funcionando con tus datos.</p>
     </div>
 
-    <!-- EL FORMULARIO (2-sep-2026). El sitio es estático y no tiene backend:
-         `sitio.js` arma un `mailto:` con el asunto y los campos, y abre el
-         cliente de correo del visitante con todo prellenado. El día que haya
-         un servicio de formularios, se pone su URL en `ENDPOINT_FORMULARIO`
-         (sitio.js) y el envío pasa a ser por `fetch`; el HTML no cambia. Los
-         `name` de los campos son los que ese servicio va a recibir.
-         Sin JavaScript el envío no ocurre —la CSP lleva `form-action 'none'`
-         a propósito— y el <noscript> manda al correo, que siempre está a la
-         vista. -->
-    <article class="tarjeta tarjeta--realce demo" id="demo">
-      <div class="demo__intro">
-        <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg></div>
-        <h2 class="demo__titulo">Solicitar una demo</h2>
-        <p>Te mostramos la aplicación completa y te decimos con franqueza qué hace falta para conectarla con tu sistema. Para que la primera conversación sirva, contanos cuántos vendedores de campo tenés, qué ERP usás, si vendés con varias empresas o almacenes y en qué país y con qué monedas facturás.</p>
-        <p>Al enviar se abre tu correo con el mensaje listo. O escribinos directo a <a class="demo__correo" href="mailto:hola@vendooapp.com?subject=Contacto%20desde%20vendooapp.com">hola@vendooapp.com</a>.</p>
-        <p><small>Para asuntos comerciales, administrativos o contractuales con GUUAO LLC, el mismo correo llega a donde tiene que llegar. Las condiciones de uso están en los <a href="/terminos.html">términos de servicio</a>.</small></p>
-      </div>
-      <form class="formulario" method="post" aria-labelledby="demo-titulo-form">
-        <h3 id="demo-titulo-form" class="visualmente-oculto">Formulario de contacto</h3>
-        <div class="formulario__fila">
-          <div class="campo">
-            <label for="f-nombre">Nombre</label>
-            <input id="f-nombre" name="nombre" type="text" autocomplete="name" required maxlength="120">
-          </div>
-          <div class="campo">
-            <label for="f-empresa">Empresa</label>
-            <input id="f-empresa" name="empresa" type="text" autocomplete="organization" required maxlength="120">
-          </div>
-        </div>
-        <div class="formulario__fila">
-          <div class="campo">
-            <label for="f-correo">Correo</label>
-            <input id="f-correo" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="160">
-          </div>
-          <div class="campo">
-            <label for="f-telefono">Teléfono <small>(opcional)</small></label>
-            <input id="f-telefono" name="telefono" type="tel" autocomplete="tel" inputmode="tel" maxlength="40">
-          </div>
+    <form class="contacto__form formulario revelar revelar--b" id="demo" method="post" aria-labelledby="f-titulo">
+      <h2 id="f-titulo" class="formulario__titulo">Pedí una demo</h2>
+      <div class="formulario__fila">
+        <div class="campo">
+          <label for="f-nombre">Nombre</label>
+          <input id="f-nombre" name="nombre" type="text" autocomplete="name" required maxlength="120">
         </div>
         <div class="campo">
-          <label for="f-equipo">Tamaño del equipo de ventas <small>(opcional)</small></label>
-          <select id="f-equipo" name="equipo">
-            <option value="">Elegí una opción</option>
-            <option>1 a 5 vendedores</option>
-            <option>6 a 20 vendedores</option>
-            <option>21 a 50 vendedores</option>
-            <option>51 a 150 vendedores</option>
-            <option>Más de 150 vendedores</option>
-          </select>
-        </div>
-        <div class="campo">
-          <label for="f-mensaje">Mensaje</label>
-          <textarea id="f-mensaje" name="mensaje" rows="5" required maxlength="3000" placeholder="Cómo trabaja hoy tu equipo, con qué sistema, y qué te gustaría ver en la demo."></textarea>
-        </div>
-        <div class="formulario__pie">
-          <button class="boton boton--lleno" type="submit">Enviar</button>
-          <p class="formulario__estado" role="status" aria-live="polite"></p>
-        </div>
-        <noscript><p class="formulario__estado">El formulario necesita JavaScript para armar el correo. Sin él, escribinos directo a <a href="mailto:hola@vendooapp.com?subject=Contacto%20desde%20vendooapp.com">hola@vendooapp.com</a>.</p></noscript>
-      </form>
-    </article>
-
-    <div class="reja reja--2 mt-md">
-      <article class="tarjeta">
-        <div class="canal">
-          <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.5L3 21l2.1-5.6A8.4 8.4 0 1 1 21 11.5z"/></svg></div>
-          <div>
-            <h3>Soporte a vendedores</h3>
-            <p>Si ya usás Vendoo en la calle y algo no te funciona —no te entra la sesión, un pedido no sale de la cola, la aplicación se cierra sola—, escribinos contando qué estabas haciendo cuando pasó: con eso se resuelve mucho más rápido.</p>
-            <p class="dato"><a href="mailto:hola@vendooapp.com?subject=Soporte%20Vendoo">hola@vendooapp.com</a></p>
-            <p><small>Dentro de la aplicación, el mismo canal está en <strong>Perfil &rsaquo; Soporte</strong>. Si tu empresa tiene una mesa de ayuda propia, empezá por ahí: son ellos los que administran las cuentas.</small></p>
-          </div>
-        </div>
-      </article>
-
-      <article class="tarjeta">
-        <div class="canal">
-          <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.4-3.2 8.3-8 9.5C7.2 20.3 4 16.4 4 12V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
-          <div>
-            <h3>Privacidad y datos</h3>
-            <p>Para pedir <strong>acceso</strong>, <strong>corrección</strong> o <strong>eliminación</strong> de datos personales. Poné en el asunto <em>Solicitud de datos — Vendoo</em> y aportá información suficiente para identificarte. Se responde en un máximo de treinta días hábiles.</p>
-            <p class="dato"><a href="mailto:hola@vendooapp.com?subject=Solicitud%20de%20datos%20%E2%80%94%20Vendoo">hola@vendooapp.com</a></p>
-            <p><small>El detalle de qué se recoge y para qué está en la <a href="/privacidad.html">política de privacidad</a>.</small></p>
-          </div>
-        </div>
-      </article>
-
-      <div class="tarjeta">
-        <h3>Descargar la aplicación</h3>
-        <p>Vendoo está publicada en Google Play. Se descarga libremente, pero <strong>no se puede crear una cuenta desde la aplicación</strong>: se entra con las credenciales que entrega la empresa que la contrata. Si querés verla con datos, pedí una demo.</p>
-        <div class="botones mt-sm">
-          <a class="boton boton--play" href="https://play.google.com/store/apps/details?id=com.leiros.vendoo" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <path d="M1.3 1.2C1.1 1.4 1 1.7 1 2.1v19.8c0 .4.1.7.3.9l.1.1L12.4 12v-.2L1.3 1.2z" fill="#00A0FF"/>
-        <path d="M16.1 15.7l-3.7-3.7v-.2l3.7-3.7.1.1 4.4 2.5c1.2.7 1.2 1.8 0 2.5l-4.4 2.5z" fill="#FFCE00"/>
-        <path d="M16.2 15.6L12.4 11.8 1.3 22.9c.4.4 1.1.5 1.8.1l13.1-7.4" fill="#FF3A44"/>
-        <path d="M16.2 8.4L3.1 1c-.7-.4-1.4-.4-1.8.1l11.1 11.1 3.8-3.8z" fill="#00E676"/>
-      </svg>
-      <span class="play__texto"><small>Disponible en</small><b>Google Play</b></span>
-    </a>
+          <label for="f-empresa">Empresa</label>
+          <input id="f-empresa" name="empresa" type="text" autocomplete="organization" required maxlength="120">
         </div>
       </div>
-      <div class="tarjeta">
-        <h3>Reportar un problema de seguridad</h3>
-        <p>Si encontraste algo que compromete datos de una empresa o de sus clientes, escribí con el asunto <em>Seguridad — Vendoo</em> y una descripción de cómo reproducirlo. Se responde antes que cualquier otra cosa.</p>
-        <p class="dato mt-sm"><a href="mailto:hola@vendooapp.com?subject=Seguridad%20%E2%80%94%20Vendoo">hola@vendooapp.com</a></p>
+      <div class="formulario__fila">
+        <div class="campo">
+          <label for="f-correo">Correo</label>
+          <input id="f-correo" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="160">
+        </div>
+        <div class="campo">
+          <label for="f-telefono">Teléfono <small>(opcional)</small></label>
+          <input id="f-telefono" name="telefono" type="tel" autocomplete="tel" inputmode="tel" maxlength="40">
+        </div>
+      </div>
+      <div class="campo">
+        <label for="f-equipo">Vendedores en la calle <small>(opcional)</small></label>
+        <select id="f-equipo" name="equipo">
+          <option value="">Elegí una opción</option>
+          <option>1 a 5</option>
+          <option>6 a 20</option>
+          <option>21 a 50</option>
+          <option>51 a 150</option>
+          <option>Más de 150</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label for="f-mensaje">Mensaje</label>
+        <textarea id="f-mensaje" name="mensaje" rows="4" required maxlength="3000" placeholder="Con qué sistema trabajás y qué te gustaría ver en la demo."></textarea>
+      </div>
+      <div class="formulario__pie">
+        <button class="boton boton--lleno" type="submit">Quiero ver Vendoo</button>
+        <p class="formulario__estado" role="status" aria-live="polite"></p>
+      </div>
+      <p class="formulario__nota">Al enviar se abre tu correo con el mensaje listo. Sin compromiso.</p>
+      <noscript><p class="formulario__nota">El formulario necesita JavaScript para armar el correo. Sin él, escribinos directo a <a href="mailto:hola@vendooapp.com?subject=Contacto%20desde%20vendooapp.com">hola@vendooapp.com</a>.</p></noscript>
+    </form>
+
+    <div class="contacto__lado">
+      <ul class="razones">
+        <li class="revelar revelar--b">
+          <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
+          <div><b>Respuesta en menos de un día hábil</b><span>Te contesta una persona del equipo, no un bot.</span></div>
+        </li>
+        <li class="revelar revelar--c">
+          <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18.5h2"/><path d="M9.5 9.5l2 2 3.5-3.5"/></svg></div>
+          <div><b>Demo con tus datos</b><span>Tu catálogo, tu tarifa y tu ruta, como los va a ver tu equipo.</span></div>
+        </li>
+        <li class="revelar revelar--d">
+          <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4" width="8" height="6" rx="1.5"/><rect x="13.5" y="14" width="8" height="6" rx="1.5"/><path d="M10.5 7h4a3 3 0 0 1 3 3v4"/><path d="M13.5 17h-4a3 3 0 0 1-3-3v-4"/></svg></div>
+          <div><b>Integración con tu ERP</b><span>Con Odoo, nativa. Con los demás, a la medida de tu operación.</span></div>
+        </li>
+      </ul>
+      <p class="contacto__o revelar revelar--d">O escribinos directo:</p>
+      <div class="vias revelar revelar--d">
+        <a class="via" href="mailto:hola@vendooapp.com?subject=Contacto%20desde%20vendooapp.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7.5l8.5 6 8.5-6"/></svg><span>hola@vendooapp.com</span></a>
+        <a class="via" href="https://wa.me/584123469712" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.6L3 21l1.9-5.6A8.5 8.5 0 1 1 21 11.5z"/><path d="M9.3 8.3c.3 2.5 2.4 4.6 4.9 5.1l1-1.1 2 .9-.2 1.5c-3.6.6-8-3.6-7.6-7.3l1.5-.2.9 1.9z"/></svg><span>WhatsApp +58 412-346 9712</span></a>
       </div>
     </div>
   </div>
@@ -296,7 +266,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
     </div>
     <div class="pie__base">
       <p>&copy; 2026 GUUAO LLC.</p>
-      <p>Vendoo &middot; <a href="mailto:hola@vendooapp.com">hola@vendooapp.com</a></p>
+      <p><a href="mailto:hola@vendooapp.com">hola@vendooapp.com</a> &middot; <a class="sin-corte" href="https://wa.me/584123469712" target="_blank" rel="noopener">WhatsApp +58 412-346 9712</a></p>
     </div>
   </div>
 </footer>

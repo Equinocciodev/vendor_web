@@ -61,8 +61,10 @@ OBLIGATORIAS = ['index.html', 'contacto.html', 'terminos.html', 'privacidad.html
 ADEMAS = ['404.html', 'robots.txt', 'sitemap.xml', 'favicon.svg', 'site.webmanifest']
 
 # Los únicos dominios a los que el sitio puede ENLAZAR (nunca pedirles un
-# recurso). Uno solo, y con su razón: ahí está publicada la aplicación.
-ENLACES_EXTERNOS_PERMITIDOS = {'play.google.com'}
+# recurso). Dos, cada uno con su razón: en Play está publicada la aplicación
+# y wa.me es el WhatsApp de Vendoo (+58 412-346 9712, decisión del dueño del
+# 2-sep-2026), que va en la página de contacto y en el pie de las cinco.
+ENLACES_EXTERNOS_PERMITIDOS = {'play.google.com', 'wa.me'}
 
 # La analítica del sitio y los hosts que su SDK necesita en la CSP. Medido
 # contra Firebase 12.18.0; si se sube la versión, se vuelve a medir.

@@ -33,7 +33,7 @@ consumo**.
 ```
 .
 ├── index.html            Inicio: la portada de producto entera
-├── contacto.html         Formulario de demo, soporte, privacidad y datos  (#demo es el ancla del CTA)
+├── contacto.html         El formulario de demo, tres razones y los dos canales directos
 ├── terminos.html         Términos de servicio
 ├── privacidad.html       Política de privacidad
 ├── 404.html              Página no encontrada, con enlaces a todo
@@ -308,10 +308,21 @@ tokens del tema lo dejaría de hacer reconocible.
 
 ## El formulario de contacto
 
-Desde el **2-sep-2026** `contacto.html` abre con un formulario (nombre,
-empresa, correo, teléfono opcional, tamaño del equipo opcional, mensaje) en
-vez de una lista de correos. Encargo del dueño: *«Contacto es un formulario
-que manda un correo a hola@vendooapp.com»*.
+Desde el **2-sep-2026** `contacto.html` es **una sola pieza**: rótulo,
+titular, una frase, el formulario (nombre, empresa, correo, teléfono
+opcional, vendedores en la calle opcional, mensaje) en su tarjeta como
+centro, tres razones cortas al lado y los dos canales directos —correo y
+WhatsApp— a la vista. Dos encargos del dueño el mismo día: primero *«Contacto
+es un formulario que manda un correo a hola@vendooapp.com»*, y sobre la
+primera versión publicada, *«mucho texto, el formulario roto; quita los cards
+de Soporte, Privacidad, Descargar y Seguridad: no tienen lugar en la página de
+contacto; haz algo muy bonito que inspire al cliente»*. Por eso **no hay
+tarjetas de soporte, de descarga ni de política** en esa página: el correo del
+pie sirve para todo, y la política y los términos tienen su enlace en el pie.
+Sobre «roto»: la publicación lleva el HTML nuevo y `estilo.css` con
+`max-age=600`, así que durante hasta diez minutos un navegador con la hoja
+vieja en caché pinta los campos sin estilo. No es del código, pero conviene
+saberlo cuando se publica un cambio de CSS y HTML a la vez.
 
 **El sitio no tiene backend, así que hoy el envío es un `mailto:`.**
 `sitio.js` valida con HTML5 (`checkValidity` + `reportValidity`, o sea los
@@ -469,8 +480,9 @@ Desde el 2-sep-2026 el verificador los trata distinto, y la distinción importa:
   CSP y no delata a nadie hasta que se hace clic. Hace falta uno: el de Google
   Play.
 
-Sigue siendo **lista blanca** (`ENLACES_EXTERNOS_PERMITIDOS`, hoy sólo
-`play.google.com`), tiene que ser `https` y tiene que llevar `rel="noopener"`.
+Sigue siendo **lista blanca** (`ENLACES_EXTERNOS_PERMITIDOS`: `play.google.com`
+y, desde el 2-sep-2026, `wa.me` para el WhatsApp de Vendoo), tiene que ser
+`https` y tiene que llevar `rel="noopener"`.
 Cualquier otro dominio es un error, para que nadie meta un pixel de seguimiento
 disfrazado de enlace.
 
@@ -636,14 +648,17 @@ tema, que va en línea en el `<head>`.
 |---|---|---|
 | **Las seis capturas reales** de la aplicación | `assets/img/capturas/` | Dueño |
 | Teléfono y horario de atención públicos, si se quieren | `contacto.html` | Dueño |
-| Un canal de WhatsApp de soporte, si se quiere publicar | `contacto.html` | Dueño |
 | Revisión de abogado venezolano de las cláusulas 15 y 17 de los términos | `terminos.html` | Legal |
 
 Nada de eso se inventa: un correo que rebota o un número que no existe es peor
-que no poner ninguno. Hoy el único dato de contacto publicado es
-**hola@vendooapp.com**, y tiene que decir lo mismo en tres sitios: acá, en la
+que no poner ninguno. Los datos de contacto publicados son dos:
+**hola@vendooapp.com** —que tiene que decir lo mismo en tres sitios: acá, en la
 política de privacidad y en el `VENDOO_CORREO_PRIVACIDAD` con el que se compila
-la app. Si difieren, el vendedor lee uno y escribe al otro.
+la app; si difieren, el vendedor lee uno y escribe al otro— y el **WhatsApp
++58 412-346 9712** (`https://wa.me/584123469712`, dueño, 2-sep-2026), en la
+página de contacto y en el pie de las cinco páginas. El ícono de WhatsApp es
+**propio** (una burbuja con un auricular), no el logotipo: la misma regla del
+muro de ERP.
 
 Si en el futuro hace falta dejar un dato a la vista sin inventarlo, la clase
 `.pendiente` sigue en la hoja de estilo: pinta el marcador en punteado naranja.
