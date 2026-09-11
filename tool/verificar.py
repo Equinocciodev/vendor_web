@@ -30,8 +30,12 @@ chequeo *liviano* a propósito. Lo que comprueba:
      manifiesto sea JSON válido con íconos que existen; y
  11. que ningún título, descripción, Open Graph ni JSON-LD diga «app Android»
      o «aplicación Android» (regla del dueño, 2-sep-2026: es «la aplicación»;
-     Android queda sólo en `operatingSystem` del JSON-LD, en el botón de
-     descarga y en el «Android 7.0 o superior» del pie).
+     Android queda sólo en `operatingSystem` del JSON-LD, en los botones de
+     descarga y en el «Android 7.0 y iOS 15 o superior» del pie).
+     ⚠️ Esa regla se escribió PREVIENDO que iba a haber iOS, y el 11-sep-2026
+     lo hubo: desde ese día, además de fea, sería falsa. Se conserva tal cual y
+     NO se le agregó el espejo «app iOS», que nadie escribió nunca; el día que
+     alguien lo escriba, se agrega acá.
 
 ⚠️ LA ANALÍTICA ES LA ÚNICA EXCEPCIÓN A «NADA EXTERNO» (decisión del dueño,
 2-sep-2026). El <script> que ven estas comprobaciones es propio
@@ -47,8 +51,8 @@ fuente, una imagen de otro dominio) sigue siendo un error: lo carga el
 navegador, lo bloquearía la CSP y le contaría a un tercero quién visita el
 sitio. Un *enlace* externo es una navegación que el visitante decide, no la
 carga: no la toca la CSP y no delata a nadie hasta que se hace clic. La app
-está publicada en Google Play y el botón de descarga tiene que poder
-apuntar ahí. Por eso hay una lista blanca corta —y sigue siendo lista
+está publicada en Google Play y en App Store, y los dos botones de
+descarga tienen que poder apuntar ahí. Por eso hay una lista blanca corta —y sigue siendo lista
 blanca: cualquier otro dominio es un error, para que nadie meta un pixel de
 seguimiento disfrazado de enlace.
 
@@ -70,10 +74,20 @@ OBLIGATORIAS = ['index.html', 'contacto.html', 'terminos.html', 'privacidad.html
 ADEMAS = ['404.html', 'robots.txt', 'sitemap.xml', 'favicon.svg', 'site.webmanifest']
 
 # Los únicos dominios a los que el sitio puede ENLAZAR (nunca pedirles un
-# recurso). Dos, cada uno con su razón: en Play está publicada la aplicación
-# y wa.me es el WhatsApp de Vendoo (+58 412-346 9712, decisión del dueño del
-# 2-sep-2026), que va en la página de contacto y en el pie de las cinco.
-ENLACES_EXTERNOS_PERMITIDOS = {'play.google.com', 'wa.me'}
+# recurso). Tres, cada uno con su razón: en Play y en App Store está publicada
+# la aplicación —`apps.apple.com` entró el 11-sep-2026, el día en que Vendoo
+# dejó de ser sólo de Android— y wa.me es el WhatsApp de Vendoo
+# (+58 412-346 9712, decisión del dueño del 2-sep-2026), que va en la página de
+# contacto y en el pie de las cinco.
+#
+# ⚠️ Que un dominio esté acá NO dice que la página del otro lado exista: esto
+# es una lista blanca de a quién se PUEDE enlazar, no una comprobación de que
+# el enlace conteste. El verificador no sale a la red a propósito (corre igual
+# sin internet y en CI). Comprobar una ficha de tienda es a mano:
+#     curl -o /dev/null -w '%{http_code}' <la url>
+# Se hizo el 11-sep-2026: Play contestó 200 y App Store, 404 —la ficha estaba
+# creada pero sin publicar—. El enlace se puso igual, por decisión del dueño.
+ENLACES_EXTERNOS_PERMITIDOS = {'play.google.com', 'apps.apple.com', 'wa.me'}
 
 # La analítica del sitio y los hosts que su SDK necesita en la CSP. Medido
 # contra Firebase 12.18.0; si se sube la versión, se vuelve a medir.

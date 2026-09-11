@@ -1,7 +1,7 @@
 # vendoo_web
 
-Sitio público de **Vendoo**, la aplicación Android de fuerza de ventas de campo
-de **GUUAO LLC**. Cuatro páginas: inicio, contacto, términos de servicio y
+Sitio público de **Vendoo**, la aplicación de fuerza de ventas de campo de
+**GUUAO LLC**, para **Android y iPhone**. Cuatro páginas: inicio, contacto, términos de servicio y
 política de privacidad, más la de «no encontrado».
 
 **HTML, CSS y un poco de JavaScript. No hay framework, no hay build y no hay
@@ -14,11 +14,24 @@ es (todo desde el propio origen) y que cualquiera pueda corregir una coma de la
 política de privacidad sin instalar nada.
 
 **Qué vende esta página** (2-sep-2026): Vendoo es un **producto B2B** para
-fuerzas de venta de distribución. Está publicada en Google Play y cualquiera la
-descarga, pero sin una cuenta que entregue la empresa que la contrata no hace
-nada — la aplicación no permite registrarse. Ese matiz es el que hay que
-mantener en cualquier texto nuevo: **descargable, pero no es una app de
-consumo**.
+fuerzas de venta de distribución. Está publicada en Google Play y en App Store y
+cualquiera la descarga, pero sin una cuenta que entregue la empresa que la
+contrata no hace nada — la aplicación no permite registrarse. Ese matiz es el
+que hay que mantener en cualquier texto nuevo: **descargable, pero no es una app
+de consumo**.
+
+> ⚠️ **Vendoo dejó de ser sólo de Android el 11-sep-2026.** Hasta ese día era una
+> aplicación Android y el sitio estaba escrito así. Lo que lo salvó de una
+> reescritura fue una regla del 2-sep-2026 —«es *la aplicación*, nunca *la app
+> Android*», que `tool/verificar.py` hace cumplir— puesta justamente previendo
+> este día: el texto de venta ya hablaba en genérico y **no hubo que tocar una
+> sola frase del copy**. Lo que sí cambió: los botones de descarga son **dos**,
+> el pie dice los dos requisitos, el `operatingSystem` del JSON-LD nombra los dos
+> sistemas, la imagen social dice «Android y iOS» y **las dos páginas legales se
+> revisaron enteras**, porque ahí Android no era una palabra de venta sino la
+> descripción de un mecanismo (el Keystore, quién pide los permisos, por dónde
+> viaja un aviso). Si agregás texto nuevo, la regla sigue siendo la misma:
+> **nombrá un sistema operativo sólo cuando lo que decís dependa de cuál sea.**
 
 > ⚠️ **Vendoo no es la app de una sola empresa y el sitio no nombra a ninguna.**
 > Hasta el 2-sep-2026 el sitio decía que era «la aplicación interna de Grupo
@@ -270,42 +283,80 @@ Tres reglas heredadas de la app que **no** hay que "arreglar":
 
 ---
 
-## El botón de Google Play
+## Los dos botones de tienda
 
-La aplicación está publicada como `com.leiros.vendoo`. El botón sale en la
-portada, en la cabecera de las cinco páginas (versión compacta, «Descargar»),
-en contacto y en la imagen social. **Del pie salió el 2-sep-2026**, y el
-paquete `com.leiros.vendoo` y el «Android 7.0 o superior» **se nombran sólo
-donde identifican la app legalmente**: la ficha de arriba de `privacidad.html`
-y de `terminos.html`, más «Android 7.0 o superior» una sola vez en el pie de
-la portada. En ningún otro texto de venta (decisión del dueño, 2-sep-2026).
+La aplicación está publicada como `com.leiros.vendoo` en las dos tiendas, y
+desde el **11-sep-2026** la portada lleva **un botón por tienda**, del mismo
+tamaño y con el mismo tratamiento: no hay una principal y una de relleno.
 
-### El botón de App Store, que no es un botón
+| Tienda | Dónde está la URL | Sale en |
+|---|---|---|
+| Google Play | repetida en varias páginas (viene de antes) | portada, cabecera de las cinco, JSON-LD |
+| App Store (Apple ID **6811065669**) | **`index.html`, y en ningún otro sitio** | sólo la portada |
 
-Al lado del de Google Play, **sólo en la portada**, hay un segundo botón del
-mismo tamaño que dice «iOS · próximamente / App Store» (`.boton--pronto`). Es
-un `<span aria-disabled="true">`, no un enlace: no recibe foco, no hace nada y
-no promete fecha. **Sin logotipo de Apple**, por la misma regla del muro de
-ERP: el sitio no usa logos de terceros, y el ícono es nuestro. El día que la
-app de iOS exista, se convierte en `<a>` con su enlace y se le quita
-`boton--pronto`; el `.play__texto` ya está.
+⚠️ **La URL de Apple vive en UN solo sitio del marcado, a propósito**, y hay un
+comentario grande al lado que lo dice. Un identificador de tienda copiado en
+tres plantillas es el que se queda viejo. Por eso la fila «Descarga» de
+`privacidad.html` y de `terminos.html` **no repite ninguna URL**: nombra las dos
+tiendas y manda a `/#descargar`, que es el bloque de botones de la portada.
 
-**Está dibujado en SVG en línea**, con el triángulo de Play en sus cuatro
-colores. No se descarga el badge oficial de Google, y ésa es la razón: fuera
-de la analítica de visitas, el sitio no le pide **un solo byte** a un tercero,
-ni siquiera una imagen — es lo que mantiene la política de seguridad de
-contenido corta y lo que evita abrir un host más por una imagen.
+⚠️ **Y hay algo medido que conviene no perder.** El 11-sep-2026, el día en que
+se puso el enlace, la ficha de App Store **todavía contestaba 404**:
 
-> **Si Legal prefiere el badge oficial de Google**, se puede cambiar: hay que
-> descargar el PNG/SVG oficial desde el *Google Play Badge Generator*, dejarlo
-> en `assets/img/`, respetar sus normas de marca (proporciones, área de
-> resguardo, no re-teñirlo) y reemplazar el `<a class="boton boton--play">` de
-> las cinco páginas. **Seguiría siendo un recurso propio**, servido desde
-> nuestro origen, así que `tool/verificar.py` no se queja.
+```bash
+curl -o /dev/null -w '%{http_code}\n' https://apps.apple.com/app/id6811065669
+curl -s 'https://itunes.apple.com/lookup?id=6811065669'   # -> resultCount: 0
+```
+
+O sea: el registro existe en App Store Connect —de ahí sale el Apple ID— pero
+no había pasado revisión. **El enlace se puso igual, por decisión del dueño**
+(«en un día lo montamos público»). Si el sitio se publica antes que la ficha,
+ese botón lleva a un 404 durante esa ventana. Vale la pena volver a correr esos
+dos comandos antes de dar por buena una publicación.
+
+`tool/verificar.py` **no comprueba que un enlace conteste** y no va a hacerlo:
+no sale a la red a propósito, para correr igual sin internet y en CI. Lo único
+que sabe es que `apps.apple.com` está en su lista blanca de dominios
+enlazables, que es otra cosa.
+
+**Del pie salió el botón el 2-sep-2026**, y el paquete `com.leiros.vendoo` y los
+requisitos de sistema **se nombran sólo donde identifican la app legalmente**:
+la ficha de arriba de `privacidad.html` y de `terminos.html`, más «Android 7.0 y
+iOS 15 o superior» una sola vez en el pie de la portada. En ningún otro texto de
+venta (decisión del dueño, 2-sep-2026).
+
+### Ni un logotipo de tienda, y por qué no se usan los badges oficiales
+
+Los dos botones están **dibujados acá**: el triángulo de Play en sus cuatro
+colores y, para Apple, **un ícono nuestro** —del mismo juego monoline que el
+resto del sitio— en vez del logotipo de la manzana. Son tres razones, y las tres
+siguen valiendo ahora que las dos tiendas están vivas:
+
+1. **El sitio no le pide un solo byte a un tercero** (salvo la analítica). Un
+   badge oficial es una imagen que hay que descargar de su servidor o versionar
+   acá; lo primero abre un host en la CSP y le cuenta a un tercero quién visita
+   la página.
+2. **Los badges tienen guía de marca** —proporciones, zona de respeto, prohibido
+   re-teñirlos— y en un sitio con seis presets de tema y modo oscuro eso se
+   incumple solo.
+3. **Un logotipo dibujado de memoria es un logotipo falso**, que es peor que
+   ninguno. Es la misma regla del muro de ERP.
+
+> **Si Legal prefiere los badges oficiales**, se pueden poner: hay que
+> descargarlos de los generadores de cada tienda, dejarlos en `assets/img/`,
+> respetar sus normas y reemplazar los dos `<a class="boton boton--play">` de la
+> portada. **Seguirían siendo recursos propios**, servidos desde nuestro origen,
+> así que `tool/verificar.py` no se queja.
 
 Los cuatro colores del triángulo (`#00A0FF`, `#00E676`, `#FFCE00`, `#FF3A44`)
 son **lo único del sitio que no sale del preset «vendoo»**: re-teñirlos con los
-tokens del tema lo dejaría de hacer reconocible.
+tokens del tema lo dejaría de hacer reconocible. El botón de Apple no tiene
+ninguno: su ícono es `currentColor`, como el resto de los nuestros.
+
+⚠️ La clase `.boton--pronto` —el botón hueco de borde punteado que decía
+«próximamente»— **quedó sin usar** el día que App Store pasó a ser un enlace. Se
+conserva en la hoja de estilo, como `.pendiente`, porque es el patrón ya resuelto
+para una tienda que todavía no se puede enlazar. Está anotado ahí.
 
 ---
 
@@ -379,6 +430,17 @@ pantalla del teléfono de la imagen social.
 280 a 360 px: mandar la maestra de 1080 a un teléfono de 2× era servir cuatro
 veces los bytes que se ven. Medido: el WebP de 360 pesa entre 13 y 24 KB
 contra 200–285 KB de la maestra.
+
+⚠️ **Las seis capturas son de un teléfono Android, y desde el 11-sep-2026 eso
+es una decisión y no un descuido.** La aplicación es la misma en los dos
+sistemas —mismos íconos, misma tipografía, mismas pantallas: está decidido así
+en `../vendoo_app/CLAUDE.md`, «los mismos iconos para ambas plataformas»—, así
+que una segunda tanda desde un iPhone mostraría lo mismo con otra barra de
+estado, a cambio de doblar el peso de la sección y de obligar a mantener doce
+imágenes sincronizadas. **Lo que no se hace es inventarlas**: una captura de
+iPhone tiene que salir de un iPhone. El día que haya una razón para mostrarlas
+—una pantalla que de verdad se vea distinta—, van con las mismas reglas de
+`assets/img/capturas/README.md`.
 
 ⚠️ **Cambiar una captura son dos pasos, no uno**: dejar el PNG nuevo con el
 mismo nombre y la misma medida, y correr `python3 tool/imagenes.py`, que
@@ -603,12 +665,16 @@ Lo que hay puesto, para no repetirlo ni olvidarlo:
   fuerza de ventas de campo», y las dos legales con «Vendoo, app de fuerza de
   ventas de campo» detrás del nombre del documento.
 - ⚠️ **«La aplicación», nunca «la app Android»** (regla del dueño,
-  2-sep-2026: pronto habrá iOS). Vale para títulos, descripciones, Open
-  Graph, JSON-LD y el copy. Android queda en tres sitios: `operatingSystem`
-  del JSON-LD (dato técnico), el botón de descarga y el «Android 7.0 o
-  superior» del pie de la portada y de la ficha de las legales.
-  `tool/verificar.py` se pone rojo si la cabeza de una página dice «app
-  Android» o «aplicación Android».
+  2-sep-2026: pronto habrá iOS). **Llegó el 11-sep-2026, y la regla se pagó
+  sola**: el copy no dijo «Android» en ninguna parte, así que el día que la
+  aplicación dejó de ser sólo Android no hubo que reescribir ni un título ni
+  una descripción. Vale para títulos, descripciones, Open Graph, JSON-LD y el
+  copy. Los sistemas operativos se nombran en tres sitios: `operatingSystem`
+  del JSON-LD (dato técnico, hoy `Android 7.0+, iOS 15.0+`), los botones de
+  descarga y el «Android 7.0 y iOS 15 o superior» del pie de la portada y de
+  la ficha de las legales. `tool/verificar.py` se pone rojo si la cabeza de
+  una página dice «app Android» o «aplicación Android»; el espejo «app iOS»
+  no está en el chequeo porque nadie lo escribió nunca.
 - `<meta name="referrer" content="strict-origin-when-cross-origin">`: es la
   única cabecera de seguridad que se puede poner **desde el HTML**, y por eso
   está. Las demás van en Cloudflare (abajo).
@@ -676,9 +742,19 @@ python3 -m http.server 8000
 El molde usa el logotipo dibujado (no un texto tecleado con Poppins), la
 misma fuente autohospedada del sitio y, desde el 2-sep-2026, **un teléfono
 con la captura real del Inicio** (`assets/img/capturas/inicio.png`) a la
-derecha. Ni un logotipo ajeno: el triángulo de Play va dibujado. Si cambia el
-claim de la portada o esa captura, regenerala: son lo primero que la gente ve
-antes de entrar. `tool/verificar.py` comprueba que mida 1200 × 630.
+derecha. **Ni un logotipo ajeno**, y desde el 11-sep-2026 ni uno dibujado: la
+primera chapa decía «Google Play» con su triángulo y hoy dice **«Android y
+iOS»**, porque nombrar una sola tienda pasó a ser media verdad.
+
+⚠️ **Las chapas entran en UN renglón y nadie avisa si dejan de entrar.** `.pie`
+lleva `flex-wrap`, así que una palabra de más no desborda: envuelve, el bloque
+sube y el titular se descoloca. Medido el 11-sep-2026 en el molde: «Google Play
+y App Store» y «Android y iPhone» **parten el renglón**; «Android y iOS» entra
+justo y deja la composición idéntica a la anterior. Si tocás una chapa,
+regenerá la imagen **y mirala**.
+
+Si cambia el claim de la portada o esa captura, regenerala: son lo primero que
+la gente ve antes de entrar. `tool/verificar.py` comprueba que mida 1200 × 630.
 
 ---
 
@@ -819,6 +895,19 @@ tema, que va en línea en el `<head>`.
 | Las reglas de Cloudflare de arriba (HSTS, cabeceras, caché) | panel de Cloudflare | Dueño |
 | Teléfono y horario de atención públicos, si se quieren | `contacto.html` | Dueño |
 | Revisión de abogado venezolano de las cláusulas 15 y 17 de los términos | `terminos.html` | Legal |
+| Que la ficha de App Store conteste 200 antes de publicar el sitio (el 11-sep-2026 daba 404) | App Store Connect | Dueño |
+| El botón compacto de la cabecera lleva **sólo a Google Play** en las cinco páginas: quien entre desde un iPhone aterriza en la tienda equivocada | `index.html` y las otras cuatro cabeceras | Dueño (es una decisión de diseño, abajo) |
+| `downloadUrl` / `offers` del JSON-LD nombran una sola tienda (admiten un destino) | `index.html` | Dueño |
+
+⚠️ **Sobre el botón compacto de la cabecera.** Es un botón de Google Play
+declarado —lleva el triángulo y la palabra «Descargar»— y vive en la cabecera de
+las cinco páginas, donde dos botones no entran. Las dos salidas son cambiarlo por
+un ícono neutro que lleve a `/#descargar` (cambia el peso visual de cinco
+cabeceras) o dejarlo (quien entra desde un iPhone toca «Descargar» y aterriza en
+Play). **Se dejó como estaba el 11-sep-2026**, porque elegir la primera es
+rediseñar la cabecera y eso no era el encargo; el par de botones de la portada,
+donde las dos tiendas están en igualdad, queda a un scroll. Si el dueño prefiere
+lo otro, es un cambio chico y acotado.
 
 Nada de eso se inventa: un correo que rebota o un número que no existe es peor
 que no poner ninguno. Los datos de contacto publicados son dos:
@@ -852,6 +941,26 @@ domicilio.
   El plazo de conservación del recorrido **no se inventó**: la tarea de
   depuración existe con 90 días como valor de referencia, viene apagada de
   fábrica y hoy no está encendida, y el texto lo dice así.
+
+  ⚠️ **La segunda revisión grande fue el 11-sep-2026, por iOS**, y ahí Android
+  no era una palabra de venta: era la descripción de un mecanismo. Cambiaron
+  siete cláusulas, **cada una con su propia «Nota de cambio» fechada**, más una
+  nota general al pie de la cláusula 1 que las enumera. Lo que cambió de verdad,
+  y lo que no:
+
+  | Cláusula | Qué pasó |
+  |---|---|
+  | 1 | Se distribuye por las dos tiendas; los permisos los pide «el sistema operativo», no Android. De paso se quitó «acceso a fotografías» de la lista: **ninguna** de las dos versiones pide ese permiso. |
+  | 2.e | Una solicitud de pago admite **hasta tres fotografías adicionales** (novedad del 11-sep, no de iOS). |
+  | 2.g | *Android Keystore* → «el *Keystore* en Android, el *Llavero* en el iPhone». |
+  | 2.i | 🔴 **La que de verdad importaba.** Decía que la aplicación usa ML Kit y que esa biblioteca le manda datos técnicos a Google. **En el iPhone es falso**: lee con *Vision*, de Apple, dentro del aparato y sin enviar nada. La cláusula se partió en dos. |
+  | 2.j | En el iPhone el aviso pasa **además por Apple** (APNs) — una transferencia internacional nueva, que hay que declarar—, y el nombre de plataforma que viaja en el registro ya no es siempre `android`. |
+  | 4 | La copia en la nube nombra iCloud; se agregó APNs como proveedor; y el mapa **ya no se dibuja en una sola pantalla** (eso venía del 6-sep y estaba sin corregir). |
+  | 5 | «Al desinstalar, Android elimina…» → una frase que vale en los dos. |
+
+  **Nada de esto se dedujo del sitio**: cada afirmación se verificó contra
+  `../vendoo_app` antes de escribirla. Lo que no se pudo verificar **no se
+  escribió**, y está en el reporte del cambio.
 
 - **`terminos.html`** se redactó para este sitio, sobre el comportamiento real
   de la app. Las cláusulas **15** (responsabilidad) y **17** (ley aplicable y

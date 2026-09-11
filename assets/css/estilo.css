@@ -1239,8 +1239,14 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
 .tarjeta--centro { text-align: center; }
 .tarjeta--centro .icono { margin-inline: auto; }
 
-/* --- App Store: «próximamente» ------------------------------------------ */
-/* Mismo tamaño que el de Google Play para que los dos se lean como pareja,
+/* --- «Próximamente»: una tienda que todavía no está --------------------- */
+/* ⚠️ HOY NO LA USA NINGUNA PÁGINA, igual que `.pendiente`, y se conserva por
+   lo mismo: es el patrón resuelto para un botón de tienda que no se puede
+   enlazar todavía. La usó el botón de App Store desde el 2-sep-2026 hasta el
+   11-sep-2026, el día en que Vendoo se publicó también para iPhone y ese
+   botón pasó a ser un <a> con su enlace, como el de Play.
+
+   Mismo tamaño que el de Google Play para que los dos se lean como pareja,
    pero hueco y con borde punteado: dice «todavía no» sin parecer roto. Es un
    <span aria-disabled>, no un enlace, así que no hay foco ni hover. Sin
    opacidad: el texto sigue pasando AA (`--tinta-suave`, 7,37:1). */

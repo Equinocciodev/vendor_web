@@ -94,14 +94,25 @@
       <p>Ruta, pedidos con impuestos, cobranza y evidencia de cada visita. Funciona sin señal.</p>
     </div>
     <div class="pie">
+      <!-- ⚠️ La primera chapa decía «Google Play», con el triángulo dibujado.
+           Cambió el 11-sep-2026: ese día Vendoo se publicó también para
+           iPhone y nombrar una sola tienda pasó a ser media verdad.
+
+           Dice las dos PLATAFORMAS y no las dos tiendas por sitio: `.pie`
+           lleva `flex-wrap`, así que una chapa de más no desborda —envuelve—,
+           y con las chapas en dos filas el bloque entero sube y el titular se
+           descoloca. Medido ese día en el molde: «Google Play y App Store» y
+           «Android y iPhone» las dos parten el renglón; «Android y iOS» entra
+           justo y deja la composición igual que estaba. Si le agregás una
+           palabra, volvé a generar la imagen y mirala: no hay aviso.
+
+           De paso se va el único dibujo de una marca ajena que quedaba en la
+           imagen social, que es la regla del resto del sitio. -->
       <span class="chip chip--play">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M1.3 1.2C1.1 1.4 1 1.7 1 2.1v19.8c0 .4.1.7.3.9l.1.1L12.4 12v-.2L1.3 1.2z" fill="#00A0FF"/>
-          <path d="M16.1 15.7l-3.7-3.7v-.2l3.7-3.7.1.1 4.4 2.5c1.2.7 1.2 1.8 0 2.5l-4.4 2.5z" fill="#FFCE00"/>
-          <path d="M16.2 15.6L12.4 11.8 1.3 22.9c.4.4 1.1.5 1.8.1l13.1-7.4" fill="#FF3A44"/>
-          <path d="M16.2 8.4L3.1 1c-.7-.4-1.4-.4-1.8.1l11.1 11.1 3.8-3.8z" fill="#00E676"/>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18.5h2"/>
         </svg>
-        Google Play
+        Android y iOS
       </span>
       <span class="chip">Sin señal</span>
       <span class="chip">Multiempresa</span>

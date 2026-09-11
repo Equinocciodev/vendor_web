@@ -109,6 +109,14 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
   ]
 }
 </script>
+<!-- ⚠️ `softwareVersion` y `operatingSystem` son los dos campos de este
+     bloque que envejecen solos: tienen que seguir a
+     `../vendoo_app/pubspec.yaml` y a las plataformas que la aplicación
+     soporta de verdad. `offers` y `downloadUrl`, en cambio, hablan de
+     DÓNDE se obtiene, y admiten un solo destino: queda Google Play, que es
+     de donde salen los teléfonos de hoy. La ficha de App Store se enlaza
+     desde el botón de la portada, que es el único sitio del marcado donde
+     vive esa URL. -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -132,8 +140,8 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
   ],
   "applicationCategory": "BusinessApplication",
   "applicationSubCategory": "Sales Force Automation",
-  "operatingSystem": "Android 7.0+",
-  "softwareVersion": "5.0.0",
+  "operatingSystem": "Android 7.0+, iOS 15.0+",
+  "softwareVersion": "5.2.0",
   "inLanguage": "es",
   "isAccessibleForFree": true,
   "image": "https://vendooapp.com/assets/img/og.png",
@@ -212,14 +220,22 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
 <section class="portada">
   <div class="envoltura portada__reja">
     <div>
+      <!-- La cuarta chapa entró el 11-sep-2026, el día en que Vendoo dejó de
+           ser sólo de Android. Dice en qué CORRE —un hecho del producto—;
+           DÓNDE SE BAJA lo dicen los dos botones de acá abajo, que es otra
+           cosa. Dice «iPhone» y no «iOS» porque es la palabra que usa el
+           vendedor; el pie, que da el requisito técnico, dice «iOS 15». -->
       <ul class="chips">
         <li><span class="chip chip--acento"><span class="chip__punto"></span>Funciona sin señal</span></li>
         <li><span class="chip">Integración nativa con Odoo</span></li>
         <li><span class="chip">Se conecta con tu ERP</span></li>
+        <li><span class="chip">Android y iPhone</span></li>
       </ul>
       <h1>Los pedidos de la calle, <em>en tu ERP el mismo día</em>.</h1>
       <p class="entrada">La aplicación con la que tu fuerza de ventas arma su ruta, levanta el pedido, cobra y deja evidencia de cada visita. Con señal o sin ella.</p>
-      <div class="botones">
+      <!-- `id="descargar"`: es a donde apuntan las dos páginas legales, para
+           no repetir en tres plantillas la URL de cada tienda. -->
+      <div class="botones" id="descargar">
         <a class="boton boton--lleno" href="/contacto.html#demo">Quiero ver Vendoo</a>
         <!-- BOTÓN DE DESCARGA. Dibujado acá; el sitio no pide un byte a
              Google. Se puede cambiar por el badge oficial si Legal lo
@@ -233,14 +249,32 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
       </svg>
       <span class="play__texto"><small>Disponible en</small><b>Google Play</b></span>
     </a>
-        <!-- APP STORE: la versión iOS todavía no existe. El botón NO es un
-             enlace y no recibe foco a propósito: dice «próximamente» y nada
-             más. Sin logotipo de Apple —el sitio no usa logos de terceros—:
-             el ícono es nuestro. Sale SÓLO acá, en la portada. -->
-        <span class="boton boton--play boton--pronto" aria-disabled="true">
+        <!-- APP STORE. Desde el 11-sep-2026 Vendoo existe también para
+             iPhone: compila, tiene sus avisos por APNs y su manifiesto de
+             privacidad de Apple. El bundle es el mismo de Android
+             (`com.leiros.vendoo`) y el Apple ID de la ficha es 6811065669.
+
+             🔴 ÉSTA ES LA ÚNICA VEZ QUE LA URL DE APPLE APARECE EN EL SITIO.
+             Las dos páginas legales no la repiten: su fila «Descarga» manda
+             acá con `/#descargar`. Un identificador de tienda copiado en tres
+             plantillas es el que se queda viejo. Si hay que cambiarlo, se
+             cambia acá y en ningún otro lado.
+
+             ⚠️ Medido el 11-sep-2026, y conviene que quede escrito: ese día la
+             ficha todavía contestaba 404 (`itunes.apple.com/lookup?id=…`
+             devolvía `resultCount: 0`, y una app publicada de control devolvía
+             1). El enlace se puso igual, por decisión del dueño —«en un día lo
+             montamos público»—. Si el sitio se publica antes que la ficha, este
+             botón lleva a un 404 durante esa ventana. Se comprueba con:
+               curl -o /dev/null -w '%{http_code}' https://apps.apple.com/app/id6811065669
+
+             Sin logotipo de Apple —el sitio no usa logos de terceros, ni le
+             pide un byte a nadie—: el ícono es nuestro, del mismo juego que el
+             resto. Como el de Play, sale SÓLO acá, en la portada. -->
+        <a class="boton boton--play" href="https://apps.apple.com/app/id6811065669" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M12 7.5v8M8.8 12.3l3.2 3.2 3.2-3.2"/></svg>
-          <span class="play__texto"><small>iOS &middot; próximamente</small><b>App Store</b></span>
-        </span>
+          <span class="play__texto"><small>Disponible en</small><b>App Store</b></span>
+        </a>
       </div>
       <p class="apoyo">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
@@ -1066,7 +1100,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
     </div>
     <div class="pie__base">
       <p>&copy; 2026 GUUAO LLC.</p>
-      <p>Android 7.0 o superior</p>
+      <p>Android 7.0 y iOS 15 o superior</p>
       <p><a href="mailto:hola@vendooapp.com">hola@vendooapp.com</a> &middot; <a class="sin-corte" href="https://wa.me/584123469712" target="_blank" rel="noopener">WhatsApp +58 412-346 9712</a></p>
     </div>
   </div>
