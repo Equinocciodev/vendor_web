@@ -464,10 +464,13 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
 @media (min-width: 620px) { .ficha dd { margin-bottom: 4px; } }
 
 /* Marcador de dato que todavía falta. Se ve, a propósito.
-   ⚠️ Desde el 2-sep-2026 NINGUNA página lo usa: los correos y la razón
-   social se completaron y los documentos legales dejaron de ser borradores.
-   La regla se conserva para el próximo dato que haya que dejar a la vista
-   sin inventarlo — que es la política de este sitio.
+   ⚠️ ESTE COMENTARIO DECÍA «desde el 2-sep-2026 NINGUNA página lo usa» y dejó
+   de ser cierto el 12-sep-2026. La regla se había conservado «para el próximo
+   dato que haya que dejar a la vista sin inventarlo — que es la política de
+   este sitio», y ese dato llegó: la **dirección legal de GUUAO LLC** en
+   `contacto.html#soporte`, que Apple exige en la Support URL de la ficha de
+   App Store y que no está escrita en ningún sitio de este repositorio ni del
+   de la aplicación. Ahí es donde se usa hoy, y en ningún otro lado.
    Va en `display: inline` y NO en `inline-block`, y no lleva `nowrap`: un
    marcador largo como el de la jurisdicción mide más de 500 px y, sin poder
    partirse, arrastraba la página entera a un desplazamiento horizontal en

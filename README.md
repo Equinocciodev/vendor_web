@@ -2,7 +2,10 @@
 
 Sitio público de **Vendoo**, la aplicación de fuerza de ventas de campo de
 **GUUAO LLC**, para **Android y iPhone**. Cuatro páginas: inicio, contacto, términos de servicio y
-política de privacidad, más la de «no encontrado».
+política de privacidad, más la de «no encontrado». Desde el 12-sep-2026 hay un
+archivo HTML más, `soporte.html`, que **no es una página**: es un desvío de
+veinte líneas a `contacto.html#soporte` y está explicado abajo, en «La página de
+soporte».
 
 **HTML, CSS y un poco de JavaScript. No hay framework, no hay build y no hay
 dependencias**: ni npm, ni un generador de sitios, ni un CDN —con una sola
@@ -489,6 +492,85 @@ ni un enlace. Si el servicio falla —red, 4xx, 5xx—, el estado del formulario
 manda al correo, que sigue a la vista: **nunca se pierde un mensaje sin
 decirlo.**
 
+## La página de soporte
+
+⚠️ **Hasta el 11-sep-2026 `contacto.html` era una página de venta y nada más**,
+y su propio comentario lo decía: «nada de política, descarga ni soporte acá».
+Eso dejó de valer el **12-sep-2026** por decisión del dueño:
+`https://vendooapp.com/contacto.html` es la **Support URL** de la ficha de App
+Store, y la guía de revisión de Apple pide que esa página traiga, textual,
+*«legal address, email address, telephone number»*. Un correo y un WhatsApp
+sueltos al costado de un formulario de demo no alcanzan.
+
+La regla vieja **no se borró**, se reemplazó dejando el rastro —qué decía, quién
+lo cambió, cuándo y qué implica—, que es como este repositorio documentó antes
+la vuelta de los dos badges y el día que Vendoo dejó de ser sólo de Android.
+
+**El soporte va DEBAJO del formulario, y el orden es la decisión.** Lo que el
+dueño mandó sacar en septiembre eran cuatro tarjetas —Soporte, Privacidad,
+Descargar, Seguridad— compitiendo con el formulario **antes** de que se viera;
+el bloque `#soporte` va después, para el que lo viene a buscar, y no le roba el
+primer pliegue a la demo. Descarga y política siguen sin tarjeta propia: viven
+en la cabecera y en el pie, como desde el 2-sep.
+
+Qué tiene, y de dónde salió cada dato:
+
+| Dato | De dónde | Nota |
+|---|---|---|
+| Correo | `hola@vendooapp.com`, en el pie de las cinco páginas desde el 2-sep-2026 | El mismo de la política y del `VENDOO_CORREO_PRIVACIDAD` de la app |
+| Teléfono | `+58 412-346 9712`, decisión del dueño del 2-sep-2026 | Va con `tel:` **y** con `wa.me`: es el mismo número dicho dos veces |
+| Razón social | **GUUAO LLC**, titular de las dos legales | |
+| **Dirección legal** | 🔴 **no existe** | Sale con `.pendiente`, a la vista. Ver abajo |
+| Aplicación, tienda, documentos | los mismos que la ficha de `privacidad.html` | Si cambian, cambian en los dos |
+
+🔴 **La dirección legal NO se inventó, y no se puede inventar.** Se buscó en
+este repositorio —páginas, README, historia de git— y en el de la aplicación:
+no está escrita en ninguna parte. En `vendoo_app/play/` figura desde agosto de
+2026 como el marcador literal «domicilio fiscal completo», pendiente de
+Legal/Administración, y los dos documentos legales de este sitio dicen desde el
+2-sep-2026 que **no se publica ningún domicilio**. Por eso el `<dd>` lleva el
+marcador `.pendiente` —punteado naranja, imposible de no ver— en vez de una
+dirección plausible: **un domicilio falso de una empresa real es peor que no
+publicar ninguno**, y le da a un revisor de Apple algo concreto que verificar y
+que no va a cuadrar. Por lo mismo, el JSON-LD de esa página **no lleva
+`address`**: ahí el dato lo lee una máquina y un marcador no se puede escribir.
+Cuando el dueño lo entregue, entra en los dos sitios a la vez.
+
+**Los blancos táctiles.** El correo, el teléfono y el WhatsApp van además como
+tres píldoras `.via` de **44 px de alto** arriba del `<dl>`, que es la pieza que
+la página ya usaba para los canales directos. Medido a 390 px: las tres se
+apilan, la más ancha mide 277 px y `scrollWidth` sigue siendo 390 — la página no
+desborda por ningún lado.
+
+### `/soporte.html` es un desvío, no una segunda página
+
+`/soporte.html` **no existía y contestaba 404**. Es la dirección que cualquiera
+adivina —un revisor, un vendedor al que le dictaron la URL por teléfono, un
+borrador viejo de la ficha—, así que ahora existe. Lo que hay que saber:
+
+- **No había un solo enlace roto que arreglar.** Se barrió el sitio entero y el
+  repositorio de la aplicación: nadie apunta a `/soporte.html` (de este sitio,
+  la app sólo enlaza `privacidad.html` y `terminos.html`). Esto es un seguro, no
+  la reparación de un enlace.
+- **Por eso es un desvío y no una página de soporte de verdad**: dos páginas de
+  soporte se contradicen en el primer dato que alguien corrija en una sola.
+- **Es un `meta refresh` a cero segundos** con la canónica apuntando al destino,
+  porque GitHub Pages no sabe hacer una 301: lo único que puede servir es un
+  archivo. El día que se apliquen las reglas de Cloudflare que están en «Lo que
+  falta», la 301 de verdad va ahí y este archivo se puede borrar.
+- **Fuera del `sitemap.xml` y con `noindex`**, más su `Disallow` en
+  `robots.txt`, por lo mismo que `404.html`: no es contenido y no compite con la
+  página de verdad. Lleva la analítica como las cinco páginas —el verificador la
+  exige en todas—, y de paso cuenta si alguien llega por ahí: si en seis meses
+  no entró nadie, se borra.
+- **No se dejó caer en el 404** a propósito: el 404 le dice al visitante que se
+  equivocó, y acá no se equivocó — la página que buscaba existe, con otro nombre.
+
+Y en el pie de las cinco páginas hay ahora un enlace **«Soporte»** a
+`/contacto.html#soporte`, entre «Contacto» y «Solicitar una demo»: es lo que
+hace que el soporte se encuentre desde cualquier página sin agregar un séptimo
+renglón al menú de la cabecera, que a 390 px ya se desplaza de lado.
+
 ## Las capturas de la aplicación
 
 La sección «Pantalla por pantalla» (`index.html`, `#pantallas`) muestra seis
@@ -973,7 +1055,8 @@ tema, que va en línea en el `<head>`.
 | Qué | Dónde | Quién |
 |---|---|---|
 | Las reglas de Cloudflare de arriba (HSTS, cabeceras, caché) | panel de Cloudflare | Dueño |
-| Teléfono y horario de atención públicos, si se quieren | `contacto.html` | Dueño |
+| 🔴 **La dirección legal de GUUAO LLC.** Apple la exige en la Support URL y hoy sale con el marcador `.pendiente`, a la vista en la página | `contacto.html` (#soporte y el JSON-LD de su cabeza) | Dueño / Legal |
+| Horario de atención público, si se quiere | `contacto.html` | Dueño |
 | Revisión de abogado venezolano de las cláusulas 15 y 17 de los términos | `terminos.html` | Legal |
 | Que la ficha de App Store conteste 200 antes de publicar el sitio (el 11-sep-2026 daba 404) | App Store Connect | Dueño |
 | `downloadUrl` / `offers` del JSON-LD nombran una sola tienda (admiten un destino) | `index.html` | Dueño |
@@ -994,9 +1077,18 @@ página de contacto y en el pie de las cinco páginas. El ícono de WhatsApp es
 **propio** (una burbuja con un auricular), no el logotipo: la misma regla del
 muro de ERP.
 
+⚠️ **Ese número es además, desde el 12-sep-2026, el TELÉFONO** (`tel:`) del
+bloque de soporte. Es el mismo número dicho dos veces, no dos datos: Apple pide
+un teléfono en la Support URL, y un número que sólo se puede escribir por un
+mensajero no es lo que ese campo promete. Si alguna vez son dos números
+distintos hay que separarlos en tres sitios: `#soporte`, el pie de las cinco
+páginas y el JSON-LD de la cabeza de `contacto.html`.
+
 Si en el futuro hace falta dejar un dato a la vista sin inventarlo, la clase
 `.pendiente` sigue en la hoja de estilo: pinta el marcador en punteado naranja.
-**Hoy no la usa ninguna página.**
+⚠️ **Este renglón decía «hoy no la usa ninguna página» y dejó de ser cierto el
+12-sep-2026**: la usa la «Dirección legal» de `contacto.html#soporte`, que es
+justamente el caso para el que se conservó.
 
 ---
 

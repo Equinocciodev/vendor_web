@@ -357,8 +357,13 @@ def main() -> int:
         # La analítica: en todas las páginas, y con sus hosts en la CSP.
         carga_analitica = any(h == ANALITICA for h, _ in lector.recursos)
         if not carga_analitica:
+            # ⚠️ «las cinco páginas» es la frase de siempre y se conserva, pero
+            # esto recorre TODOS los *.html: desde el 12-sep-2026 son seis, y
+            # el sexto —soporte.html— es un desvío a contacto.html#soporte, no
+            # una página. Lleva la analítica igual, y así de paso cuenta si
+            # alguien llega por esa dirección.
             error(nombre, f'no carga {ANALITICA}: la analítica va en las cinco páginas '
-                          'o en ninguna (ver el README).')
+                          '—y en el desvío de soporte.html— o en ninguna (ver el README).')
         else:
             directivas = {}
             for trozo in lector.csp.split(';'):

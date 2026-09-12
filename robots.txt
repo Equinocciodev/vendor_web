@@ -1,8 +1,11 @@
 # Vendoo — https://vendooapp.com
 # Sitio público de producto. Se indexa entero: son cuatro páginas y ninguna
-# tiene datos de nadie. La única que se deja fuera es la de «no encontrado».
+# tiene datos de nadie. Las dos que se dejan fuera no son páginas: la de «no
+# encontrado» y, desde el 12-sep-2026, /soporte.html, que es un desvío a
+# /contacto.html#soporte y no tiene contenido propio (ver ese archivo).
 User-agent: *
 Allow: /
 Disallow: /404.html
+Disallow: /soporte.html
 
 Sitemap: https://vendooapp.com/sitemap.xml

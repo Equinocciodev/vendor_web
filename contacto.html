@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sBSmF0cvqwH9q89LN1kE6J363Sy1ybqC0YQqLHqJ1RI=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pedí una demo de Vendoo — app de fuerza de ventas de campo</title>
-<meta name="description" content="Contanos cómo vende hoy tu equipo de campo o de preventa y te mostramos Vendoo funcionando con tus datos. Correo y WhatsApp a la vista; respondemos en menos de un día hábil.">
+<title>Contacto y soporte de Vendoo — correo, teléfono y demo</title>
+<meta name="description" content="Soporte de Vendoo: el correo, el teléfono y el WhatsApp de GUUAO LLC, y el formulario para pedir una demo con tus datos. Te contesta una persona en menos de un día hábil.">
 <meta name="robots" content="index, follow">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="canonical" href="https://vendooapp.com/contacto.html">
@@ -20,16 +20,16 @@
 <meta property="og:site_name" content="Vendoo">
 <meta property="og:locale" content="es_VE">
 <meta property="og:url" content="https://vendooapp.com/contacto.html">
-<meta property="og:title" content="Pedí una demo de Vendoo — app de fuerza de ventas de campo">
-<meta property="og:description" content="Contanos cómo vende hoy tu equipo de campo o de preventa y te mostramos Vendoo funcionando con tus datos. Correo y WhatsApp a la vista; respondemos en menos de un día hábil.">
+<meta property="og:title" content="Contacto y soporte de Vendoo — correo, teléfono y demo">
+<meta property="og:description" content="Soporte de Vendoo: el correo, el teléfono y el WhatsApp de GUUAO LLC, y el formulario para pedir una demo con tus datos. Te contesta una persona en menos de un día hábil.">
 <meta property="og:image" content="https://vendooapp.com/assets/img/og.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Vendoo — la fuerza de ventas de campo, de punta a punta.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Pedí una demo de Vendoo — app de fuerza de ventas de campo">
-<meta name="twitter:description" content="Contanos cómo vende hoy tu equipo de campo o de preventa y te mostramos Vendoo funcionando con tus datos. Correo y WhatsApp a la vista; respondemos en menos de un día hábil.">
+<meta name="twitter:title" content="Contacto y soporte de Vendoo — correo, teléfono y demo">
+<meta name="twitter:description" content="Soporte de Vendoo: el correo, el teléfono y el WhatsApp de GUUAO LLC, y el formulario para pedir una demo con tus datos. Te contesta una persona en menos de un día hábil.">
 <meta name="twitter:image" content="https://vendooapp.com/assets/img/og.png">
 <meta name="twitter:image:alt" content="Vendoo — la fuerza de ventas de campo, de punta a punta.">
 
@@ -71,11 +71,17 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
      arriba y explicados en assets/js/analitica.js. -->
 <script type="module" src="/assets/js/analitica.js"></script>
 
+<!-- El `address` va acá y en el `<dl>` de #soporte, y los dos tienen que
+     decir lo mismo: es el dato que Apple exige en la Support URL («legal
+     address, email address, telephone number») y acá encima lo lee una
+     máquina. Lo entregó el dueño el 12-sep-2026; hasta ese día este bloque no
+     lo llevaba, a propósito, porque no existía escrito en ningún repositorio y
+     un domicilio inventado de una empresa real es peor que ninguno. -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "ContactPage",
-  "name": "Contacto y demo — Vendoo",
+  "name": "Contacto y soporte — Vendoo",
   "url": "https://vendooapp.com/contacto.html",
   "inLanguage": "es-VE",
   "about": {
@@ -85,7 +91,25 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
   "publisher": {
     "@type": "Organization",
     "name": "GUUAO LLC",
-    "email": "hola@vendooapp.com"
+    "url": "https://vendooapp.com/",
+    "email": "hola@vendooapp.com",
+    "telephone": "+58-412-346-9712",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "10302 NW South River Drive",
+      "addressLocality": "Medley",
+      "addressRegion": "FL",
+      "postalCode": "33178",
+      "addressCountry": "US"
+    },
+    "contactPoint": [{
+      "@type": "ContactPoint",
+      "contactType": "customer support",
+      "email": "hola@vendooapp.com",
+      "telephone": "+58-412-346-9712",
+      "url": "https://vendooapp.com/contacto.html#soporte",
+      "availableLanguage": ["es"]
+    }]
   }
 }
 </script>
@@ -170,8 +194,19 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
      texto, el formulario roto; quita los cards […] haz algo muy bonito que
      inspire al cliente». Una sola pieza: titular, una frase, el formulario
      como centro en su tarjeta, tres razones cortas al lado y los dos
-     canales directos a la vista. Nada de política, descarga ni soporte
-     acá: eso vive en el pie y en las legales.
+     canales directos a la vista.
+
+     ⚠️ ESTE COMENTARIO DECÍA «nada de política, descarga ni soporte acá» y
+     DEJÓ DE SER CIERTO EL 12-SEP-2026, por decisión del dueño: esta URL es la
+     **Support URL** de la ficha de App Store, y Apple exige que esa página
+     lleve «legal address, email address, telephone number». La regla vieja no
+     se borra —era buena y sigue explicando por qué la mitad de arriba es sólo
+     el formulario—: lo que cambió es que ahora hay un segundo bloque, #soporte,
+     DEBAJO. El orden es la decisión. Lo que el dueño mandó sacar en septiembre
+     eran cuatro tarjetas compitiendo con el formulario ANTES de que se viera;
+     el soporte va después, para el que lo viene a buscar, y no le roba el
+     primer pliegue a la demo. Descarga y política siguen sin tarjeta propia:
+     viven en la cabecera y en el pie, como antes.
 
      El envío es un `mailto:` armado por sitio.js (ver el README, «El
      formulario de contacto»); con `ENDPOINT_FORMULARIO` pasa a fetch. Los
@@ -254,6 +289,91 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
     </div>
   </div>
 </section>
+
+<!-- SOPORTE (12-sep-2026). Existe porque `https://vendooapp.com/contacto.html`
+     es la **Support URL** de la ficha de App Store, y la guía de revisión de
+     Apple pide, textual, «legal address, email address, telephone number» en la
+     página que ese campo enlaza. Hasta hoy acá había una página de venta: el
+     correo y el WhatsApp estaban a la vista, pero el domicilio no, y nada decía
+     qué se puede pedir por esas dos vías.
+
+     No se creó una página nueva para esto —decisión del dueño: el enlace es
+     /contacto.html—, así que el bloque cuelga de un `id` propio y se puede
+     enlazar directo: /contacto.html#soporte. Ése es el destino al que apunta
+     /soporte.html (ver ese archivo) y el que lleva el pie de las cinco páginas.
+
+     ⚠️ NO SE INVENTÓ NI UN DATO, y los cuatro salen del dueño. El correo
+     `hola@vendooapp.com` y el WhatsApp +58 412-346 9712 están en el pie de las
+     cinco páginas desde el 2-sep-2026; GUUAO LLC es el titular de las dos
+     legales; y el **domicilio lo entregó el 12-sep-2026**, textual:
+     «Warehouse / Principal Address: 10302 NW South River Drive, Medley, FL
+     33178». Hasta ese día salía con el marcador `.pendiente` —a la vista, en
+     punteado— porque no existía escrito en ningún repositorio: un domicilio
+     inventado de una empresa real es peor que no publicar ninguno. Vive en DOS
+     sitios que tienen que decir lo mismo: el `<dl>` de acá abajo y el
+     `address` del JSON-LD de la cabeza.
+
+     ⚠️ El teléfono y el WhatsApp son EL MISMO NÚMERO, dicho dos veces. Es el
+     único que el dueño publicó, y va también con `tel:` porque Apple pide un
+     teléfono, no un mensajero: un número que sólo se puede escribir por
+     WhatsApp no es lo que ese campo promete. Los dos enlaces salen del mismo
+     literal; si alguna vez son dos números distintos, hay que separarlos acá,
+     en el pie de las cinco páginas y en el JSON-LD de la cabeza. -->
+<section class="seccion seccion--fina" id="soporte">
+  <div class="envoltura">
+    <div class="encabezado revelar">
+      <span class="rotulo">Soporte</span>
+      <h2>Soporte de Vendoo</h2>
+      <p>Te contesta una persona de GUUAO LLC, que es quien hace y publica la aplicación. En español, en menos de un día hábil.</p>
+    </div>
+
+    <div class="vias revelar">
+      <a class="via" href="mailto:hola@vendooapp.com?subject=Soporte%20de%20Vendoo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7.5l8.5 6 8.5-6"/></svg><span>hola@vendooapp.com</span></a>
+      <a class="via" href="tel:+584123469712"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 3h3l1.5 4-2 1.4a12 12 0 0 0 5.6 5.6l1.4-2 4 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.5 5.2 2 2 0 0 1 6.5 3z"/></svg><span>+58 412-346 9712</span></a>
+      <a class="via" href="https://wa.me/584123469712" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.6L3 21l1.9-5.6A8.5 8.5 0 1 1 21 11.5z"/><path d="M9.3 8.3c.3 2.5 2.4 4.6 4.9 5.1l1-1.1 2 .9-.2 1.5c-3.6.6-8-3.6-7.6-7.3l1.5-.2.9 1.9z"/></svg><span>WhatsApp, el mismo número</span></a>
+    </div>
+
+    <div class="reja mt-sm">
+      <article class="tarjeta revelar">
+        <h3>Si usás Vendoo en la calle</h3>
+        <p>La cuenta te la crea y te la entrega <strong>tu empresa</strong>: la aplicación no permite registrarse y no hay forma de darse de alta desde acá. Si no podés entrar, si algo no te carga o si un pedido no llegó, escribinos con tu correo de vendedor y el nombre de tu empresa.</p>
+      </article>
+      <article class="tarjeta revelar revelar--b">
+        <h3>Si tu empresa ya usa Vendoo</h3>
+        <p>Altas y bajas de vendedores, permisos, empresas y almacenes, o la integración con tu ERP. Escribinos desde el correo de la empresa y decinos qué necesitás cambiar.</p>
+      </article>
+      <article class="tarjeta revelar revelar--c">
+        <h3>Tus datos</h3>
+        <p>Qué recoge la aplicación, para qué y cuánto tiempo se guarda está en la <a href="/privacidad.html">política de privacidad</a>. El acceso, la corrección y la eliminación se piden por el mismo correo: <a href="/privacidad.html#c7">cómo hacerlo</a>.</p>
+      </article>
+    </div>
+
+    <div class="ficha mt-sm revelar revelar--b">
+      <dl>
+        <dt>Responsable de la aplicación</dt>
+        <dd>GUUAO LLC</dd>
+        <dt>Dirección legal</dt>
+        <!-- La entregó el dueño el 12-sep-2026, textual: «Warehouse /
+             Principal Address: 10302 NW South River Drive, Medley, FL 33178».
+             Hasta ese día acá había un marcador visible: Apple exige «legal
+             address» en la Support URL y la política del sitio es no inventar
+             un dato de contacto. Está en DOS sitios y tienen que decir lo
+             mismo: acá y en el `address` del JSON-LD de la cabeza. -->
+        <dd>10302 NW South River Drive, Medley, FL 33178, Estados Unidos</dd>
+        <dt>Correo de soporte</dt>
+        <dd><a href="mailto:hola@vendooapp.com?subject=Soporte%20de%20Vendoo">hola@vendooapp.com</a></dd>
+        <dt>Teléfono</dt>
+        <dd><a class="sin-corte" href="tel:+584123469712">+58 412-346 9712</a> — también por <a class="sin-corte" href="https://wa.me/584123469712" target="_blank" rel="noopener">WhatsApp</a>.</dd>
+        <dt>Tiempo de respuesta</dt>
+        <dd>Menos de un día hábil.</dd>
+        <dt>Aplicación</dt>
+        <dd>Vendoo (<code>com.leiros.vendoo</code>), Android 7.0 o superior e iOS 15 o superior. <a href="/#descargar">Los dos enlaces de descarga están en la portada</a>.</dd>
+        <dt>Documentos</dt>
+        <dd><a href="/privacidad.html">Política de privacidad</a> &middot; <a href="/terminos.html">Términos de servicio</a></dd>
+      </dl>
+    </div>
+  </div>
+</section>
 </main>
 
 <footer class="pie">
@@ -293,6 +413,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
         <ul>
           <li><a href="/">Inicio</a></li>
           <li><a href="/contacto.html">Contacto</a></li>
+          <li><a href="/contacto.html#soporte">Soporte</a></li>
           <li><a href="/contacto.html#demo">Solicitar una demo</a></li>
           <li><a href="/privacidad.html">Política de privacidad</a></li>
           <li><a href="/terminos.html">Términos de servicio</a></li>

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es-VE">
+<head>
+<meta charset="utf-8">
+<!-- /soporte.html — UN DESVÍO, NO UNA PÁGINA (12-sep-2026).
+
+     Por qué existe. `contacto.html` es la Support URL de la ficha de App Store
+     y ahí vive ahora el bloque #soporte. Pero `/soporte.html` es la dirección
+     que cualquiera adivina —un revisor de Apple, un vendedor al que le
+     dictaron «entrá a vendooapp punto com barra soporte», un borrador viejo de
+     la ficha— y hasta hoy contestaba 404. Se buscó en el sitio entero y en el
+     repositorio de la aplicación: NO HAY UN SOLO ENLACE a esta dirección, o
+     sea que no había nada roto que arreglar. Esto es un seguro, y por eso es
+     un desvío de veinte líneas y no una segunda página de soporte: dos páginas
+     de soporte se contradicen en el primer dato que alguien cambie en una sola.
+
+     Por qué no se hizo al revés (apuntar los enlaces a contacto.html): no hay
+     enlaces que apuntar. Y por qué no se dejó en el 404: el 404 le dice al
+     visitante que se equivocó, y acá no se equivocó — la página que buscaba
+     existe, sólo que con otro nombre.
+
+     Fuera del sitemap y con `noindex`: no es contenido y no compite en
+     buscadores con la página de verdad. Está en el `Disallow` de robots.txt
+     por lo mismo que 404.html.
+
+     Lleva la analítica como las cinco páginas de verdad —`tool/verificar.py` la
+     exige en todas—, y de paso cuenta si alguien llega de verdad por acá: si
+     en seis meses no entró nadie, este archivo se borra. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sBSmF0cvqwH9q89LN1kE6J363Sy1ybqC0YQqLHqJ1RI=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Soporte de Vendoo</title>
+<meta name="description" content="El soporte de Vendoo vive en la página de contacto: correo, teléfono y WhatsApp de GUUAO LLC. Esta dirección lleva ahí.">
+<meta name="robots" content="noindex, follow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<!-- La canónica apunta al DESTINO y no a esta página: lo que hay acá no es
+     contenido, es un desvío. -->
+<link rel="canonical" href="https://vendooapp.com/contacto.html">
+<!-- El desvío. GitHub Pages no sabe hacer un 301 —lo único que puede servir
+     es un archivo—, así que el redirigido es este `meta refresh` a cero
+     segundos, que los buscadores tratan como una redirección permanente y
+     que a un lector de pantalla no le mueve nada debajo del dedo. El día que
+     el dueño aplique las reglas de Cloudflare que el README tiene
+     pendientes, la 301 de verdad va ahí y este archivo se puede borrar. -->
+<meta http-equiv="refresh" content="0; url=/contacto.html#soporte">
+<meta name="theme-color" content="#F4F5F9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E0E10" media="(prefers-color-scheme: dark)">
+<meta name="author" content="GUUAO LLC">
+<meta name="apple-mobile-web-app-title" content="Vendoo">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vendoo">
+<meta property="og:locale" content="es_VE">
+<meta property="og:url" content="https://vendooapp.com/contacto.html">
+<meta property="og:title" content="Soporte de Vendoo">
+<meta property="og:description" content="El soporte de Vendoo vive en la página de contacto: correo, teléfono y WhatsApp de GUUAO LLC. Esta dirección lleva ahí.">
+<meta property="og:image" content="https://vendooapp.com/assets/img/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Vendoo — la fuerza de ventas de campo, de punta a punta.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Soporte de Vendoo">
+<meta name="twitter:description" content="El soporte de Vendoo vive en la página de contacto: correo, teléfono y WhatsApp de GUUAO LLC. Esta dirección lleva ahí.">
+<meta name="twitter:image" content="https://vendooapp.com/assets/img/og.png">
+<meta name="twitter:image:alt" content="Vendoo — la fuerza de ventas de campo, de punta a punta.">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/img/icono-180.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Las cuatro Poppins van precargadas (~9 KB cada una): el titular es 700, el
+     menú 500, los botones 600 y el texto 400, y todas están en el primer
+     pliegue. Medido con Lighthouse el 2-sep-2026: con sólo 400 y 600
+     precargadas, la 700 llegaba tarde y el titular saltaba (CLS 0,29). -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-700.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-400.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-600.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-500.woff2" crossorigin>
+<!-- Sólo la resolución de DNS, no la conexión: la analítica se carga después
+     del evento load (ver assets/js/analitica.js), así que abrir la conexión
+     antes competiría con la hoja de estilo y las fuentes por nada. -->
+<link rel="dns-prefetch" href="https://www.gstatic.com">
+<link rel="dns-prefetch" href="https://www.googletagmanager.com">
+<link rel="stylesheet" href="/assets/css/estilo.css">
+<script>/* Dos cosas que tienen que pasar ANTES del primer pintado.
+
+   1. El tema elegido: con `defer` la pagina parpadearia en claro. Los tres
+      valores estan explicados en sitio.js.
+   2. `data-anim`, que es lo que habilita las animaciones de entrada. Va aca
+      y no en sitio.js por lo mismo: puesto despues, lo que va a aparecer se
+      veria un instante antes de esconderse. Y se QUITA SOLO a los dos
+      segundos si sitio.js no alcanzo a marcar `data-listo` — sin esa red,
+      un script que no cargue dejaria media pagina en opacity 0. */
+try{var t=localStorage.getItem('vendoo-tema');
+if(t==='claro'||t==='oscuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}
+try{var h=document.documentElement;h.setAttribute('data-anim','1');
+setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-anim');}},2000);}catch(e){}</script>
+<script src="/assets/js/sitio.js" defer></script>
+<!-- Analítica (GA4 por Firebase), decisión del dueño del 2-sep-2026. Es la
+     única cosa externa del sitio; los hosts que necesita están en la CSP de
+     arriba y explicados en assets/js/analitica.js. -->
+<script type="module" src="/assets/js/analitica.js"></script>
+</head>
+<body>
+<main id="principal">
+<section class="seccion">
+  <div class="envoltura">
+    <div class="doc centrado">
+      <span class="rotulo">Soporte</span>
+      <h1 class="titulo-doc">El soporte está en la página de contacto.</h1>
+      <p class="apagado estrecho centrado">Te estamos llevando ahí. Si tu navegador no lo hace solo, tocá el botón.</p>
+      <div class="botones botones--centro mt-sm">
+        <a class="boton boton--lleno" href="/contacto.html#soporte">Ir al soporte de Vendoo</a>
+      </div>
+      <p class="apagado mt-sm">O escribinos directo a <a href="mailto:hola@vendooapp.com?subject=Soporte%20de%20Vendoo">hola@vendooapp.com</a>, o llamanos al <a class="sin-corte" href="tel:+584123469712">+58 412-346 9712</a>.</p>
+    </div>
+  </div>
+</section>
+</main>
+</body>
+</html>
