@@ -28,7 +28,9 @@ chequeo *liviano* a propósito. Lo que comprueba:
      el repositorio (huella en assets/img/capturas/derivadas.json, que escribe
      tool/imagenes.py), que la imagen social mida 1200 × 630 y que el
      manifiesto sea JSON válido con íconos que existen; y
- 11. que ningún título, descripción, Open Graph ni JSON-LD diga «app Android»
+ 11. que todas las URL de tienda del sitio nombren la MISMA aplicación —un
+     solo Apple ID y un solo paquete de Google Play—, y
+ 12. que ningún título, descripción, Open Graph ni JSON-LD diga «app Android»
      o «aplicación Android» (regla del dueño, 2-sep-2026: es «la aplicación»;
      Android queda sólo en `operatingSystem` del JSON-LD, en los botones de
      descarga y en el «Android 7.0 y iOS 15 o superior» del pie).
@@ -482,6 +484,35 @@ def main() -> int:
                 aviso('site.webmanifest', 'no hay ícono maskable')
         except Exception as exc:
             error('site.webmanifest', f'no es JSON válido ({exc})')
+
+    # Las URL de tienda tienen que nombrar UNA sola aplicación.
+    #
+    # ⚠️ Hasta el 11-sep-2026 la regla era otra y estaba escrita en el README:
+    # «la URL de Apple vive en UN solo sitio del marcado». Ese día los dos
+    # badges entraron también a la cabecera de las cinco páginas —encargo del
+    # dueño— y la cabecera es, por diseño, cuarenta líneas copiadas en los
+    # cinco HTML. O sea que la regla ya no se podía cumplir.
+    #
+    # Lo que la regla protegía no era la copia: era que una copia se quedara
+    # vieja («un identificador de tienda copiado en tres plantillas es el que
+    # se queda viejo»). Eso se protege mejor acá que con una convención —es el
+    # mismo movimiento que el hash del script del tema, que también vive
+    # repetido en las cinco y también lo custodia este archivo—. Si alguien
+    # cambia el Apple ID o el paquete en una sola página, esto se pone rojo y
+    # dice cuál.
+    ids_apple: dict[str, set[str]] = {}
+    ids_play: dict[str, set[str]] = {}
+    for pagina in paginas:
+        texto = pagina.read_text(encoding='utf-8')
+        for ident in re.findall(r'apps\.apple\.com/(?:[a-z]{2}/)?app/(?:[^/"\s]+/)?id(\d+)', texto):
+            ids_apple.setdefault(ident, set()).add(pagina.name)
+        for ident in re.findall(r'play\.google\.com/store/apps/details\?id=([\w.]+)', texto):
+            ids_play.setdefault(ident, set()).add(pagina.name)
+    for cual, hallados in (('Apple ID', ids_apple), ('paquete de Google Play', ids_play)):
+        if len(hallados) > 1:
+            detalle = '; '.join(f'{k} en {", ".join(sorted(v))}' for k, v in sorted(hallados.items()))
+            error('URL de tienda', f'hay {len(hallados)} {cual} distintos en el sitio '
+                                   f'({detalle}). Tienen que nombrar la misma aplicación.')
 
     # robots.txt tiene que declarar el sitemap, o nadie lo encuentra.
     robots = (RAIZ / 'robots.txt')

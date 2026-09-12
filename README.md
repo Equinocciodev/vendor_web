@@ -65,6 +65,7 @@ de consumo**.
 │       ├── og.png        Imagen social 1200×630 — se genera con tool/og.html
 │       ├── isotipo.svg, favicon-32.png, icono-180.png, icono-192.png,
 │       │   icono-512.png, icono-512-maskable.png   (los PNG salen de tool/imagenes.py)
+│       ├── tiendas/      Los badges OFICIALES de App Store y Google Play. NO se editan.
 │       └── capturas/     Las seis capturas (PNG maestras + WebP derivadas + derivadas.json)
 ├── tool/verificar.py     El chequeo que corre en CI y también en tu máquina
 ├── tool/imagenes.py      Deriva los WebP de las capturas y los íconos. Se corre a mano.
@@ -87,7 +88,8 @@ Lo único que cambia entre página y página dentro de la cabecera es el
 ### El menú son anclas del inicio, y por qué
 
 El menú es **Inicio · Producto · Cómo funciona · Integraciones · Seguridad ·
-Contacto**, más el botón **Descargar** a la derecha. Los cuatro del medio son
+Contacto**, y a la derecha los **dos badges de tienda** —o, en el teléfono, un
+botón corto que lleva a los dos—. Los cuatro del medio son
 **anclas de la portada** (`/#producto`, `/#como`, `/#integraciones`,
 `/#seguridad`) y no páginas propias.
 
@@ -289,16 +291,28 @@ La aplicación está publicada como `com.leiros.vendoo` en las dos tiendas, y
 desde el **11-sep-2026** la portada lleva **un botón por tienda**, del mismo
 tamaño y con el mismo tratamiento: no hay una principal y una de relleno.
 
-| Tienda | Dónde está la URL | Sale en |
-|---|---|---|
-| Google Play | repetida en varias páginas (viene de antes) | portada, cabecera de las cinco, JSON-LD |
-| App Store (Apple ID **6811065669**) | **`index.html`, y en ningún otro sitio** | sólo la portada |
+| Tienda | Sale en |
+|---|---|
+| Google Play (paquete `com.leiros.vendoo`) | portada, cabecera de las cinco, JSON-LD |
+| App Store (Apple ID **6811065669**) | portada y cabecera de las cinco |
 
-⚠️ **La URL de Apple vive en UN solo sitio del marcado, a propósito**, y hay un
-comentario grande al lado que lo dice. Un identificador de tienda copiado en
-tres plantillas es el que se queda viejo. Por eso la fila «Descarga» de
-`privacidad.html` y de `terminos.html` **no repite ninguna URL**: nombra las dos
-tiendas y manda a `/#descargar`, que es el bloque de botones de la portada.
+⚠️ **Hasta el 11-sep-2026 acá decía que la URL de Apple vivía en UN solo sitio
+del marcado, a propósito. Dejó de ser cierto ese día**, cuando el dueño mandó
+poner los dos badges también en la cabecera —y la cabecera es, por diseño,
+cuarenta líneas copiadas en los cinco HTML—. La regla no se podía cumplir y no
+se disimuló: se cambió por algo más fuerte.
+
+Lo que esa regla protegía no era la copia, era **que una copia se quedara
+vieja**. Eso ahora lo custodia `tool/verificar.py`: si el Apple ID o el paquete
+de Google Play no son **el mismo en todo el sitio**, el chequeo se pone rojo y
+dice en qué página está el distinto. Es el mismo movimiento que ya se había
+hecho con el hash del script del tema, que también vive repetido en las cinco y
+también lo vigila ese archivo. **Una convención que hay que recordar pasó a ser
+un chequeo que no se puede olvidar.**
+
+La fila «Descarga» de `privacidad.html` y de `terminos.html` **sigue sin repetir
+ninguna URL**: nombra las dos tiendas y manda a `/#descargar`. Ahí no hace falta
+un enlace de tienda, y menos texto legal es mejor texto legal.
 
 ⚠️ **Y hay algo medido que conviene no perder.** El 11-sep-2026, el día en que
 se puso el enlace, la ficha de App Store **todavía contestaba 404**:
@@ -325,38 +339,100 @@ la ficha de arriba de `privacidad.html` y de `terminos.html`, más «Android 7.0
 iOS 15 o superior» una sola vez en el pie de la portada. En ningún otro texto de
 venta (decisión del dueño, 2-sep-2026).
 
-### Ni un logotipo de tienda, y por qué no se usan los badges oficiales
+### Los badges son el arte OFICIAL, y se sirve desde acá (11-sep-2026)
 
-Los dos botones están **dibujados acá**: el triángulo de Play en sus cuatro
-colores y, para Apple, **un ícono nuestro** —del mismo juego monoline que el
-resto del sitio— en vez del logotipo de la manzana. Son tres razones, y las tres
-siguen valiendo ahora que las dos tiendas están vivas:
+⚠️ **Este apartado decía lo contrario hasta el 11-sep-2026**, y conviene leer el
+cambio entero porque el razonamiento viejo no estaba mal: estaba incompleto.
+Decía que los botones se dibujaban a mano —el triángulo de Play en sus cuatro
+colores y un ícono nuestro en vez de la manzana— por tres razones: que el sitio
+no le pide un byte a nadie, que los badges tienen guía de marca y que un
+logotipo dibujado de memoria es un logotipo falso.
 
-1. **El sitio no le pide un solo byte a un tercero** (salvo la analítica). Un
-   badge oficial es una imagen que hay que descargar de su servidor o versionar
-   acá; lo primero abre un host en la CSP y le cuenta a un tercero quién visita
-   la página.
-2. **Los badges tienen guía de marca** —proporciones, zona de respeto, prohibido
-   re-teñirlos— y en un sitio con seis presets de tema y modo oscuro eso se
-   incumple solo.
-3. **Un logotipo dibujado de memoria es un logotipo falso**, que es peor que
-   ninguno. Es la misma regla del muro de ERP.
+Ese día el dueño mandó seguir las guías, y enlazó las dos:
 
-> **Si Legal prefiere los badges oficiales**, se pueden poner: hay que
-> descargarlos de los generadores de cada tienda, dejarlos en `assets/img/`,
-> respetar sus normas y reemplazar los dos `<a class="boton boton--play">` de la
-> portada. **Seguirían siendo recursos propios**, servidos desde nuestro origen,
-> así que `tool/verificar.py` no se queja.
+- <https://developer.apple.com/app-store/marketing/guidelines/>
+- <https://partnermarketinghub.withgoogle.com/brands/google-play/google-play/lockups-icons-badges/#badges>
 
-Los cuatro colores del triángulo (`#00A0FF`, `#00E676`, `#FFCE00`, `#FF3A44`)
-son **lo único del sitio que no sale del preset «vendoo»**: re-teñirlos con los
-tokens del tema lo dejaría de hacer reconocible. El botón de Apple no tiene
-ninguno: su ícono es `currentColor`, como el resto de los nuestros.
+Las dos dicen, con todas las letras, que **el badge no se recrea**. Apple: *«Use
+only the badge artwork provided in these guidelines»* y *«Don't modify, angle,
+or animate the App Store badge»*. Google: *«Don't change the badge color»* y
+*«Don't remove or rearrange badge elements, or otherwise adjust the badge in any
+way»*. O sea que la razón 3 —«un logotipo dibujado de memoria es falso»— **era
+un argumento a favor de usar el oficial**, no en contra; estaba aplicada al
+revés.
 
-⚠️ La clase `.boton--pronto` —el botón hueco de borde punteado que decía
-«próximamente»— **quedó sin usar** el día que App Store pasó a ser un enlace. Se
-conserva en la hoja de estilo, como `.pendiente`, porque es el patrón ya resuelto
-para una tienda que todavía no se puede enlazar. Está anotado ahí.
+🔴 **Y la tensión con «ningún byte de terceros» era aparente.** Un badge oficial
+no obliga a pedírselo a su servidor: se baja **una vez**, se versiona en
+`assets/img/tiendas/` y se sirve desde nuestro propio origen. Cero peticiones a
+terceros, la CSP sigue con `img-src 'self'` sin un host nuevo, y el badge es el
+de verdad. Las dos cosas a la vez.
+
+De la lista vieja sobrevive intacta la razón 1 —**nada externo**— y la 2 cambia
+de signo: la guía de marca ya no es un motivo para no ponerlos, es la
+especificación de cómo ponerlos. Están aplicadas en `.tienda` / `.tiendas` de
+`estilo.css` y explicadas con sus citas en **`assets/img/tiendas/README.md`**,
+que es donde hay que mirar antes de tocar un tamaño. En corto:
+
+| Regla | Quién la pide | Cómo se cumple acá |
+|---|---|---|
+| Alto mínimo en pantalla | Apple **40 px**, Google **28 px** | 48 px en la portada, **40 en la cabecera** (el mínimo exacto) |
+| Zona de respeto = ¼ del alto | las dos | `gap` de 14 px sobre 48 y 12 sobre 40; medido también contra la marca y el interruptor de tema |
+| Los dos del mismo tamaño | Google (*«the Google Play badge is the same size or larger than the other badges»*) | misma **altura**; el ancho sale del `viewBox`, y el de Play queda más ancho (3,37:1 contra 2,99:1) |
+| El App Store va primero | Apple (*«Place the App Store badge first in the lineup of badges»*) | ése es el orden en la portada y en la cabecera |
+| Negro, sin re-teñir, en los dos temas | Apple pide el negro **justamente** cuando hay otro badge al lado; Google tiene una sola versión | los dos traen su propio filete gris `#a6a6a6`, que es lo que los hace legibles sobre el fondo oscuro. **No hay variante clara y no hay que inventarla.** |
+| Idioma de la campaña | las dos | español de América Latina: Apple **es-MX** («Descárgalo en el App Store») y Google **Spanish-LATAM** («DESCARGAR EN Google Play»). Apple avisa además que *«App Store»* nunca se traduce |
+
+⚠️ **Van como `<img>`, no como `<svg>` en línea**, y es a propósito: un SVG
+pegado en el HTML invita a que alguien le meta `currentColor` o un `fill` del
+tema, que es exactamente lo que las dos guías prohíben. Como `<img>` el arte es
+intocable desde la hoja de estilo. Por lo mismo **no hay efecto de `hover` ni de
+`opacity`**: cualquiera de los dos modifica el badge. Queda el cursor y el
+anillo de foco del sitio.
+
+⚠️ **De la hoja de estilo se fue el último hex ajeno.** Los cuatro colores del
+triángulo (`#00A0FF`, `#00E676`, `#FFCE00`, `#FF3A44`) eran «lo único del sitio
+que no sale del preset vendoo» y se fueron con el botón dibujado, junto con
+`.boton--play`, `.boton--mini`, `.play__texto` y los tokens `--play-*`.
+
+⚠️ La clase `.boton--pronto` sigue sin usar, como `.pendiente`, pero **ya no
+tiene con qué emparejarse**: su compañera `.boton--play` se fue. Si vuelve a
+hacer falta anunciar una tienda que todavía no se puede enlazar, lo honesto es
+una frase al lado de los badges — **no un tercer badge inventado**, que es justo
+lo que las guías prohíben.
+
+**Si hay que actualizar el arte**, se vuelve a bajar de esas dos fuentes y se
+reemplaza entero. No se edita a mano, ni para sacarle el comentario del
+generador de Illustrator.
+
+### El renglón donde los dos badges NO entran: el teléfono
+
+🔴 **Está medido, y es la única concesión del cambio.** A 40 px de alto los dos
+badges miden **255 px juntos**, y en una ventana de 320 px el ancho útil es
+**280**: con la marca y el interruptor de tema en la misma fila no hay forma.
+No es cuestión de apretar el `gap` — a cualquier tamaño que entre, el badge deja
+de ser legible, y achicarlo por debajo de los 40 px de Apple incumple la guía
+que este cambio vino a cumplir.
+
+Por eso **por debajo de 500 px los dos badges se reemplazan por un botón corto**
+(`.descarga-corta`) que lleva a `/#descargar`, el bloque de la portada donde
+están los dos de verdad. **No es un badge** —es texto y un ícono nuestro—, así
+que no incumple ninguna guía, y resuelve igual el defecto que este encargo vino
+a cerrar: hasta ese día la cabecera tenía **un** botón que decía «Descargar» y
+llevaba **sólo a Google Play**, o sea que quien entraba desde un iPhone
+aterrizaba en la tienda equivocada. Hoy aterriza donde están las dos. **Un toque
+de más es mejor que la tienda equivocada.**
+
+⚠️ **Y la cabecera pasó a partirse en dos renglones a 1160 px y no a 1000.**
+También medido: con el menú sin partir, la fila pide **1.025 px**, y
+`.envoltura` no da más de **1.040** (`--ancho` 1120 menos el relleno), así que
+ni a 1.440 px de ventana entraba — el tope es la envoltura, no la pantalla. Se
+veía como «Cómo funciona» partido en dos renglones y la cabecera 17 px más
+alta. Van dos cosas juntas: el relleno horizontal de `.nav a` bajó de 11 a 7 px
+(el alto de 40 px **no** se toca: es el blanco táctil) y el corte subió a 1160.
+Es la tercera vez que ese número sube por la misma razón —660 → 1000 el
+2-sep-2026, 1000 → 1160 hoy—: **cada vez que entra algo nuevo en esa fila, hay
+que volver a medirla.** Si movés el corte, mové también el `scroll-margin-top`
+de `.seccion[id]`: los dos describen el mismo alto de cabecera.
 
 ---
 
@@ -525,8 +601,11 @@ página tenga `title`, `description`, `lang`, `canonical`, `viewport`, Open Grap
 Twitter Card y un solo `h1`; que ningún enlace interno ni ancla apunte a algo
 que no existe; que **ningún recurso** sea externo; que no haya `style=`; que
 cada `<script>` en línea tenga su hash en la CSP de su página; que la
-analítica esté en las cinco páginas con sus hosts en la CSP, y que cada
-bloque JSON-LD sea JSON válido. Es el mismo script que corre en CI.
+analítica esté en las cinco páginas con sus hosts en la CSP; que **todas las
+URL de tienda del sitio nombren la misma aplicación** —un solo Apple ID y un
+solo paquete de Play, que es lo que reemplazó a la regla de «la URL de Apple
+en un solo sitio»—, y que cada bloque JSON-LD sea JSON válido. Es el mismo
+script que corre en CI.
 
 ### La analítica del sitio (2-sep-2026)
 
@@ -712,9 +791,10 @@ Lo que hay puesto, para no repetirlo ni olvidarlo:
     El salto de 0,29 era el titular en 700 reflowando cuando la fuente
     llegaba tarde; con el respaldo a la misma medida, el cambio no mueve
     nada.
-  - El «Descargar» del botón compacto de la cabecera se esconde con `clip`
+  - El «Descargar» del botón corto de la cabecera se esconde con `clip`
     y no con `display: none`, así que el enlace **conserva su nombre**
-    accesible.
+    accesible. (Desde el 11-sep-2026 ese botón es `.descarga-corta` y sólo
+    sale por debajo de 500 px; los badges llevan su nombre en el `alt`.)
   - Las capturas en WebP y tres anchos (arriba), y la analítica después de
     `load`.
   - Lo que Lighthouse sigue marcando y **no se va a arreglar acá**: la hoja
@@ -896,18 +976,13 @@ tema, que va en línea en el `<head>`.
 | Teléfono y horario de atención públicos, si se quieren | `contacto.html` | Dueño |
 | Revisión de abogado venezolano de las cláusulas 15 y 17 de los términos | `terminos.html` | Legal |
 | Que la ficha de App Store conteste 200 antes de publicar el sitio (el 11-sep-2026 daba 404) | App Store Connect | Dueño |
-| El botón compacto de la cabecera lleva **sólo a Google Play** en las cinco páginas: quien entre desde un iPhone aterriza en la tienda equivocada | `index.html` y las otras cuatro cabeceras | Dueño (es una decisión de diseño, abajo) |
 | `downloadUrl` / `offers` del JSON-LD nombran una sola tienda (admiten un destino) | `index.html` | Dueño |
 
-⚠️ **Sobre el botón compacto de la cabecera.** Es un botón de Google Play
-declarado —lleva el triángulo y la palabra «Descargar»— y vive en la cabecera de
-las cinco páginas, donde dos botones no entran. Las dos salidas son cambiarlo por
-un ícono neutro que lleve a `/#descargar` (cambia el peso visual de cinco
-cabeceras) o dejarlo (quien entra desde un iPhone toca «Descargar» y aterriza en
-Play). **Se dejó como estaba el 11-sep-2026**, porque elegir la primera es
-rediseñar la cabecera y eso no era el encargo; el par de botones de la portada,
-donde las dos tiendas están en igualdad, queda a un scroll. Si el dueño prefiere
-lo otro, es un cambio chico y acotado.
+✅ **El botón compacto de la cabecera ya no lleva sólo a Google Play.** Estaba
+en esta tabla como pendiente del dueño, y el dueño lo resolvió el mismo
+11-sep-2026 con los dos badges oficiales en la cabecera —y, por debajo de 500 px,
+con el botón corto a `/#descargar`—. Está contado arriba, en «Los badges son el
+arte OFICIAL».
 
 Nada de eso se inventa: un correo que rebota o un número que no existe es peor
 que no poner ninguno. Los datos de contacto publicados son dos:

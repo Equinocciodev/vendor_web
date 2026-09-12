@@ -74,8 +74,6 @@
   --marca-disco:  #8644D5;   /* el disco de la ultima «o» del logotipo:
                                 5,52:1 sobre blanco — AA. Es el acento de
                                 `logotipo_vendoo_claro.svg` de la app. */
-  --play-fondo:   #0E0E10;
-  --play-tinta:   #FFFFFF;
   --velo-acento:  rgba(109, 40, 217, .07);
   --velo-marca:   rgba(155, 93, 229, .16);
   --sombra:       0 1px 2px rgba(20, 20, 30, .05), 0 12px 32px rgba(20, 20, 30, .06);
@@ -112,8 +110,6 @@
     --velo-calido:  rgba(251, 191, 36, .12);
     --marca-disco:  #9B5DE5;   /* sobre fondo oscuro, 4,84:1. El #8644D5 de
                                   la variante clara se apaga aca. */
-    --play-fondo:   #FFFFFF;
-    --play-tinta:   #0E0E10;
     --velo-acento:  rgba(181, 123, 255, .10);
     --velo-marca:   rgba(155, 93, 229, .22);
     --sombra:       0 1px 2px rgba(0, 0, 0, .40), 0 16px 40px rgba(0, 0, 0, .35);
@@ -137,8 +133,6 @@
   --calido:       #FBBF24;
   --velo-calido:  rgba(251, 191, 36, .12);
   --marca-disco:  #9B5DE5;
-  --play-fondo:   #FFFFFF;
-  --play-tinta:   #0E0E10;
   --velo-acento:  rgba(181, 123, 255, .10);
   --velo-marca:   rgba(155, 93, 229, .22);
   --sombra:       0 1px 2px rgba(0, 0, 0, .40), 0 16px 40px rgba(0, 0, 0, .35);
@@ -201,7 +195,7 @@ a:hover { text-decoration-thickness: 2px; }
    titular escondido DEBAJO de la barra. Es además la línea con la que el
    marcador del menú decide en qué sección estás. */
 .seccion[id] { scroll-margin-top: 84px; }
-@media (max-width: 1000px) { .seccion[id] { scroll-margin-top: 104px; } }
+@media (max-width: 1160px) { .seccion[id] { scroll-margin-top: 104px; } }
 
 .saltar {
   position: absolute; left: -9999px; top: 0; z-index: 100;
@@ -227,10 +221,21 @@ a:hover { text-decoration-thickness: 2px; }
 .isotipo { width: 34px; height: 34px; border-radius: 10px; display: block; flex: none; }
 
 .nav { margin-left: auto; display: flex; align-items: center; gap: 2px; }
+/* ⚠️ El relleno horizontal bajó de 11 a 7 px el 11-sep-2026, y está medido.
+   Ese día la cabecera pasó de UN botón de descarga (118 px) a los DOS badges
+   oficiales (267 px), o sea 149 px más en el mismo renglón. Con 11 px el menú
+   pedía 608 px y la fila entera 1.068, contra los 1.040 que da `--ancho`
+   (1.120 menos el relleno de `.envoltura`): NO ENTRABA A NINGÚN ANCHO, ni a
+   1.440 —el tope es la envoltura, no la ventana—. Se veía como «Cómo
+   funciona» partido en dos renglones y la cabecera 17 px más alta.
+   Con 7 px el menú pide 560 y sobran 20. El alto de 40 px no se toca: es el
+   blanco táctil, y lo que se achica es sólo el aire a los lados.
+   Si algún día entra un séptimo enlace, no bajes más este número: ahí lo que
+   corresponde es subir el corte de 1.000 px y mandar el menú a su renglón. */
 .nav a {
   color: var(--tinta-suave); text-decoration: none;
   font-size: .91rem; font-weight: 500;
-  padding: 9px 11px; border-radius: var(--r-boton);
+  padding: 9px 7px; border-radius: var(--r-boton);
   display: inline-flex; align-items: center; min-height: 40px;
 }
 .nav a:hover { color: var(--tinta); background: var(--velo-acento); }
@@ -258,13 +263,19 @@ a:hover { text-decoration-thickness: 2px; }
    enlaces en la misma línea que la marca, la fila no entra en un teléfono de
    360 px y arrastra la página entera a un desplazamiento horizontal — que es
    el defecto más feo que puede tener un sitio en un móvil. */
-/* El corte esta en 1000 px y no en 660: desde el 2-sep-2026 el menu lleva
-   SEIS enlaces mas el boton de descarga, y en una sola fila no entran en una
-   tableta angosta — arrastraban la pagina a un desplazamiento horizontal. */
-@media (max-width: 1000px) {
+/* El corte estaba en 660 px, paso a 1000 el 2-sep-2026 —cuando el menu crecio
+   a SEIS enlaces mas el boton de descarga— y paso a 1160 el 11-sep-2026, por
+   la misma razon una vez mas: ese dia el boton unico (118 px) se convirtio en
+   los DOS badges oficiales (267 px). Esta MEDIDO: con el menu sin partir, la
+   fila pide 1.025 px, o sea que necesita una ventana de 1.105 para que
+   `.envoltura` se los de. Por debajo de eso el menu se partia en dos renglones
+   («Como funciona») y la cabecera crecia 17 px. 1160 deja 56 px de holgura.
+   ⚠️ Si moves este numero, move tambien el `scroll-margin-top` de
+   `.seccion[id]` de mas arriba: los dos describen el mismo alto de cabecera. */
+@media (max-width: 1160px) {
   .cabecera__fila { flex-wrap: wrap; min-height: 0; padding-block: 10px; row-gap: 4px; }
   .marca { order: 1; }
-  .boton--mini { order: 2; margin-left: auto; }
+  .tiendas--mini, .descarga-corta { order: 2; margin-left: auto; }
   .tema { order: 3; margin-left: 8px; }
   .nav {
     order: 4; flex-basis: 100%; margin-left: 0;
@@ -280,11 +291,11 @@ a:hover { text-decoration-thickness: 2px; }
   /* El texto «Descargar» se esconde sólo a la vista: con `display: none` el
      enlace se quedaba sin nombre accesible (Lighthouse, 2-sep-2026) y un lector
      de pantalla anunciaba «enlace» a secas. */
-  .boton--mini span {
+  .descarga-corta span {
     position: absolute; width: 1px; height: 1px; overflow: hidden;
     clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
   }
-  .boton--mini { padding: 0 12px; }
+  .descarga-corta { padding: 0 12px; }
 }
 
 /* --- Portada ------------------------------------------------------------ */
@@ -528,7 +539,7 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
 }
 
 @media print {
-  .cabecera, .pie, .tema, .botones, .saltar { display: none !important; }
+  .cabecera, .pie, .tema, .botones, .tiendas, .saltar { display: none !important; }
   body { background: #fff; color: #000; font-size: 11pt; }
   a { color: #000; }
   .doc { max-width: none; }
@@ -590,9 +601,10 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
 /* ==========================================================================
    AGREGADO 2-sep-2026 — el sitio pasa de «página de una app interna» a
    página de producto: botón de Google Play, capturas reales, integraciones.
-   Todo con los mismos tokens de arriba; acá abajo no hay ni un hex suelto
-   salvo los cuatro colores del triángulo de Google Play, que son de Google
-   y no se pueden re-teñir sin dejar de ser ese triángulo.
+   Todo con los mismos tokens de arriba, y desde el 11-sep-2026 acá abajo no
+   hay ni un hex suelto: los cuatro colores del triángulo de Google Play eran
+   la única excepción y se fueron con el botón dibujado, que hoy es el badge
+   oficial de cada tienda (ver «Los badges de las tiendas»).
    ========================================================================== */
 
 /* --- La marca es el LOGOTIPO (la palabra) ------------------------------- */
@@ -607,28 +619,79 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
 .marca__disco { fill: var(--marca-disco); }
 .pie .marca__palabra { height: 27px; }
 
-/* --- Botón de Google Play ----------------------------------------------- */
-/* Dibujado acá, no descargado: el sitio no pide un solo byte a un tercero.
-   Se puede reemplazar por el badge oficial de Google si Legal lo prefiere;
-   está anotado en el README. */
-.boton--play {
-  background: var(--play-fondo); color: var(--play-tinta);
-  border-color: var(--play-fondo);
-  min-height: 56px; padding: 0 24px; gap: 13px;
-}
-.boton--play:hover { filter: brightness(.92); }
-:root[data-tema="oscuro"] .boton--play:hover { filter: brightness(.9); }
-.boton--play svg { width: 26px; height: 26px; }
-.play__texto { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.08; }
-.play__texto small { font-size: .63rem; letter-spacing: .13em; text-transform: uppercase; font-weight: 500; }
-.play__texto b { font-size: 1.2rem; font-weight: 600; letter-spacing: -.015em; color: inherit; }
+/* --- Los badges de las tiendas ------------------------------------------ */
+/* 11-sep-2026. Hasta hoy los dos botones estaban DIBUJADOS acá —el triángulo
+   de Play en sus cuatro colores y un ícono nuestro en lugar de la manzana—
+   para no pedirle un byte a un tercero. El dueño mandó seguir las guías
+   oficiales de las dos tiendas, y las dos dicen lo mismo con todas las
+   letras: el badge no se recrea. Apple: «Use only the badge artwork provided
+   in these guidelines» y «Don't modify, angle, or animate the App Store
+   badge». Google: «Don't change the badge color», «Don't remove or rearrange
+   badge elements, or otherwise adjust the badge in any way».
 
-/* Version compacta, para la cabecera. */
-.boton--mini {
-  min-height: 40px; padding: 0 15px; gap: 8px; flex: none;
-  font-size: .88rem; font-weight: 600;
+   La tensión con «nada externo» era aparente: el arte se bajó UNA vez, vive
+   en assets/img/tiendas/ y se sirve desde nuestro propio origen. Cero
+   peticiones a terceros y la CSP sigue con `img-src 'self'`.
+
+   🔴 EL ARTE NO SE TOCA DESDE ACÁ, y por eso va como <img> y no en línea: un
+   <svg> pegado en el HTML invita a que alguien le meta `currentColor` o un
+   `fill` del tema. Lo único que esta hoja decide es CUÁNTO MIDE y CUÁNTO AIRE
+   tiene alrededor. El porqué de cada número, con sus citas, está en
+   assets/img/tiendas/README.md.
+
+   - Alto: 48 px en la portada, 40 px en la cabecera. El mínimo en pantalla es
+     40 px (Apple) y 28 px (Google): manda el de Apple, y el de la cabecera es
+     ese mínimo exacto.
+   - `gap` ≥ un cuarto del alto: es la zona de respeto que piden las dos, y
+     ahí no puede entrar ni texto ni otro gráfico. 14 px sobre 48 y 12 sobre
+     40. Si achicás el badge, achicá el gap en la misma proporción, nunca al
+     revés.
+   - La altura la fija ESTA regla y el ancho sale del `viewBox`. Los dos
+     quedan a la misma altura, que es lo que pide Google («the Google Play
+     badge is the same size or larger than the other badges»), y como el de
+     Play es más ancho (3,37:1 contra 2,99:1) termina siendo el mayor. NUNCA
+     le pongas un `width` fijo a uno solo.
+   - No hay efecto de `hover` ni de `opacity`, y no es un olvido: cualquiera
+     de los dos modifica el arte, que es lo que las guías prohíben. Queda el
+     cursor y el anillo de foco del sitio.
+   - Negro en los DOS temas. Apple pide el negro justamente cuando hay otro
+     badge al lado, Google tiene una sola versión, y los dos traen su propio
+     filete gris (#a6a6a6), que es lo que los hace legibles sobre el fondo
+     oscuro. No hay variante clara que poner. */
+.tiendas { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+.tienda { display: inline-flex; flex: none; line-height: 0; border-radius: 8px; }
+.tienda:hover { text-decoration: none; }
+.tienda img {
+  display: block; height: 48px; width: auto; max-width: none;
 }
-.boton--mini svg { width: 17px; height: 17px; }
+
+/* Versión compacta, para la cabecera de las cinco páginas. */
+/* Sin `margin-left: auto`: con el menú en la misma fila ya lo lleva `.nav`, y
+   dos márgenes automáticos se reparten el hueco y despegan el menú de la
+   derecha. En pantalla angosta, donde el menú baja a su propio renglón, se lo
+   pone la media query de la cabecera. */
+.tiendas--mini { flex: none; flex-wrap: nowrap; gap: 12px; }
+.tiendas--mini img { height: 40px; }
+
+/* El botón corto del teléfono: lo que se ve por debajo de 500 px, donde los
+   dos badges no entran en el renglón a un tamaño legible. NO es un badge —es
+   texto y un ícono nuestro—, así que no incumple ninguna guía, y lleva al
+   bloque `#descargar` de la portada, donde están los dos de verdad. Antes un
+   toque de más que aterrizar en la tienda equivocada, que es el defecto que
+   este cambio vino a cerrar. */
+.descarga-corta {
+  display: none; align-items: center; gap: 8px; flex: none; margin-left: auto;
+  min-height: 40px; padding: 0 14px;
+  border: var(--grosor) solid var(--borde); border-radius: var(--r-boton);
+  color: var(--tinta); background: var(--superficie);
+  font-size: .88rem; font-weight: 600; text-decoration: none;
+}
+.descarga-corta:hover { border-color: var(--acento); color: var(--acento); text-decoration: none; }
+.descarga-corta svg { width: 17px; height: 17px; flex: none; }
+@media (max-width: 500px) {
+  .tiendas--mini { display: none; }
+  .descarga-corta { display: inline-flex; }
+}
 
 /* --- Franja de datos duros ---------------------------------------------- */
 /* ⚠️ CUATRO elementos, y por eso las columnas van EXPLÍCITAS y no con
@@ -740,10 +803,6 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
 @media (prefers-color-scheme: dark) {
   :root:not([data-tema="claro"]) .i-sombra { filter: drop-shadow(0 10px 22px rgba(0, 0, 0, .5)); }
 }
-
-/* --- Pie: la columna de la descarga ------------------------------------- */
-.pie .boton--play { min-height: 50px; padding: 0 18px; }
-.pie .play__texto b { font-size: 1.05rem; }
 
 /* --- Utilidades --------------------------------------------------------- */
 .mt-xl { margin-top: 38px; }
@@ -1246,8 +1305,14 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
    11-sep-2026, el día en que Vendoo se publicó también para iPhone y ese
    botón pasó a ser un <a> con su enlace, como el de Play.
 
-   Mismo tamaño que el de Google Play para que los dos se lean como pareja,
-   pero hueco y con borde punteado: dice «todavía no» sin parecer roto. Es un
+   ⚠️ Desde el 11-sep-2026 las tiendas se pintan con su badge OFICIAL y no
+   con un botón nuestro, así que esta clase ya no tiene con qué emparejarse:
+   su compañera `.boton--play` se fue ese día. Hoy es un `.boton` hueco de
+   borde punteado y nada más. Si vuelve a hacer falta anunciar una tienda que
+   todavía no se puede enlazar, lo honesto es una frase al lado de los badges
+   —no un tercer badge inventado, que es justo lo que las guías prohíben—.
+
+   Hueco y con borde punteado: dice «todavía no» sin parecer roto. Es un
    <span aria-disabled>, no un enlace, así que no hay foco ni hover. Sin
    opacidad: el texto sigue pasando AA (`--tinta-suave`, 7,37:1). */
 .boton--pronto {
