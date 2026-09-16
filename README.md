@@ -186,6 +186,45 @@ ninguno recortado y `scrollWidth` nunca mayor que la ventana, 54 de 54; en
 escritorio el botón no se dibuja y la barra sigue horizontal a 69 px; y
 Lighthouse con accesibilidad, buenas prácticas y SEO en **100**.
 
+#### Todo destino de ancla necesita reservarle sitio a la cabecera
+
+La cabecera es **pegajosa**, así que saltar a un ancla deja el destino **debajo
+de ella**: el navegador lo pone a cero del borde de arriba, que es justo donde
+está la barra. Lo resuelve `scroll-margin-top` — 84 px, 104 en pantalla
+angosta: la altura de la cabecera más aire.
+
+⚠️ **Y la regla decía sólo `.seccion[id]`**, que fue verdad mientras todos los
+destinos eran secciones. Dejó de serlo. Defecto reportado por el dueño el
+**16-sep-2026**: «el botón de descarga en el header no enfoca la pantalla en
+los botones de las tiendas en teléfono». Y era literal — `#descargar` y
+`#download` son el `div.tiendas` del héroe, no una sección, así que tenían
+`scroll-margin-top: 0` y **los 48 px del badge quedaban enteros tapados** por
+los 65 px de cabecera. En el teléfono y también en escritorio.
+
+Hoy la regla es `.seccion[id], .tiendas[id]`. Se barrieron **las 44 anclas que
+el sitio enlaza**, en los dos idiomas y a 390 y 1400 px: ésas dos eran las
+únicas rotas, y hoy no queda ninguna. **Si agregás un destino que no sea
+`.seccion[id]` ni `.tiendas[id]`, agregalo a esa regla.**
+
+#### El segundo fallo del mismo informe: el panel no se cerraba
+
+El mismo toque tenía **otra** causa encima, y ésta nació con el menú plegable.
+El cierre al elegir destino escuchaba en `.nav`, y **`.descarga-corta` es
+hermano de `.nav`, no está dentro**: al tocar «Descargar» el panel seguía
+abierto, el salto se calculaba con la cabecera desplegada —**422 px en vez de
+65**— y la página se pasaba **357 px**, dejando el destino debajo del panel.
+
+Se arregla escuchando en **la cabecera entera**: cualquier `<a>` de ahí cierra
+el panel. Los seis del menú, «Descargar», la marca y el selector de idioma —
+los tres últimos navegan de todas formas, y cerrar algo ya cerrado no cuesta
+nada.
+
+⚠️ **La lección, que vale para el próximo control que entre al panel:** un
+`<a>` que vive en la cabecera pero **fuera** del `<nav>` no lo cubre un oyente
+puesto en el menú. Medido desde las cinco entradas posibles —`/`,
+`/index.html`, otra página, y las dos en inglés—: hoy las cinco aterrizan con
+los badges enteros a la vista y el panel cerrado.
+
 #### El marcador del ítem activo, y por qué necesita JavaScript
 
 Defecto reportado por el dueño el **2-sep-2026**: «el indicador de seleccionado

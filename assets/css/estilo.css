@@ -194,8 +194,23 @@ a:hover { text-decoration-thickness: 2px; }
 /* La cabecera es pegajosa: sin esto, saltar a `/#integraciones` deja el
    titular escondido DEBAJO de la barra. Es además la línea con la que el
    marcador del menú decide en qué sección estás. */
-.seccion[id] { scroll-margin-top: 84px; }
-@media (max-width: 1080px) { .seccion[id] { scroll-margin-top: 104px; } }
+/* ⚠️ LA CABECERA ES PEGAJOSA, ASI QUE TODO DESTINO DE ANCLA NECESITA
+   RESERVARLE SITIO. Sin esto, saltar a un ancla deja el destino DEBAJO de la
+   cabecera: el navegador lo pone a cero del borde de arriba, que es justo
+   donde esta la barra.
+
+   ⚠️ Y la regla decia solo `.seccion[id]`, que fue verdad mientras todos los
+   destinos eran secciones. Dejo de serlo: `#descargar` / `#download` son el
+   `div.tiendas` del heroe, y estaban con `scroll-margin-top: 0`. Reportado por
+   el dueno el 16-sep-2026 —«el boton de descarga no enfoca la pantalla en los
+   botones de las tiendas»— y medido: los badges caian a `top: 0` con 65 px de
+   cabecera encima, o sea los 48 px del badge ENTEROS tapados, en el telefono y
+   tambien en escritorio.
+
+   Barridas las 44 anclas que el sitio enlaza: eran las dos unicas. Si agregas
+   un destino que no sea `.seccion[id]` ni `.tiendas[id]`, agregalo aca. */
+.seccion[id], .tiendas[id] { scroll-margin-top: 84px; }
+@media (max-width: 1080px) { .seccion[id], .tiendas[id] { scroll-margin-top: 104px; } }
 
 .saltar {
   position: absolute; left: -9999px; top: 0; z-index: 100;

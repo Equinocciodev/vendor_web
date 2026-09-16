@@ -364,10 +364,21 @@ var VENDOO_BASE = VENDOO_IDIOMA === 'en' ? '/en/' : '/';
 
   boton.addEventListener('click', function () { poner(!abierto()); });
 
-  // Al elegir un destino, el menu sobra: si no, el panel tapa justo aquello a
-  // lo que se acaba de saltar. Vale igual para las anclas de la portada, que
-  // no recargan la pagina y dejarian el panel abierto para siempre.
-  nav.addEventListener('click', function (ev) {
+  /* Al elegir un destino, el menu sobra: si no, el panel tapa justo aquello a
+     lo que se acaba de saltar.
+
+     ⚠️ ESCUCHA EN LA CABECERA ENTERA Y NO SOLO EN `.nav`, y eso es un arreglo
+     del 16-sep-2026. Escuchando solo en el menu se quedaba fuera
+     `.descarga-corta`, que es HERMANO de `.nav` y no esta dentro: al tocar
+     «Descargar» el panel seguia abierto y, como el salto se calcula con la
+     cabecera desplegada —422 px en vez de 65—, la pagina se pasaba 357 px y el
+     destino quedaba debajo del panel. Lo reporto el dueno.
+
+     Cualquier `<a>` de la cabecera cierra: los seis del menu, «Descargar», la
+     marca y el selector de idioma. Los tres ultimos navegan de todos modos, y
+     cerrar algo que ya esta cerrado no cuesta nada. */
+  var cabecera = document.querySelector('.cabecera');
+  (cabecera || nav).addEventListener('click', function (ev) {
     if (ev.target.closest && ev.target.closest('a')) poner(false);
   });
 
