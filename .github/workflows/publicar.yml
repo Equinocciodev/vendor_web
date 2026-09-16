@@ -36,10 +36,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Que estén las cuatro páginas
+      # Cuatro en español (la raíz) y las mismas cuatro en inglés (/en/).
+      # Si falta una, el selector de idioma de su gemela lleva a un 404.
+      - name: Que estén las ocho páginas
         run: |
           faltan=0
-          for f in index.html contacto.html terminos.html privacidad.html; do
+          for f in index.html contacto.html terminos.html privacidad.html \
+                   en/index.html en/contact.html en/terms.html en/privacy.html; do
             if [ ! -f "$f" ]; then echo "falta $f"; faltan=1; fi
           done
           exit $faltan
@@ -55,7 +58,7 @@ jobs:
         continue-on-error: true
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq tidy
-          for f in *.html; do
+          for f in *.html en/*.html; do
             echo "--- $f"
             tidy -quiet -errors --gnu-emacs yes "$f" || true
           done
@@ -68,7 +71,11 @@ jobs:
         run: |
           mkdir -p _sitio
           cp -R assets _sitio/
-          cp *.html robots.txt sitemap.xml favicon.svg site.webmanifest CNAME _sitio/
+          cp *.html robots.txt sitemap.xml favicon.svg *.webmanifest CNAME _sitio/
+          # La versión en inglés, que es una carpeta y no un archivo suelto:
+          # sin esta línea se publica el sitio entero menos /en/, y las ocho
+          # `hreflang` apuntan a cuatro páginas que contestan 404.
+          cp -R en _sitio/
           # Sin Jekyll: Pages lo correría por defecto y se comería cualquier
           # archivo o carpeta que empiece con guion bajo. Y los README de
           # assets/ son del repositorio, no del sitio.
@@ -79,6 +86,13 @@ jobs:
           # serviría como un archivo más), `tool/` y `.github/`.
           for f in _headers tool .github README.md; do
             if [ -e "_sitio/$f" ]; then echo "$f no va en el sitio"; exit 1; fi
+          done
+          # Y lo que SÍ tiene que haber llegado. Copiar una carpeta es la clase
+          # de línea que alguien borra sin querer al reordenar el bloque, y el
+          # sitio publicado no protestaría: sólo se caería /en/.
+          for f in en/index.html en/contact.html en/terms.html en/privacy.html \
+                   site.webmanifest site-en.webmanifest; do
+            if [ ! -f "_sitio/$f" ]; then echo "$f no llegó a _sitio"; exit 1; fi
           done
 
       - name: Subir el artefacto de Pages

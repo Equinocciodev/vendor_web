@@ -1,0 +1,149 @@
+<!doctype html>
+<!-- tool/og-en.html — el molde de la imagen social EN INGLES (15-sep-2026).
+
+     Es la copia de og.html con el texto traducido y NADA MAS: misma
+     composicion, mismas medidas, misma captura del telefono. Si tocas una,
+     toca la otra, o las dos versiones del sitio dejan de verse como la misma
+     marca cuando alguien las pega en un chat.
+
+     ⚠️ LAS CHAPAS ENTRAN EN UN RENGLON Y NADIE AVISA SI DEJAN DE ENTRAR.
+     `.pie` lleva `flex-wrap`: una palabra de mas no desborda, envuelve, y el
+     bloque sube y descoloca el titular. **En ingles paso de verdad**: la
+     traduccion literal —«No signal» y «Odoo and your ERP»— medía 745 px de los
+     720 que da `.texto` y tiraba la cuarta chapa a un segundo renglon. Medido
+     chapa por chapa el 15-sep-2026, con estas cuatro queda en **707, o sea 13
+     de sobra**; las alternativas que se probaron y no entraban: «Odoo and your
+     ERP» (745), «Odoo + your ERP» (744) y «Android & iOS» + «Odoo & your ERP»
+     (721, por UN pixel). Si le agregas una palabra, regenera la imagen Y MIRALA.
+
+     Se genera igual que la otra, desde la raiz del repositorio:
+       python3 -m http.server 8000
+       "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+         --headless=new --disable-gpu --hide-scrollbars \
+         --window-size=1200,630 --screenshot=assets/img/og-en.png \
+         http://localhost:8000/tool/og-en.html
+     Este archivo NO se publica: el workflow arma _sitio/ a mano y tool/ no va.
+-->
+<!--
+  Molde de la imagen de OpenGraph (assets/img/og.png), 1200 × 630.
+
+  NO se publica: `tool/` no entra en la carpeta que se sube a Pages. Está acá
+  para que la imagen se pueda volver a generar cuando cambie el claim o la
+  captura, en vez de ser un PNG que nadie sabe de dónde salió. Se genera así,
+  desde la raíz del repositorio:
+
+      python3 -m http.server 8000
+      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+        --headless=new --disable-gpu --hide-scrollbars \
+        --window-size=1200,630 --screenshot=assets/img/og.png \
+        http://localhost:8000/tool/og.html
+
+  OpenGraph no acepta SVG: tiene que ser PNG o JPG, y por eso hay un paso de
+  rasterizado. La tipografía es la misma Poppins autohospedada del sitio, la
+  marca es el logotipo dibujado (no un texto tecleado con la fuente) y la
+  pantalla del teléfono es la captura real del Inicio
+  (`assets/img/capturas/inicio.png`, la misma de la portada y de la ficha de
+  Play): si se cambian las capturas, se vuelve a generar esto también. No hay
+  ni un logotipo ajeno: el triángulo de Play va dibujado, como en el sitio.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Vendoo — molde de la imagen social</title>
+<style>
+  @font-face { font-family: 'Poppins'; src: url('/assets/fonts/poppins-400.woff2') format('woff2'); font-weight: 400; }
+  @font-face { font-family: 'Poppins'; src: url('/assets/fonts/poppins-500.woff2') format('woff2'); font-weight: 500; }
+  @font-face { font-family: 'Poppins'; src: url('/assets/fonts/poppins-600.woff2') format('woff2'); font-weight: 600; }
+  @font-face { font-family: 'Poppins'; src: url('/assets/fonts/poppins-700.woff2') format('woff2'); font-weight: 700; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    background:
+      radial-gradient(52% 60% at 84% 12%, rgba(155, 93, 229, .30), transparent 66%),
+      radial-gradient(46% 52% at 6% 92%, rgba(109, 40, 217, .26), transparent 70%),
+      #0E0E10;
+    color: #fff; font-family: 'Poppins', sans-serif;
+    padding: 66px 0 0 72px; position: relative;
+    border-bottom: 8px solid #9B5DE5;
+  }
+  .texto { width: 720px; height: 556px; display: flex; flex-direction: column; justify-content: space-between; padding-bottom: 58px; }
+  /* El ancho va explícito: un <svg> con `width:auto` se estira al 100 %
+     del contenedor y `preserveAspectRatio` lo centra — el logotipo quedaba
+     en el medio de la imagen en vez de arriba a la izquierda. 3806/926. */
+  .marca { height: 58px; width: 238px; display: block; }
+  h1 { font-size: 56px; line-height: 1.1; letter-spacing: -.032em; font-weight: 700; max-width: 22ch; }
+  h1 em { font-style: normal; color: #B57BFF; }
+  p { font-size: 23px; color: #A5A5B0; margin-top: 20px; max-width: 32ch; line-height: 1.45; }
+  .pie { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .chip {
+    border: 1.6px solid #646472; border-radius: 999px; padding: 8px 18px;
+    font-size: 19px; color: #D5D5DE; font-weight: 500; white-space: nowrap;
+  }
+  .chip--play { background: #fff; color: #0E0E10; border-color: #fff; display: flex; align-items: center; gap: 10px; font-weight: 600; }
+  .chip--play svg { width: 22px; height: 22px; }
+
+  /* El teléfono: un marco oscuro con la captura adentro, inclinado apenas
+     y saliendo por abajo, como en la portada. 1080 × 2400 → 300 × 667. */
+  .telefono {
+    position: absolute; right: 88px; top: 96px;
+    width: 316px; height: 683px; padding: 8px;
+    border-radius: 42px; background: #1C1C22;
+    border: 1.6px solid #3A3A44;
+    box-shadow: 0 40px 90px rgba(0, 0, 0, .6), 0 0 0 1px rgba(255, 255, 255, .04);
+    transform: rotate(-4deg);
+  }
+  .telefono img { display: block; width: 300px; height: 667px; border-radius: 34px; object-fit: cover; object-position: top; }
+  .telefono::after {
+    /* la muesca de la cámara, para que se lea como teléfono y no como foto */
+    content: ''; position: absolute; top: 18px; left: 50%; width: 88px; height: 8px;
+    transform: translateX(-50%); border-radius: 999px; background: #0E0E10;
+  }
+</style>
+</head>
+<body>
+  <div class="texto">
+    <svg class="marca" viewBox="0 0 3806 926" role="img" aria-label="vendoo">
+      <g transform="translate(66,0)" fill="none" stroke="#FFFFFF" stroke-width="132" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M66,326 L256,794 L446,326"/>
+        <path transform="translate(546,0)" d="M424,758.4 A234,234 0 1 1 534,560 L66,560"/>
+        <path transform="translate(1186,0)" d="M66,794 L66,538 A212,212 0 0 1 490,538 L490,794"/>
+        <path transform="translate(1782,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+        <path transform="translate(1782,0)" d="M534,66 L534,794"/>
+        <path transform="translate(2428,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+        <path transform="translate(3074,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+        <path d="M3281.6,560 A92.4,92.4 0 1 0 3466.4,560 A92.4,92.4 0 1 0 3281.6,560 Z" fill="#9B5DE5" stroke="none"/>
+      </g>
+    </svg>
+    <div>
+      <h1>Field sales, <em>end to end</em>.</h1>
+      <p>Route, orders with tax, collections and proof of every visit. Works with no signal.</p>
+    </div>
+    <div class="pie">
+      <!-- ⚠️ La primera chapa decía «Google Play», con el triángulo dibujado.
+           Cambió el 11-sep-2026: ese día Vendoo se publicó también para
+           iPhone y nombrar una sola tienda pasó a ser media verdad.
+
+           Dice las dos PLATAFORMAS y no las dos tiendas por sitio: `.pie`
+           lleva `flex-wrap`, así que una chapa de más no desborda —envuelve—,
+           y con las chapas en dos filas el bloque entero sube y el titular se
+           descoloca. Medido ese día en el molde: «Google Play y App Store» y
+           «Android y iPhone» las dos parten el renglón; «Android y iOS» entra
+           justo y deja la composición igual que estaba. Si le agregás una
+           palabra, volvé a generar la imagen y mirala: no hay aviso.
+
+           De paso se va el único dibujo de una marca ajena que quedaba en la
+           imagen social, que es la regla del resto del sitio. -->
+      <span class="chip chip--play">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18.5h2"/>
+        </svg>
+        Android and iOS
+      </span>
+      <span class="chip">Offline</span>
+      <span class="chip">Multi-company</span>
+      <span class="chip">Odoo &amp; ERPs</span>
+    </div>
+  </div>
+  <div class="telefono"><img src="/assets/img/capturas/inicio.png" alt=""></div>
+</body>
+</html>

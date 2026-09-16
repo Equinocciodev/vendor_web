@@ -1,0 +1,46 @@
+{
+  "name": "Vendoo — field sales",
+  "short_name": "Vendoo",
+  "description": "The app a field sales team uses to build its route, take orders, collect payment and leave proof of every visit. Works with no signal.",
+  "lang": "en",
+  "start_url": "/en/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#0E0E10",
+  "theme_color": "#6D28D9",
+  "icons": [
+    {
+      "src": "/assets/img/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/img/icono-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/img/icono-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/img/icono-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/img/icono-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

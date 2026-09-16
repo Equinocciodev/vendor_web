@@ -11,11 +11,45 @@
    La lectura inicial NO vive acá sino en un script en línea dentro del <head>
    de cada página: este archivo se carga con `defer` y para cuando corre el
    primer pintado ya ocurrió, o sea que el sitio parpadearía en blanco. */
+/* ==========================================================================
+   El idioma de la pagina (15-sep-2026)
+
+   El sitio existe en espanol (la raiz) y en ingles (/en/), y las dos versiones
+   comparten ESTE archivo — es el mismo sitio, no dos—. Casi todo el texto vive
+   en el HTML, que ya viene traducido; lo que no puede vivir ahi es lo que este
+   script escribe solo: el rotulo del interruptor de tema y el correo que arma
+   el formulario de contacto.
+
+   La fuente de verdad es `lang` del <html>, que cada pagina ya declara y que
+   un buscador y un lector de pantalla tambien leen. No se mira la URL: una
+   pagina que se moviera de carpeta seguiria diciendo en que idioma esta.
+   Cualquier cosa que no empiece por «en» es espanol, que es el idioma del
+   sitio. */
+var VENDOO_IDIOMA = (function () {
+  'use strict';
+  var l = (document.documentElement.getAttribute('lang') || '').toLowerCase();
+  return l.slice(0, 2) === 'en' ? 'en' : 'es';
+})();
+
+/* La raiz de ESTA version del sitio. El menu de la portada son anclas
+   (`/#producto` en espanol, `/en/#product` en ingles) y el marcador del menu
+   —mas abajo— necesita saber cual de las dos es «Inicio». */
+var VENDOO_BASE = VENDOO_IDIOMA === 'en' ? '/en/' : '/';
+
 (function () {
   'use strict';
 
   var CLAVE = 'vendoo-tema';
   var raiz = document.documentElement;
+
+  /* El rotulo del boton de tema: lo escribe el script, asi que es lo unico
+     del interruptor que hay que traducir. Las claves son los dos valores del
+     estado, que siguen siendo «claro» y «oscuro» en los dos idiomas: son el
+     contenido de `data-tema` y de localStorage, no texto para nadie. */
+  var ROTULO = {
+    es: { claro: 'Cambiar a tema claro', oscuro: 'Cambiar a tema oscuro' },
+    en: { claro: 'Switch to light theme', oscuro: 'Switch to dark theme' }
+  }[VENDOO_IDIOMA];
 
   function delSistema() {
     return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -41,8 +75,8 @@
     var boton = document.querySelector('.tema');
     if (!boton) return;
     var proximo = actual() === 'oscuro' ? 'claro' : 'oscuro';
-    boton.setAttribute('aria-label', 'Cambiar a tema ' + proximo);
-    boton.setAttribute('title', 'Cambiar a tema ' + proximo);
+    boton.setAttribute('aria-label', ROTULO[proximo]);
+    boton.setAttribute('title', ROTULO[proximo]);
   }
 
   document.addEventListener('click', function (ev) {
@@ -197,8 +231,11 @@
   var cabecera = document.querySelector('.cabecera');
   if (!nav || !('IntersectionObserver' in window)) return;
 
+  // `main > section` y no `#principal > section`: el id de la envoltura es un
+  // gancho interno y en las paginas en ingles se llama `main`. Hay un solo
+  // <main> por pagina, asi que el selector nombra lo mismo en las dos.
   var secciones = Array.prototype.slice.call(
-    document.querySelectorAll('#principal > section'));
+    document.querySelectorAll('main > section'));
   if (!secciones.length) return;
 
   var enlaces = Array.prototype.slice.call(nav.querySelectorAll('a'));
@@ -207,10 +244,13 @@
   enlaces.forEach(function (a) {
     var href = a.getAttribute('href') || '';
     var corte = href.indexOf('#');
-    if (href === '/' ) { inicio = a; return; }
-    // Sólo las anclas de ESTA página: `/#producto`, `#producto`.
+    // `VENDOO_BASE` es «/» en espanol y «/en/» en ingles: el mismo menu, la
+    // misma logica, dos raices. Escrito con «/» a secas, en /en/ NINGUN enlace
+    // casaba y el marcador se quedaba clavado donde el HTML lo dejo.
+    if (href === VENDOO_BASE) { inicio = a; return; }
+    // Sólo las anclas de ESTA página: `/#producto`, `/en/#product`, `#product`.
     if (corte === -1) return;
-    if (corte > 0 && href.slice(0, corte) !== '/') return;
+    if (corte > 0 && href.slice(0, corte) !== VENDOO_BASE) return;
     porAncla[href.slice(corte + 1)] = a;
   });
   if (!inicio) return;
@@ -320,7 +360,50 @@
   var CORREO = 'hola@vendooapp.com';
 
   var form = document.querySelector('.formulario');
-  if (!form) return;                        // sólo contacto.html tiene uno
+  if (!form) return;                        // sólo la página de contacto tiene uno
+
+  /* Lo que este bloque ESCRIBE, en los dos idiomas (15-sep-2026). El HTML del
+     formulario ya viene traducido —etiquetas, opciones, botón—; lo que no
+     puede venir de ahí es el correo que se arma acá y los avisos de estado.
+
+     ⚠️ Los `name` de los campos NO se traducen y no hay que traducirlos: son
+     `nombre`, `empresa`, `email`, `telefono`, `equipo` y `mensaje` en las dos
+     versiones. Son la clave con la que un servicio de formularios va a recibir
+     el mensaje el día que se contrate (ver el README), y dos juegos de nombres
+     serían dos integraciones. Lo que cambia es el RÓTULO que se escribe en el
+     cuerpo del correo, que es lo que lee una persona.
+
+     `%s` es el correo de contacto; `%e`, el del visitante. */
+  var T = {
+    es: {
+      asunto: 'Contacto desde vendooapp.com — ',
+      nombre: 'Nombre', empresa: 'Empresa', correo: 'Correo',
+      telefono: 'Teléfono', equipo: 'Tamaño del equipo de ventas',
+      mensaje: 'Mensaje:', vacio: '—',
+      firma: '— Enviado desde el formulario de vendooapp.com',
+      abierto: 'Se abrió tu correo con el mensaje listo: sólo falta que lo mandes. ' +
+               'Si no se abrió nada, escribinos a %s con lo que llenaste.',
+      enviando: 'Enviando…',
+      recibido: 'Recibido. Te respondemos a %e.',
+      fallo: 'No se pudo enviar. Escribinos a %s y lo vemos igual.'
+    },
+    en: {
+      // El mismo asunto que los dos `mailto:` escritos a mano de
+      // en/contact.html: el del <noscript> y el del enlace directo. Si
+      // cambia uno, cambian los tres, o el mismo formulario llega a la
+      // bandeja con dos asuntos distintos segun si corrio el script.
+      asunto: 'Inquiry from vendooapp.com — ',
+      nombre: 'Name', empresa: 'Company', correo: 'Email',
+      telefono: 'Phone', equipo: 'Size of the sales team',
+      mensaje: 'Message:', vacio: '—',
+      firma: '— Sent from the contact form at vendooapp.com',
+      abierto: 'Your email app just opened with the message ready — all that is left ' +
+               'is to send it. If nothing opened, write to %s with what you filled in.',
+      enviando: 'Sending…',
+      recibido: 'Got it. We will reply to %e.',
+      fallo: 'That did not go through. Write to %s and we will pick it up there.'
+    }
+  }[VENDOO_IDIOMA];
 
   var estado = form.querySelector('.formulario__estado');
   var enviar = form.querySelector('button[type="submit"]');
@@ -349,22 +432,22 @@
   }
 
   function asunto(d) {
-    return 'Contacto desde vendooapp.com — ' + d.empresa;
+    return T.asunto + d.empresa;
   }
 
   function cuerpo(d) {
-    var o = function (v) { return v || '—'; };
+    var o = function (v) { return v || T.vacio; };
     return [
-      'Nombre: ' + d.nombre,
-      'Empresa: ' + d.empresa,
-      'Correo: ' + d.email,
-      'Teléfono: ' + o(d.telefono),
-      'Tamaño del equipo de ventas: ' + o(d.equipo),
+      T.nombre + ': ' + d.nombre,
+      T.empresa + ': ' + d.empresa,
+      T.correo + ': ' + d.email,
+      T.telefono + ': ' + o(d.telefono),
+      T.equipo + ': ' + o(d.equipo),
       '',
-      'Mensaje:',
+      T.mensaje,
       d.mensaje,
       '',
-      '— Enviado desde el formulario de vendooapp.com'
+      T.firma
     ].join('\n');
   }
 
@@ -376,13 +459,12 @@
     // `form-action 'none'` no la toca, y el navegador abre el cliente de
     // correo sin salir de la página.
     window.location.href = href;
-    decir('Se abrió tu correo con el mensaje listo: sólo falta que lo mandes. ' +
-          'Si no se abrió nada, escribinos a ' + CORREO + ' con lo que llenaste.', '');
+    decir(T.abierto.replace('%s', CORREO), '');
   }
 
   function porServicio(d) {
     if (enviar) enviar.disabled = true;
-    decir('Enviando…', '');
+    decir(T.enviando, '');
     var carga = {
       _subject: asunto(d),
       nombre: d.nombre, empresa: d.empresa, email: d.email,
@@ -395,9 +477,9 @@
     }).then(function (r) {
       if (!r.ok) throw new Error('HTTP ' + r.status);
       form.reset();
-      decir('Recibido. Te respondemos a ' + d.email + '.', 'ok');
+      decir(T.recibido.replace('%e', d.email), 'ok');
     }).catch(function () {
-      decir('No se pudo enviar. Escribinos a ' + CORREO + ' y lo vemos igual.', 'error');
+      decir(T.fallo.replace('%s', CORREO), 'error');
     }).then(function () {
       if (enviar) enviar.disabled = false;
     });

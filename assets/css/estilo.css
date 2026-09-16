@@ -195,7 +195,7 @@ a:hover { text-decoration-thickness: 2px; }
    titular escondido DEBAJO de la barra. Es además la línea con la que el
    marcador del menú decide en qué sección estás. */
 .seccion[id] { scroll-margin-top: 84px; }
-@media (max-width: 1160px) { .seccion[id] { scroll-margin-top: 104px; } }
+@media (max-width: 1240px) { .seccion[id] { scroll-margin-top: 104px; } }
 
 .saltar {
   position: absolute; left: -9999px; top: 0; z-index: 100;
@@ -258,25 +258,62 @@ a:hover { text-decoration-thickness: 2px; }
   :root:not([data-tema="claro"]) .tema .sol  { display: none; }
 }
 
+/* EL SELECTOR DE IDIOMA (15-sep-2026). Un enlace, no un menu: con DOS idiomas
+   un menu es un clic de mas y una lista de uno. Y por ser un enlace de verdad
+   funciona con el JavaScript apagado, cada version vive en su propia URL y un
+   buscador puede seguirlo — que es justo lo que un menu armado con script no
+   le da a nadie.
+
+   Dice el idioma AL QUE LLEVA, no en el que estas: «EN» en las paginas en
+   espanol y «ES» en las inglesas. Lleva ademas `lang` y `hreflang` con ese
+   mismo idioma, para que un lector de pantalla lo pronuncie como lo que es y
+   no como una sigla en espanol.
+
+   Mide lo mismo que el interruptor de tema y va pegado a el: son los dos
+   controles de la cabecera, y juntos se leen como un grupo. */
+.idioma {
+  margin-left: 8px; flex: none;
+  min-width: 40px; height: 40px; padding: 0 9px;
+  display: inline-grid; place-items: center;
+  background: transparent; color: var(--tinta-suave);
+  font-size: .8rem; font-weight: 600; letter-spacing: .04em;
+  text-decoration: none;
+  border: var(--grosor) solid var(--borde); border-radius: var(--r-boton);
+}
+.idioma:hover { color: var(--tinta); border-color: var(--acento); text-decoration: none; }
+
 /* En pantalla angosta la cabecera se parte en DOS renglones: la marca y el
    interruptor arriba, la navegación abajo a todo el ancho. Con los cuatro
    enlaces en la misma línea que la marca, la fila no entra en un teléfono de
    360 px y arrastra la página entera a un desplazamiento horizontal — que es
    el defecto más feo que puede tener un sitio en un móvil. */
 /* El corte estaba en 660 px, paso a 1000 el 2-sep-2026 —cuando el menu crecio
-   a SEIS enlaces mas el boton de descarga— y paso a 1160 el 11-sep-2026, por
-   la misma razon una vez mas: ese dia el boton unico (118 px) se convirtio en
-   los DOS badges oficiales (267 px). Esta MEDIDO: con el menu sin partir, la
-   fila pide 1.025 px, o sea que necesita una ventana de 1.105 para que
-   `.envoltura` se los de. Por debajo de eso el menu se partia en dos renglones
-   («Como funciona») y la cabecera crecia 17 px. 1160 deja 56 px de holgura.
+   a SEIS enlaces mas el boton de descarga—, paso a 1160 el 11-sep-2026 —ese dia
+   el boton unico (118 px) se convirtio en los DOS badges oficiales (267 px)— y
+   paso a 1240 el 15-sep-2026, cuando entro el selector de idioma.
+   Es la CUARTA vez que sube por la misma razon, y la regla ya es un patron:
+   **cada vez que entra algo nuevo en esta fila, hay que volver a medirla.**
+
+   Esta MEDIDO, con el menu en espanol (que es el largo: en ingles la fila pide
+   ~80 px menos y por eso el numero sale del castellano). Con el menu sin
+   partir la fila pedia 1.025 px; `.idioma` agrega 64 —40 de ancho, 16 del
+   `gap` de la fila y 8 de su propio margen— y la deja en 1.089, o sea que
+   necesita una ventana de 1.169 para que `.envoltura` se los de. Por debajo de
+   eso el menu se parte en dos renglones («Como funciona») y la cabecera crece
+   17 px. 1240 deja 71 px de holgura.
    ⚠️ Si moves este numero, move tambien el `scroll-margin-top` de
    `.seccion[id]` de mas arriba: los dos describen el mismo alto de cabecera. */
-@media (max-width: 1160px) {
+@media (max-width: 1240px) {
   .cabecera__fila { flex-wrap: wrap; min-height: 0; padding-block: 10px; row-gap: 4px; }
   .marca { order: 1; }
   .tiendas--mini, .descarga-corta { order: 2; margin-left: auto; }
-  .tema { order: 3; margin-left: 8px; }
+  /* ⚠️ `idioma` y `tema` comparten el order 3 —y NO 3 y 4— a propósito: el
+     menú es `order: 4` con `flex-basis: 100%`, así que cualquier cosa que
+     quede en un order POSTERIOR al suyo se va a un tercer renglón detrás de
+     él. Medido: con `tema` en 4 la cabecera pasaba de 69 a 149 px y se partía
+     en cuatro filas. Con el mismo order, los dos controles se ordenan por su
+     sitio en el HTML, que ya es el correcto. */
+  .idioma, .tema { order: 3; margin-left: 8px; }
   .nav {
     order: 4; flex-basis: 100%; margin-left: 0;
     justify-content: space-between; gap: 0;
@@ -296,6 +333,11 @@ a:hover { text-decoration-thickness: 2px; }
     clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
   }
   .descarga-corta { padding: 0 12px; }
+  /* A 320 px la fila lleva cuatro piezas —marca, descarga, idioma y tema— y
+     el aire es lo unico que sobra. El alto de 40 px NO se toca: es el blanco
+     tactil. Medido a 320: la fila pide 266 px de los 280 utiles. */
+  .idioma { margin-left: 4px; padding: 0 6px; min-width: 34px; }
+  .tema { margin-left: 4px; }
 }
 
 /* --- Portada ------------------------------------------------------------ */
@@ -542,7 +584,7 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
 }
 
 @media print {
-  .cabecera, .pie, .tema, .botones, .tiendas, .saltar { display: none !important; }
+  .cabecera, .pie, .tema, .idioma, .botones, .tiendas, .saltar { display: none !important; }
   body { background: #fff; color: #000; font-size: 11pt; }
   a { color: #000; }
   .doc { max-width: none; }

@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sBSmF0cvqwH9q89LN1kE6J363Sy1ybqC0YQqLHqJ1RI=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vendoo contact and support — email, phone and demo</title>
+<meta name="description" content="Vendoo support: the email, phone and WhatsApp of GUUAO LLC, and the form to request a demo on your own data. A person replies in under one business day.">
+<meta name="robots" content="index, follow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="canonical" href="https://vendooapp.com/en/contact.html">
+<link rel="alternate" hreflang="es" href="https://vendooapp.com/contacto.html">
+<link rel="alternate" hreflang="en" href="https://vendooapp.com/en/contact.html">
+<link rel="alternate" hreflang="x-default" href="https://vendooapp.com/contacto.html">
+<meta name="theme-color" content="#F4F5F9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E0E10" media="(prefers-color-scheme: dark)">
+<meta name="author" content="GUUAO LLC">
+<meta name="apple-mobile-web-app-title" content="Vendoo">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vendoo">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="es_VE">
+<meta property="og:url" content="https://vendooapp.com/en/contact.html">
+<meta property="og:title" content="Vendoo contact and support — email, phone and demo">
+<meta property="og:description" content="Vendoo support: the email, phone and WhatsApp of GUUAO LLC, and the form to request a demo on your own data. A person replies in under one business day.">
+<meta property="og:image" content="https://vendooapp.com/assets/img/og-en.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Vendoo - field sales, end to end.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Vendoo contact and support — email, phone and demo">
+<meta name="twitter:description" content="Vendoo support: the email, phone and WhatsApp of GUUAO LLC, and the form to request a demo on your own data. A person replies in under one business day.">
+<meta name="twitter:image" content="https://vendooapp.com/assets/img/og-en.png">
+<meta name="twitter:image:alt" content="Vendoo - field sales, end to end.">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/img/icono-180.png">
+<link rel="manifest" href="/site-en.webmanifest">
+
+<!-- Las cuatro Poppins van precargadas (~9 KB cada una): el titular es 700, el
+     menu 500, los botones 600 y el texto 400, y todas estan en el primer
+     pliegue. Medido con Lighthouse el 2-sep-2026: con solo 400 y 600
+     precargadas, la 700 llegaba tarde y el titular saltaba (CLS 0,29). -->
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-700.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-400.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-600.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-500.woff2" crossorigin>
+<!-- Solo la resolucion de DNS, no la conexion: la analitica se carga despues
+     del evento load (ver assets/js/analitica.js), asi que abrir la conexion
+     antes competiria con la hoja de estilo y las fuentes por nada. -->
+<link rel="dns-prefetch" href="https://www.gstatic.com">
+<link rel="dns-prefetch" href="https://www.googletagmanager.com">
+<link rel="stylesheet" href="/assets/css/estilo.css">
+<script>/* Dos cosas que tienen que pasar ANTES del primer pintado.
+
+   1. El tema elegido: con `defer` la pagina parpadearia en claro. Los tres
+      valores estan explicados en sitio.js.
+   2. `data-anim`, que es lo que habilita las animaciones de entrada. Va aca
+      y no en sitio.js por lo mismo: puesto despues, lo que va a aparecer se
+      veria un instante antes de esconderse. Y se QUITA SOLO a los dos
+      segundos si sitio.js no alcanzo a marcar `data-listo` — sin esa red,
+      un script que no cargue dejaria media pagina en opacity 0. */
+try{var t=localStorage.getItem('vendoo-tema');
+if(t==='claro'||t==='oscuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}
+try{var h=document.documentElement;h.setAttribute('data-anim','1');
+setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-anim');}},2000);}catch(e){}</script>
+<script src="/assets/js/sitio.js" defer></script>
+<!-- Analitica (GA4 por Firebase), decision del dueno del 2-sep-2026. Es la
+     unica cosa externa del sitio; los hosts que necesita estan en la CSP de
+     arriba y explicados en assets/js/analitica.js. -->
+<script type="module" src="/assets/js/analitica.js"></script>
+
+<!-- El `address` va aca y en el <dl> de #support, y los dos tienen que decir
+     lo mismo — y lo mismo que su gemela en espanol. Es el dato que Apple exige
+     en la Support URL («legal address, email address, telephone number») y aca
+     encima lo lee una maquina.
+
+     ⚠️ `availableLanguage` dice ["es"] y NO ["es","en"]. Que exista esta
+     traduccion no prueba que se atienda en ingles, y eso no esta escrito en
+     ningun repositorio. El dia que el dueno lo confirme, cambia aca y en la
+     frase de #support. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact and support \u2014 Vendoo",
+  "url": "https://vendooapp.com/en/contact.html",
+  "inLanguage": "en",
+  "about": {
+    "@type": "SoftwareApplication",
+    "name": "Vendoo"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "GUUAO LLC",
+    "url": "https://vendooapp.com/",
+    "email": "hola@vendooapp.com",
+    "telephone": "+58-412-346-9712",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "10302 NW South River Drive",
+      "addressLocality": "Medley",
+      "addressRegion": "FL",
+      "postalCode": "33178",
+      "addressCountry": "US"
+    },
+    "contactPoint": [{
+      "@type": "ContactPoint",
+      "contactType": "customer support",
+      "email": "hola@vendooapp.com",
+      "telephone": "+58-412-346-9712",
+      "url": "https://vendooapp.com/en/contact.html#support",
+      "availableLanguage": ["es"]
+    }]
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://vendooapp.com/en/"},
+    {"@type": "ListItem", "position": 2, "name": "Contact", "item": "https://vendooapp.com/en/contact.html"}
+  ]
+}
+</script>
+</head>
+<body>
+<a class="saltar" href="#main">Skip to content</a>
+<header class="cabecera">
+  <div class="envoltura cabecera__fila">
+    <a class="marca" href="/en/" aria-label="Vendoo, go to the home page">
+      <svg class="marca__palabra" viewBox="0 0 3806 926" role="img" aria-label="vendoo">
+        <g transform="translate(66,0)" fill="none" stroke="currentColor" stroke-width="132" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M66,326 L256,794 L446,326"/>
+          <path transform="translate(546,0)" d="M424,758.4 A234,234 0 1 1 534,560 L66,560"/>
+          <path transform="translate(1186,0)" d="M66,794 L66,538 A212,212 0 0 1 490,538 L490,794"/>
+          <path transform="translate(1782,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path transform="translate(1782,0)" d="M534,66 L534,794"/>
+          <path transform="translate(2428,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path transform="translate(3074,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path class="marca__disco" d="M3281.6,560 A92.4,92.4 0 1 0 3466.4,560 A92.4,92.4 0 1 0 3281.6,560 Z" stroke="none"/>
+        </g>
+      </svg>
+    </a>
+    <nav class="nav" aria-label="Main navigation">
+        <a href="/en/">Home</a>
+        <a href="/en/#product">Product</a>
+        <a href="/en/#how">How it works</a>
+        <a href="/en/#integrations">Integrations</a>
+        <a href="/en/#security">Security</a>
+        <a href="/en/contact.html" aria-current="page">Contact</a>
+    </nav>
+    <!-- LOS DOS BADGES DE TIENDA, EN CHICO. Es arte OFICIAL servido desde
+         nuestro propio origen; las reglas —el orden (App Store primero, lo pide
+         Apple), el alto minimo y que los dos midan lo mismo— estan en
+         assets/img/tiendas/README.md. NO les pongas un `width` distinto ni los
+         re-tinas para el modo oscuro.
+
+         🔴 EL ARTE QUE HAY HOY ES EL DE LA CAMPANA EN ESPANOL (Apple es-MX,
+         Google Spanish-LATAM), y en una pagina en ingles eso INCUMPLE la regla
+         de idioma de las dos guias. No se arregla desde aca: hay que bajar el
+         badge en ingles de sus dos fuentes y servirlo. Esta anotado en el
+         README, en «Lo que falta», con las dos URL. Lo que NO se hizo es
+         dibujar uno o editarle el texto al que hay: eso lo prohiben las dos
+         guias con todas las letras, y un badge retocado es peor que uno en
+         otro idioma. El `alt`, que es lo unico que si podemos escribir, va en
+         ingles. -->
+    <div class="tiendas tiendas--mini">
+      <a class="tienda" href="https://apps.apple.com/app/id6811065669" target="_blank" rel="noopener">
+        <img src="/assets/img/tiendas/app-store.svg" alt="Download on the App Store" width="120" height="40">
+      </a>
+      <a class="tienda" href="https://play.google.com/store/apps/details?id=com.leiros.vendoo" target="_blank" rel="noopener">
+        <img src="/assets/img/tiendas/google-play.svg" alt="Get it on Google Play" width="135" height="40">
+      </a>
+    </div>
+    <a class="descarga-corta" href="/en/#download">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v12M7.5 10.5 12 15l4.5-4.5M4 20h16"/></svg>
+      <span>Download</span>
+    </a>
+    <!-- EL SELECTOR DE IDIOMA. Apunta a la GEMELA en espanol, no a la portada:
+         mandar todo a «/» seria contestar «esta pagina no existe en espanol»
+         cuando si existe. -->
+    <a class="idioma" href="/contacto.html" hreflang="es" lang="es" aria-label="Ver esta página en español">ES</a>
+    <button class="tema" type="button" aria-label="Switch theme">
+      <svg class="sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+<!-- CONTACTO. Una sola pieza: titular, una frase, el formulario como centro en
+     su tarjeta, tres razones cortas al lado y los dos canales directos a la
+     vista. El bloque #support va DEBAJO, por la misma razon que en espanol: el
+     que viene a pedir soporte lo busca, y no le roba el primer pliegue a la
+     demo.
+
+     El envio es un `mailto:` armado por sitio.js, que escribe el asunto y el
+     cuerpo en el idioma de la pagina (ver el bloque `T` de ese archivo). Sin
+     JavaScript no se envia —la CSP lleva `form-action 'none'`— y el <noscript>
+     manda al correo, que igual esta a la vista. -->
+<section class="seccion contacto">
+  <div class="envoltura contacto__reja">
+    <div class="contacto__intro revelar">
+      <span class="rotulo">Contact</span>
+      <h1 class="titulo-pagina">Let's talk about <em>your sales force</em>.</h1>
+      <p class="entrada">Tell us how your team sells today and we will show you Vendoo running on your own data.</p>
+    </div>
+
+    <form class="contacto__form formulario revelar revelar--b" id="demo" method="post" aria-labelledby="f-titulo">
+      <h2 id="f-titulo" class="formulario__titulo">Request your demo</h2>
+      <div class="formulario__fila">
+        <div class="campo">
+          <label for="f-nombre">Name</label>
+          <input id="f-nombre" name="nombre" type="text" autocomplete="name" required maxlength="120">
+        </div>
+        <div class="campo">
+          <label for="f-empresa">Company</label>
+          <input id="f-empresa" name="empresa" type="text" autocomplete="organization" required maxlength="120">
+        </div>
+      </div>
+      <div class="formulario__fila">
+        <div class="campo">
+          <label for="f-correo">Email</label>
+          <input id="f-correo" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="160">
+        </div>
+        <div class="campo">
+          <label for="f-telefono">Phone <small>(optional)</small></label>
+          <input id="f-telefono" name="telefono" type="tel" autocomplete="tel" inputmode="tel" maxlength="40">
+        </div>
+      </div>
+      <div class="campo">
+        <label for="f-equipo">Reps out in the field <small>(optional)</small></label>
+        <select id="f-equipo" name="equipo">
+          <option value="">Pick one</option>
+          <option>1 to 5</option>
+          <option>6 to 20</option>
+          <option>21 to 50</option>
+          <option>51 to 150</option>
+          <option>More than 150</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label for="f-mensaje">Message</label>
+        <textarea id="f-mensaje" name="mensaje" rows="4" required maxlength="3000" placeholder="Which system you run, and what you would like to see in the demo."></textarea>
+      </div>
+      <div class="formulario__pie">
+        <button class="boton boton--lleno" type="submit">Show me Vendoo</button>
+        <p class="formulario__estado" role="status" aria-live="polite"></p>
+      </div>
+      <p class="formulario__nota">Sending opens your email app with the message ready. No strings attached.</p>
+      <noscript><p class="formulario__nota">The form needs JavaScript to put the email together. Without it, write to us directly at <a href="mailto:hola@vendooapp.com?subject=Inquiry%20from%20vendooapp.com">hola@vendooapp.com</a>.</p></noscript>
+    </form>
+
+    <div class="contacto__lado">
+      <ul class="razones">
+        <li class="revelar revelar--b">
+          <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
+          <div><b>An answer in under one business day</b><span>A person replies, not a bot.</span></div>
+        </li>
+        <li class="revelar revelar--c">
+          <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18.5h2"/><path d="M9.5 9.5l2 2 3.5-3.5"/></svg></div>
+          <div><b>A demo on your own data</b><span>Your catalog, your price list and your route.</span></div>
+        </li>
+        <li class="revelar revelar--d">
+          <div class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4" width="8" height="6" rx="1.5"/><rect x="13.5" y="14" width="8" height="6" rx="1.5"/><path d="M10.5 7h4a3 3 0 0 1 3 3v4"/><path d="M13.5 17h-4a3 3 0 0 1-3-3v-4"/></svg></div>
+          <div><b>Integration with your ERP</b><span>With Odoo, native. With the rest, custom-built.</span></div>
+        </li>
+      </ul>
+      <p class="contacto__o revelar revelar--d">Or write to us directly:</p>
+      <div class="vias revelar revelar--d">
+        <a class="via" href="mailto:hola@vendooapp.com?subject=Inquiry%20from%20vendooapp.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7.5l8.5 6 8.5-6"/></svg><span>hola@vendooapp.com</span></a>
+        <a class="via" href="https://wa.me/584123469712" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.6L3 21l1.9-5.6A8.5 8.5 0 1 1 21 11.5z"/><path d="M9.3 8.3c.3 2.5 2.4 4.6 4.9 5.1l1-1.1 2 .9-.2 1.5c-3.6.6-8-3.6-7.6-7.3l1.5-.2.9 1.9z"/></svg><span>WhatsApp +58 412-346 9712</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOPORTE. Es la gemela de #soporte de contacto.html y tiene que decir
+     EXACTAMENTE los mismos datos: correo, telefono, domicilio legal y tiempo
+     de respuesta. Si cambia uno, cambia en los dos.
+
+     ⚠️ EL IDIOMA DE ATENCION NO SE INVENTA. La pagina en espanol promete
+     respuesta «en espanol». Que GUUAO atienda en ingles es un hecho que no
+     esta escrito en ningun repositorio y que no se puede deducir de que exista
+     esta traduccion, asi que aca NO se promete: se dice lo que se sabe —que
+     contesta una persona, en menos de un dia habil— y que el idioma de trabajo
+     es el espanol. Es la misma regla con la que el domicilio legal estuvo meses
+     con el marcador `.pendiente` en vez de una direccion plausible. El dia que
+     el dueno confirme que se atiende en ingles, esta frase cambia aca y el
+     `availableLanguage` del JSON-LD de la cabeza pasa a ["es","en"]. -->
+<section class="seccion seccion--fina" id="support">
+  <div class="envoltura">
+    <div class="encabezado revelar">
+      <span class="rotulo">Support</span>
+      <h2>Vendoo support</h2>
+      <p>A person at GUUAO LLC &mdash; the company that builds and publishes the app &mdash; replies in under one business day. Our working language is Spanish.</p>
+    </div>
+
+    <div class="vias revelar">
+      <a class="via" href="mailto:hola@vendooapp.com?subject=Vendoo%20support"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7.5l8.5 6 8.5-6"/></svg><span>hola@vendooapp.com</span></a>
+      <a class="via" href="tel:+584123469712"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 3h3l1.5 4-2 1.4a12 12 0 0 0 5.6 5.6l1.4-2 4 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.5 5.2 2 2 0 0 1 6.5 3z"/></svg><span>+58 412-346 9712</span></a>
+      <a class="via" href="https://wa.me/584123469712" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.6L3 21l1.9-5.6A8.5 8.5 0 1 1 21 11.5z"/><path d="M9.3 8.3c.3 2.5 2.4 4.6 4.9 5.1l1-1.1 2 .9-.2 1.5c-3.6.6-8-3.6-7.6-7.3l1.5-.2.9 1.9z"/></svg><span>WhatsApp, the same number</span></a>
+    </div>
+
+    <div class="reja mt-sm">
+      <article class="tarjeta revelar">
+        <h3>If you use Vendoo out in the field</h3>
+        <p>Your account is created and handed to you by <strong>your employer</strong>: the app has no sign-up and there is no way to register from here. If you cannot get in, if something will not load, or if an order never arrived, write to us with your rep email address and your company's name.</p>
+      </article>
+      <article class="tarjeta revelar revelar--b">
+        <h3>If your company already runs Vendoo</h3>
+        <p>Adding or removing reps, permissions, companies and warehouses, or the integration with your ERP. Write from the company address and tell us what you need changed.</p>
+      </article>
+      <article class="tarjeta revelar revelar--c">
+        <h3>Your data</h3>
+        <p>What the app collects, what for and how long it is kept is in the <a href="/en/privacy.html">privacy policy</a>. Access, correction and deletion are requested at the same address: <a href="/en/privacy.html#c7">how to do it</a>.</p>
+      </article>
+    </div>
+
+    <div class="ficha mt-sm revelar revelar--b">
+      <dl>
+        <dt>Responsible for the app</dt>
+        <dd>GUUAO LLC</dd>
+        <dt>Legal address</dt>
+        <!-- El mismo literal que el <dl> de contacto.html y que el `address`
+             del JSON-LD de esta cabeza. Los TRES tienen que decir lo mismo. -->
+        <dd>10302 NW South River Drive, Medley, FL 33178, United States</dd>
+        <dt>Support email</dt>
+        <dd><a href="mailto:hola@vendooapp.com?subject=Vendoo%20support">hola@vendooapp.com</a></dd>
+        <dt>Telephone</dt>
+        <dd><a class="sin-corte" href="tel:+584123469712">+58 412-346 9712</a> &mdash; also on <a class="sin-corte" href="https://wa.me/584123469712" target="_blank" rel="noopener">WhatsApp</a>.</dd>
+        <dt>Response time</dt>
+        <dd>Under one business day.</dd>
+        <dt>Application</dt>
+        <dd>Vendoo (<code>com.leiros.vendoo</code>), Android 7.0 or later and iOS 15 or later. <a href="/en/#download">Both download links are on the home page</a>.</dd>
+        <dt>Documents</dt>
+        <dd><a href="/en/privacy.html">Privacy policy</a> &middot; <a href="/en/terms.html">Terms of service</a></dd>
+      </dl>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="pie">
+  <div class="envoltura">
+    <div class="pie__reja">
+      <div>
+        <a class="marca" href="/en/" aria-label="Vendoo, go to the home page">
+      <svg class="marca__palabra" viewBox="0 0 3806 926" role="img" aria-label="vendoo">
+        <g transform="translate(66,0)" fill="none" stroke="currentColor" stroke-width="132" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M66,326 L256,794 L446,326"/>
+          <path transform="translate(546,0)" d="M424,758.4 A234,234 0 1 1 534,560 L66,560"/>
+          <path transform="translate(1186,0)" d="M66,794 L66,538 A212,212 0 0 1 490,538 L490,794"/>
+          <path transform="translate(1782,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path transform="translate(1782,0)" d="M534,66 L534,794"/>
+          <path transform="translate(2428,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path transform="translate(3074,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path class="marca__disco" d="M3281.6,560 A92.4,92.4 0 1 0 3466.4,560 A92.4,92.4 0 1 0 3281.6,560 Z" stroke="none"/>
+        </g>
+      </svg>
+    </a>
+        <p class="pie__nota">The field sales app: route, orders, collections and proof of every visit, with or without a signal.</p>
+        <div class="botones mt-sm">
+        </div>
+      </div>
+      <div>
+        <h3>Product</h3>
+        <ul>
+          <li><a href="/en/#product">What Vendoo does</a></li>
+          <li><a href="/en/#how">How it works</a></li>
+          <li><a href="/en/#screens">Screen by screen</a></li>
+          <li><a href="/en/#integrations">Integrations and ERP</a></li>
+          <li><a href="/en/#security">Security</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Site</h3>
+        <ul>
+          <li><a href="/en/">Home</a></li>
+          <li><a href="/en/contact.html">Contact</a></li>
+          <li><a href="/en/contact.html#support">Support</a></li>
+          <li><a href="/en/contact.html#demo">Request a demo</a></li>
+          <li><a href="/en/privacy.html">Privacy policy</a></li>
+          <li><a href="/en/terms.html">Terms of service</a></li>
+          <li><a href="/contacto.html" hreflang="es" lang="es">Español</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pie__base">
+      <p>&copy; 2026 GUUAO LLC.</p>
+      <p><a href="mailto:hola@vendooapp.com">hola@vendooapp.com</a> &middot; <a class="sin-corte" href="https://wa.me/584123469712" target="_blank" rel="noopener">WhatsApp +58 412-346 9712</a></p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

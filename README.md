@@ -36,6 +36,15 @@ de consumo**.
 > viaja un aviso). Si agregás texto nuevo, la regla sigue siendo la misma:
 > **nombrá un sistema operativo sólo cuando lo que decís dependa de cuál sea.**
 
+> ⚠️ **El sitio está en dos idiomas desde el 15-sep-2026.** El español vive en
+> la raíz —donde estaba y donde se queda: esas URL están registradas como
+> Support URL en App Store Connect y como política de privacidad en Google
+> Play, y **no se mueven**— y el inglés en **`/en/`**. Son ocho páginas, no
+> cuatro, y están **emparejadas**: cada una declara su gemela con `hreflang` y
+> el selector de la cabecera lleva a ella, no a la portada del otro idioma.
+> Todo eso lo vigila `tool/verificar.py`. Está contado abajo, en «Los dos
+> idiomas».
+
 > ⚠️ **Vendoo no es la app de una sola empresa y el sitio no nombra a ninguna.**
 > Hasta el 2-sep-2026 el sitio decía que era «la aplicación interna de Grupo
 > Leiros» y que no se podía obtener. Ya no: es un producto de GUUAO LLC y el
@@ -52,11 +61,19 @@ de consumo**.
 ├── contacto.html         El formulario de demo, tres razones y los dos canales directos
 ├── terminos.html         Términos de servicio
 ├── privacidad.html       Política de privacidad
-├── 404.html              Página no encontrada, con enlaces a todo
+├── 404.html              Página no encontrada, BILINGÜE (Pages sirve una sola para todo el dominio)
+├── en/                   El sitio en inglés. Las cuatro mismas páginas y el mismo desvío
+│   ├── index.html        gemela de /index.html
+│   ├── contact.html      gemela de /contacto.html
+│   ├── terms.html        gemela de /terminos.html
+│   ├── privacy.html      gemela de /privacidad.html
+│   └── support.html      desvío a /en/contact.html#support (espejo de /soporte.html)
 ├── favicon.svg           El isotipo, copiado de la app
 ├── robots.txt
 ├── sitemap.xml
 ├── site.webmanifest
+├── site.webmanifest      El manifiesto en español (lo enlazan las páginas de la raíz)
+├── site-en.webmanifest   El mismo en inglés (lo enlazan las de /en/). Cambian cuatro campos: lang, name, description y start_url
 ├── _headers              Referencia de cabeceras: Pages NO las sirve (ver «Lo que Pages no puede hacer»)
 ├── CNAME                 El dominio que sirve GitHub Pages
 ├── assets/
@@ -65,22 +82,30 @@ de consumo**.
 │   ├── js/analitica.js   GA4 por Firebase, cargado después de `load` y sin señales de anuncios
 │   ├── fonts/            Poppins 400/500/600/700, subconjunto latino (~9 KB c/u)
 │   └── img/
-│       ├── og.png        Imagen social 1200×630 — se genera con tool/og.html
+│       ├── og.png        Imagen social 1200×630 (español) — se genera con tool/og.html
+│       ├── og-en.png     La misma en inglés — se genera con tool/og-en.html
 │       ├── isotipo.svg, favicon-32.png, icono-180.png, icono-192.png,
 │       │   icono-512.png, icono-512-maskable.png   (los PNG salen de tool/imagenes.py)
 │       ├── tiendas/      Los badges OFICIALES de App Store y Google Play. NO se editan.
 │       └── capturas/     Las seis capturas (PNG maestras + WebP derivadas + derivadas.json)
 ├── tool/verificar.py     El chequeo que corre en CI y también en tu máquina
 ├── tool/imagenes.py      Deriva los WebP de las capturas y los íconos. Se corre a mano.
-├── tool/og.html          El molde de la imagen social. NO se publica.
+├── tool/og.html          El molde de la imagen social en español. NO se publica.
+├── tool/og-en.html       El mismo molde en inglés (og-en.png). NO se publica.
 └── .github/workflows/publicar.yml
 ```
 
 ### La cabecera y el pie están copiados en cada página
 
 A propósito, y conviene saberlo antes de tocarlos: son unas cuarenta líneas
-idénticas al principio y al final de los cinco HTML. **Si cambiás una, cambiala
-en las cinco.** La alternativa era inyectarlas con JavaScript, y eso significa
+idénticas al principio y al final de los cinco HTML **de cada idioma**. **Si
+cambiás una, cambiala en las cinco** — y mirá si su gemela en el otro idioma
+dice lo mismo.
+
+⚠️ **Dos cosas cambian dentro de la cabecera, no una**: el `aria-current="page"`
+del enlace activo y el **destino del selector de idioma**, que apunta a la
+gemela de esa página y por lo tanto es distinto en cada una. Las dos las
+comprueba `tool/verificar.py`. La alternativa era inyectarlas con JavaScript, y eso significa
 que el menú y el pie no existen para quien tenga el script bloqueado ni para un
 buscador que no ejecute JS. Para cinco páginas, la copia sale más barata que ese
 costo.
@@ -103,7 +128,8 @@ en el anuncio o en el enlace de Play. **Cuatro páginas con contenido de verdad
 rinden más que seis con relleno.** Si algún día «Integraciones» crece hasta
 merecer su propia página —un caso por ERP, por ejemplo—, se parte entonces: el
 ancla `/#integraciones` se convierte en `/integraciones.html` y hay que tocar el
-menú y el pie de las cinco páginas, el `sitemap.xml` y el `BreadcrumbList`.
+menú y el pie de las diez páginas, las dos versiones de la página nueva, el
+`sitemap.xml`, el `BreadcrumbList` y la tabla `GEMELAS` de `tool/verificar.py`.
 
 **Términos y privacidad NO están en el menú** (decisión del dueño): viven en el
 pie y en la página de contacto.
@@ -296,8 +322,8 @@ tamaño y con el mismo tratamiento: no hay una principal y una de relleno.
 
 | Tienda | Sale en |
 |---|---|
-| Google Play (paquete `com.leiros.vendoo`) | portada, cabecera de las cinco, JSON-LD |
-| App Store (Apple ID **6811065669**) | portada y cabecera de las cinco |
+| Google Play (paquete `com.leiros.vendoo`) | portada, cabecera de las cinco **de cada idioma**, JSON-LD |
+| App Store (Apple ID **6811065669**) | portada y cabecera de las cinco **de cada idioma** |
 
 ⚠️ **Hasta el 11-sep-2026 acá decía que la URL de Apple vivía en UN solo sitio
 del marcado, a propósito. Dejó de ser cierto ese día**, cuando el dueño mandó
@@ -439,6 +465,173 @@ de `.seccion[id]`: los dos describen el mismo alto de cabecera.
 
 ---
 
+## Los dos idiomas (15-sep-2026)
+
+Encargo del dueño: **«haz la página disponible en español/inglés»**. El sitio
+existe ahora en dos lenguas, y las decisiones que lo sostienen son cinco.
+
+### 1. El español se queda en la raíz; el inglés va a `/en/`
+
+No hay `/es/`, y no es pereza: **mover el español habría roto tres cosas que no
+están en este repositorio**. `https://vendooapp.com/contacto.html` es la
+*Support URL* de la ficha de App Store, `https://vendooapp.com/privacidad.html`
+es la URL de la política que exige la política de datos de usuario de Google
+Play, y las dos están escritas en la app. Una traducción no vale una redirección
+en un sitio que no sabe hacer redirecciones (Pages sólo sirve archivos).
+
+| Español | Inglés |
+|---|---|
+| `/` | `/en/` |
+| `/contacto.html` | `/en/contact.html` |
+| `/terminos.html` | `/en/terms.html` |
+| `/privacidad.html` | `/en/privacy.html` |
+| `/soporte.html` (desvío) | `/en/support.html` (desvío) |
+| `/404.html` | — *(no tiene: ver abajo)* |
+
+Los nombres de archivo están **en su idioma** —`contact.html`, no
+`contacto.html`— y las anclas también (`/en/#product`, `/en/#how`). Las únicas
+que **no** se tradujeron son las de las dos legales: `#c1..#c11` y `#t1..#t18`
+son las mismas en las dos versiones **a propósito**, para que
+`/privacidad.html#c7` y `/en/privacy.html#c7` sean la misma cláusula y un
+enlace a una cláusula sirva en las dos.
+
+### 2. El selector es un enlace, y lleva a la gemela
+
+En la cabecera, pegado al interruptor de tema, hay **un enlace** que dice el
+idioma **al que lleva**: «EN» en las páginas en español y «ES» en las inglesas.
+
+- **Es un enlace y no un menú** porque con dos idiomas un menú es un clic de más
+  y una lista de uno. Y por ser un enlace de verdad, **funciona con el
+  JavaScript apagado**, un buscador lo sigue y cada versión vive en su URL.
+- **Lleva a la GEMELA, no a `/en/`.** Mandar todo a la portada es contestarle
+  «esta página no existe en el otro idioma» a alguien que la está leyendo. Es
+  la regla que más fácil se rompe al agregar una página, y por eso la comprueba
+  el verificador.
+- Lleva `lang` y `hreflang` del idioma de destino, para que un lector de
+  pantalla pronuncie «EN» en inglés en vez de deletrear una sigla en castellano.
+- La **404 es la excepción correcta**: apunta a `/en/` a secas porque no tiene
+  gemela ni puede tenerla (abajo).
+
+En el pie hay además un enlace **«English» / «Español»** en la columna «Sitio»,
+para quien no mira la cabecera.
+
+### 3. No hay detección automática, y es una decisión
+
+Entrar en `/` con el navegador en inglés **no te manda a `/en/`**. Un redirigido
+por JavaScript rompería «la página dice la verdad sin JS», obligaría a
+recalcular el hash de la CSP y a Google no le gusta; y Pages no puede negociar
+el idioma en el servidor porque no hay servidor. Lo que sí hay es lo que un
+buscador necesita: **`hreflang` en las ocho páginas y en el `sitemap.xml`**, con
+`x-default` apuntando siempre al **español**, que es el idioma original y el del
+mercado del producto.
+
+### 4. La 404 es bilingüe porque no puede ser dos páginas
+
+⚠️ **GitHub Pages sirve UNA sola página de «no encontrado» para todo el
+dominio**: la `404.html` de la raíz, también para lo que cuelgue de `/en/`. Un
+`/en/404.html` existiría y no lo vería nadie. Por eso ahí conviven los dos
+idiomas —el `<h1>` sigue siendo uno solo, el español, y el inglés entra como
+`<p lang="en">`— y el botón lleva a `/en/`.
+
+### 5. `sitio.js` lee el idioma del `<html lang>`
+
+El sitio comparte **un solo** `assets/js/sitio.js`: es el mismo sitio, no dos.
+Lo poco que ese archivo escribe por su cuenta está traducido adentro y sale del
+atributo `lang` de la página, **no de la URL** (una página que se mudara de
+carpeta seguiría diciendo en qué idioma está):
+
+| Qué | Dónde |
+|---|---|
+| El rótulo del interruptor de tema | `ROTULO`, arriba del todo |
+| El asunto y el cuerpo del correo del formulario, y sus avisos de estado | `T`, en el bloque del formulario |
+| Cuál es «Inicio» para el marcador del menú | `VENDOO_BASE` (`/` o `/en/`) |
+
+⚠️ **Los `name` de los campos del formulario NO se tradujeron** y no hay que
+traducirlos: siguen siendo `nombre`, `empresa`, `email`, `telefono`, `equipo` y
+`mensaje` en las dos versiones. Son la clave con la que un servicio de
+formularios recibirá el mensaje el día que se contrate, y dos juegos de nombres
+serían **dos integraciones**. Lo que cambia es el rótulo que se escribe en el
+cuerpo del correo, que es lo que lee una persona.
+
+⚠️ Y el marcador del menú pasó a buscar sus secciones con **`main > section`** y
+no con `#principal > section`: el `id` de la envoltura es un gancho interno y en
+las páginas en inglés se llama `main`. Hay un solo `<main>` por página, así que
+el selector nombra lo mismo en las dos.
+
+### Un manifiesto por idioma
+
+`lang`, `name` y `description` del manifiesto son campos de **un** idioma, y no
+hay forma de declararlos en dos. Con uno solo, quien instalara el sitio desde
+`/en/` se encontraba el nombre y la descripción en castellano. Por eso hay
+`site-en.webmanifest`, que es una copia con **cuatro** campos distintos —`lang`,
+`name`, `description` y `start_url`— y todo lo demás igual: los íconos y los
+colores son los mismos a propósito, porque es la misma marca y no dos.
+
+⚠️ El `scope` se queda en **`/`** y NO pasa a `/en/`: el selector de idioma
+lleva a la raíz, y con el alcance restringido ese enlace se saldría de la
+aplicación instalada y abriría el navegador.
+
+### El inglés es de Estados Unidos, y es una decisión
+
+**Se escribe en inglés americano**: `catalog` y no `catalogue`, `authorized` y
+no `authorised`, `organization`, `recognizing`, `traveling`, `canceled`,
+`inquiry`. GUUAO LLC es una sociedad de **Florida**, las fichas de App Store y
+de Google Play salen en `en-US` y el mercado es América. Mezclar las dos
+ortografías es lo que delata una traducción hecha a pedazos, y en la primera
+pasada estaban mezcladas: había `catalogue` y `authorized` en la misma página.
+
+⚠️ **Y las comillas son `“ ”`, no `« »`.** Los guillemets son la comilla del
+español y quedaron colados dentro del texto en inglés en la primera pasada
+(«To send» en vez de “To send”). Cuidado al corregir esto con una sustitución
+global: **los comentarios de `/en/` están en español** —como todos los de este
+repositorio— y ahí `« »` es lo correcto. Lo que se cambia es el texto que se
+ve, no los comentarios.
+
+Tres frases más que se reescribieron porque eran calco y no inglés: «For whoever
+sells out in the street» (que se lee como «se queda sin existencias» o
+«traiciona»), «the rep **orders** the stops» (choca con *Order*, el pedido, dos
+líneas más abajo) y «With no signal too».
+
+### Lo que la traducción le costó a la cabecera
+
+Lo de siempre, y ya es un patrón: **cada vez que entra algo nuevo en esa fila,
+hay que volver a medirla.** El corte a dos renglones subió de **1160 a 1240 px**
+—es la cuarta vez que sube: 660 → 1000 → 1160 → 1240—. Medido con el menú en
+español, que es el largo (en inglés la fila pide ~80 px menos): la fila pedía
+1.025 px y `.idioma` le agrega **64** —40 de ancho, 16 del `gap` y 8 de su
+margen—, o sea 1.089, que necesitan una ventana de 1.169. 1240 deja 71 px de
+holgura. Si movés ese número, mové también el `scroll-margin-top` de
+`.seccion[id]`.
+
+🔴 **Y hubo un defecto propio, que conviene no repetir.** Al principio `.idioma`
+entró con `order: 3` y `.tema` se pasó a `order: 4`. El menú es `order: 4` con
+`flex-basis: 100%`, así que **cualquier cosa en un order posterior al suyo se va
+a un tercer renglón detrás de él**: la cabecera pasó de 69 a **149 px** y se
+partió en cuatro filas. Los dos controles comparten `order: 3` y se ordenan por
+su sitio en el HTML, que ya era el correcto. Medido de 320 a 1440 px en las
+cinco páginas de los dos idiomas: **69 px en una fila por encima de 1240, 105 en
+dos por debajo, y `scrollWidth` nunca supera al `innerWidth`.**
+
+### Cómo se comprobó
+
+Con Chrome de verdad manejado por CDP, **no con `--virtual-time-budget`** — el
+README ya avisaba de que con el reloj virtual el `IntersectionObserver` entrega
+una sola tanda, y en la primera pasada de este cambio volvió a pasar: el menú
+parecía atrasado una sección y 25 bloques `.revelar` parecían quedarse
+invisibles. Con reloj real, las dos cosas están bien:
+
+- el **marcador del menú** en `/en/` recorre las siete secciones y hereda como
+  debe (`#screens` → «Product», `#offline` → «How it works», `#who-for` →
+  «Security»), y el español sigue igual;
+- **cero** `.revelar` en `opacity: 0` al terminar el recorrido, ni a 1400 px ni
+  a 390;
+- **cero violaciones de CSP** en las cinco páginas nuevas (el `<script>` en
+  línea es byte a byte el mismo, así que el hash de la CSP no cambió);
+- el formulario arma el correo en el idioma de su página y con los mismos
+  `name`.
+
+---
+
 ## El formulario de contacto
 
 Desde el **2-sep-2026** `contacto.html` es **una sola pieza**: rótulo,
@@ -479,11 +672,14 @@ alcanza con **tres** cosas:
    HTML (`nombre`, `empresa`, `email`, `telefono`, `equipo`, `mensaje`) más
    `_subject` con el mismo asunto del `mailto:`. `email` se llama así, y no
    `correo`, porque es el nombre que esos servicios usan para el *reply-to*.
-2. En la CSP de `contacto.html` (`<meta http-equiv="Content-Security-Policy">`),
-   agregar el host del servicio a `connect-src`: por ejemplo
+2. En la CSP de **`contacto.html` Y de `en/contact.html`**
+   (`<meta http-equiv="Content-Security-Policy">`), agregar el host del
+   servicio a `connect-src`: por ejemplo
    `connect-src 'self' https://formspree.io`. Sin eso el navegador bloquea el
-   `fetch` en silencio. **Sólo en contacto.html**: las otras cuatro páginas no
-   envían nada.
+   `fetch` en silencio. **Sólo en esas dos**: las otras ocho no envían nada.
+   ⚠️ Son dos porque el formulario existe en los dos idiomas y comparte el
+   mismo `ENDPOINT_FORMULARIO`; abrir el host en una sola deja el formulario
+   del otro idioma fallando en silencio.
 3. Si el servicio pide un dominio autorizado, registrar `vendooapp.com`.
 
 `tool/verificar.py` no se queja de nada de esto: la constante vive en un
@@ -520,21 +716,26 @@ Qué tiene, y de dónde salió cada dato:
 | Correo | `hola@vendooapp.com`, en el pie de las cinco páginas desde el 2-sep-2026 | El mismo de la política y del `VENDOO_CORREO_PRIVACIDAD` de la app |
 | Teléfono | `+58 412-346 9712`, decisión del dueño del 2-sep-2026 | Va con `tel:` **y** con `wa.me`: es el mismo número dicho dos veces |
 | Razón social | **GUUAO LLC**, titular de las dos legales | |
-| **Dirección legal** | 🔴 **no existe** | Sale con `.pendiente`, a la vista. Ver abajo |
+| **Dirección legal** | La entregó el dueño el 12-sep-2026 | «10302 NW South River Drive, Medley, FL 33178». Vive en DOS sitios que tienen que decir lo mismo: el `<dl>` de `#soporte` y el `address` del JSON-LD de esa cabeza — más sus dos gemelos en `en/contact.html`. Ver abajo |
 | Aplicación, tienda, documentos | los mismos que la ficha de `privacidad.html` | Si cambian, cambian en los dos |
 
-🔴 **La dirección legal NO se inventó, y no se puede inventar.** Se buscó en
-este repositorio —páginas, README, historia de git— y en el de la aplicación:
-no está escrita en ninguna parte. En `vendoo_app/play/` figura desde agosto de
+✅ **La dirección legal existe desde el 12-sep-2026**, y conviene conservar por
+qué tardó. **No se inventó, y no se podía inventar**: se buscó en este
+repositorio —páginas, README, historia de git— y en el de la aplicación, y no
+estaba escrita en ninguna parte; en `vendoo_app/play/` figuraba desde agosto de
 2026 como el marcador literal «domicilio fiscal completo», pendiente de
-Legal/Administración, y los dos documentos legales de este sitio dicen desde el
-2-sep-2026 que **no se publica ningún domicilio**. Por eso el `<dd>` lleva el
-marcador `.pendiente` —punteado naranja, imposible de no ver— en vez de una
-dirección plausible: **un domicilio falso de una empresa real es peor que no
-publicar ninguno**, y le da a un revisor de Apple algo concreto que verificar y
-que no va a cuadrar. Por lo mismo, el JSON-LD de esa página **no lleva
-`address`**: ahí el dato lo lee una máquina y un marcador no se puede escribir.
-Cuando el dueño lo entregue, entra en los dos sitios a la vez.
+Legal/Administración. Durante esos días el `<dd>` salió con el marcador
+`.pendiente` —punteado naranja, imposible de no ver— en vez de una dirección
+plausible, porque **un domicilio falso de una empresa real es peor que no
+publicar ninguno**: le da a un revisor de Apple algo concreto que verificar y
+que no va a cuadrar. Y por lo mismo el JSON-LD se quedó **sin `address`** hasta
+ese día: ahí el dato lo lee una máquina y un marcador no se puede escribir.
+
+Ese día el dueño lo entregó, textual: «Warehouse / Principal Address: 10302 NW
+South River Drive, Medley, FL 33178», y entró en los dos sitios a la vez. Desde
+el 15-sep-2026 son **cuatro**, porque la página existe también en inglés: el
+`<dl>` y el JSON-LD de `contacto.html`, y los de `en/contact.html`. **Si cambia,
+cambia en los cuatro.**
 
 **Los blancos táctiles.** El correo, el teléfono y el WhatsApp van además como
 tres píldoras `.via` de **44 px de alto** arriba del `<dl>`, que es la pieza que
@@ -567,7 +768,9 @@ borrador viejo de la ficha—, así que ahora existe. Lo que hay que saber:
   equivocó, y acá no se equivocó — la página que buscaba existe, con otro nombre.
 
 Y en el pie de las cinco páginas hay ahora un enlace **«Soporte»** a
-`/contacto.html#soporte`, entre «Contacto» y «Solicitar una demo»: es lo que
+`/contacto.html#soporte`, entre «Contacto» y «Solicitar una demo» —y desde el
+15-sep-2026, su gemelo **«Support»** a `/en/contact.html#support` en el pie de
+las cinco inglesas—: es lo que
 hace que el soporte se encuentre desde cualquier página sin agregar un séptimo
 renglón al menú de la cabecera, que a 390 px ya se desplaza de lado.
 
@@ -599,6 +802,15 @@ imágenes sincronizadas. **Lo que no se hace es inventarlas**: una captura de
 iPhone tiene que salir de un iPhone. El día que haya una razón para mostrarlas
 —una pantalla que de verdad se vea distinta—, van con las mismas reglas de
 `assets/img/capturas/README.md`.
+
+⚠️ **Las seis capturas son de un teléfono en español, y en `/en/` se sirven
+igual.** El `alt` de cada una sí está en inglés —es texto nuestro—, pero lo que
+se ve dentro de la pantalla («Hola, Victor», «Crear pedido») está en castellano,
+y lo mismo vale para el teléfono de `og-en.png`. **No se retocan y no se
+inventan**: una captura en inglés tiene que salir de una aplicación en inglés, y
+hoy no existe. Es la misma regla que impide fabricar una captura de iPhone. El
+día que la aplicación se traduzca, la segunda tanda entra con las reglas de
+`assets/img/capturas/README.md` y hay que decidir si se sirven por idioma.
 
 ⚠️ **Cambiar una captura son dos pasos, no uno**: dejar el PNG nuevo con el
 mismo nombre y la misma medida, y correr `python3 tool/imagenes.py`, que
@@ -668,9 +880,10 @@ cd vendoo_web
 python3 -m http.server 8000
 ```
 
-Y abrir <http://localhost:8000>. Hace falta un servidor —no vale abrir el
-archivo con doble clic— porque los enlaces son absolutos (`/contacto.html`) y
-las fuentes se piden con `crossorigin`.
+Y abrir <http://localhost:8000> —o <http://localhost:8000/en/> para la versión
+en inglés—. Hace falta un servidor —no vale abrir el archivo con doble clic—
+porque los enlaces son absolutos (`/contacto.html`) y las fuentes se piden con
+`crossorigin`.
 
 Antes de subir nada:
 
@@ -683,17 +896,33 @@ página tenga `title`, `description`, `lang`, `canonical`, `viewport`, Open Grap
 Twitter Card y un solo `h1`; que ningún enlace interno ni ancla apunte a algo
 que no existe; que **ningún recurso** sea externo; que no haya `style=`; que
 cada `<script>` en línea tenga su hash en la CSP de su página; que la
-analítica esté en las cinco páginas con sus hosts en la CSP; que **todas las
+analítica esté en las diez páginas con sus hosts en la CSP; que **todas las
 URL de tienda del sitio nombren la misma aplicación** —un solo Apple ID y un
 solo paquete de Play, que es lo que reemplazó a la regla de «la URL de Apple
 en un solo sitio»—, y que cada bloque JSON-LD sea JSON válido. Es el mismo
 script que corre en CI.
 
+**Desde el 15-sep-2026 recorre también `en/`**, y ahí comprueba lo que hace que
+una traducción no se descuelgue con el tiempo: que cada página tenga su gemela,
+que las dos declaren `hreflang` es/en/x-default apuntando la una a la otra, que
+la canónica de cada una sea la suya, que **el selector de idioma lleve a la
+gemela y no a la portada**, que el `lang` del `<html>` diga la verdad de en qué
+carpeta está —`sitio.js` lo lee para saber en qué idioma escribir—, que cada
+página use la imagen social **de su idioma**, y que el `sitemap.xml` nombre las
+ocho URL con sus alternativas. La tabla de equivalencias es la constante
+`GEMELAS`, arriba del archivo: **si agregás una página, agregala ahí y el resto
+se comprueba solo.**
+
+⚠️ Y una trampa que costó encontrar: hasta ese día el verificador indexaba cada
+página **por su nombre a secas**. Con dos idiomas hay dos `index.html`, y una
+tapaba a la otra — las anclas de una se comprobaban contra los `id` de la otra.
+Ahora la clave es la ruta relativa (`en/index.html`).
+
 ### La analítica del sitio (2-sep-2026)
 
 Decisión del dueño: el sitio mide visitas con **Google Analytics 4 a través de
-Firebase** (`assets/js/analitica.js`, un `<script type="module">` en las cinco
-páginas, con los módulos `firebase-app` y `firebase-analytics` **12.18.0**
+Firebase** (`assets/js/analitica.js`, un `<script type="module">` en **todas
+las páginas —las cinco de cada idioma—**, con los módulos `firebase-app` y `firebase-analytics` **12.18.0**
 importados desde gstatic, tal como los entrega la consola de Firebase para un
 sitio sin empaquetador). **Es la única excepción a «nada externo»** y por eso
 está en un archivo propio con su cabecera explicando qué host necesita y para
@@ -701,7 +930,7 @@ qué. Sólo analítica: nada de anuncios, y los hosts de publicidad que la guía
 de CSP de Google sugiere «por si acaso» (`doubleclick.net`,
 `googlesyndication.com`) **no están abiertos** a propósito.
 
-Lo que eso abrió en la CSP de las cinco páginas y de `_headers` —y nada más—:
+Lo que eso abrió en la CSP de todas las páginas y de `_headers` —y nada más—:
 
 | Directiva | Hosts | Por qué |
 |---|---|---|
@@ -726,8 +955,8 @@ después del evento `load`** con `import()` dinámico: con los `import`
 estáticos de la consola de Firebase, los ~100 KB del SDK competían con la
 hoja de estilo y las fuentes que pintan el titular.
 El script en línea del `<head>` **no cambió**, así que el hash de la CSP es el
-mismo. `tool/verificar.py` exige que la analítica esté **en las cinco páginas
-o en ninguna** y que cada página que la carga tenga los hosts en su CSP: una
+mismo. `tool/verificar.py` exige que la analítica esté **en todas las páginas
+o en ninguna** —las cinco de cada idioma, `/en/` incluido— y que cada página que la carga tenga los hosts en su CSP: una
 página sin ella se cuenta como cero visitas, y una con el script y sin los
 hosts falla en silencio. La política de privacidad lo dice en la cláusula 6
 («El sitio web»). Si algún día se apaga, hay que sacar las tres cosas: el
@@ -816,7 +1045,9 @@ no estás midiendo 320.
 
 Lo que hay puesto, para no repetirlo ni olvidarlo:
 
-- `lang="es-VE"`, `hreflang="es"` y `x-default` en las cinco páginas.
+- `lang="es-VE"` en las páginas en español y `lang="en"` en las de `/en/`,
+  con `hreflang="es"`, `hreflang="en"` y `x-default` —al español— en las ocho
+  que están emparejadas. Ver «Los dos idiomas».
 - `title` y `description` **únicos por página**, `canonical` propio, `robots`
   (`404.html` va con `noindex, follow` y **sin `hreflang`**: no hay nada que
   indexar en otra lengua). Los títulos llevan la palabra clave por la que se
@@ -854,18 +1085,29 @@ Lo que hay puesto, para no repetirlo ni olvidarlo:
   encogido a la zona segura, porque el lanzador de Android recorta con la
   forma que quiere). Los PNG de los íconos salen de `tool/imagenes.py`, que
   pinta las tres figuras del isotipo con sus proporciones.
-  ⚠️ **Los títulos del pie son `<h3>` en `404.html` y en las dos legales**
-  (Lighthouse marcaba «heading-order»: un `<h4>` después de un `<h2>`); en
-  `index.html` y `contacto.html` siguen siendo `<h4>` porque esas dos páginas
-  las cuida otro frente, y la regla `.pie h3, .pie h4` los pinta igual. Cuando
-  se toquen esas dos, van a `<h3>` también.
-- **Rendimiento, medido con Lighthouse 12 en móvil el 2-sep-2026** (servidor
-  local, sin gzip; en Pages es mejor porque sí comprime). Portada:
-  rendimiento **83 → 98** (CLS **0,29 → 0**), accesibilidad 95 → 98,
-  buenas prácticas **93 → 100** (los cinco errores de consola de la
-  analítica, arriba); contacto: 99 / 94 / 93 → 99 / 98 / 100; términos
-  99 / 100 / 100 / 100. Los dos puntos de accesibilidad que faltan en la
-  portada y en contacto son el `<h4>` del pie (arriba). Lo que lo movió:
+  ✅ **Los títulos del pie son `<h3>` en todas las páginas** (Lighthouse
+  marcaba «heading-order»: un `<h4>` después de un `<h2>`). Este renglón decía
+  que `index.html` y `contacto.html` «siguen siendo `<h4>`, y cuando se toquen
+  van a `<h3>` también»: **ya se tocaron y ya son `<h3>`**. La regla
+  `.pie h3, .pie h4` se conserva porque los pinta igual y no estorba.
+- **Rendimiento, medido con Lighthouse.** El 2-sep-2026, con Lighthouse 12 en
+  móvil (servidor local, sin gzip; en Pages es mejor porque sí comprime), la
+  portada pasó de rendimiento **83 → 98** (CLS **0,29 → 0**), accesibilidad
+  95 → 98 y buenas prácticas **93 → 100** (los cinco errores de consola de la
+  analítica, arriba); contacto, de 99 / 94 / 93 a 99 / 98 / 100.
+
+  **Vuelto a medir el 15-sep-2026 con Lighthouse 13.4.1, las ocho páginas de
+  los dos idiomas** (`--only-categories=performance,accessibility,best-practices,seo`):
+
+  | | rend. | a11y | b. prácticas | SEO |
+  |---|---|---|---|---|
+  | `/` · `/contacto.html` · `/privacidad.html` · `/terminos.html` | 97–98 | **100** | **100** | **100** |
+  | `/en/` · `/en/contact.html` · `/en/privacy.html` · `/en/terms.html` | 97–99 | **100** | **100** | **100** |
+
+  Accesibilidad, buenas prácticas y SEO están en **100 en las ocho**, y
+  Lighthouse no marca ni una auditoría fallida: los dos puntos de accesibilidad
+  que faltaban eran el `<h4>` del pie, que ya no existe. Lo que movió el
+  rendimiento en su día:
   - **Las cuatro Poppins van precargadas** (700 para el titular, 500 para el
     menú, 600 para los botones, 400 para el texto: ~9 KB cada una) y hay una
     `@font-face` de **respaldo con las métricas de Poppins** (`'Poppins
@@ -915,8 +1157,30 @@ y App Store» y «Android y iPhone» **parten el renglón**; «Android y iOS» e
 justo y deja la composición idéntica a la anterior. Si tocás una chapa,
 regenerá la imagen **y mirala**.
 
-Si cambia el claim de la portada o esa captura, regenerala: son lo primero que
-la gente ve antes de entrar. `tool/verificar.py` comprueba que mida 1200 × 630.
+**Y son DOS desde el 15-sep-2026**, una por idioma, porque el claim que llevan
+dibujado es texto. La inglesa sale igual, de `tool/og-en.html`:
+
+```bash
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  --headless=new --disable-gpu --hide-scrollbars \
+  --window-size=1200,630 --screenshot=assets/img/og-en.png \
+  http://localhost:8000/tool/og-en.html
+```
+
+⚠️ **Y en inglés las chapas SÍ se salieron del renglón**, que es exactamente lo
+que avisa el párrafo de arriba. La traducción literal —«No signal» y «Odoo and
+your ERP»— medía **745 px de los 720** que da `.texto` y tiraba la cuarta chapa
+a un segundo renglón, con el titular descolocado. Medido chapa por chapa, las
+que entran son **«Android and iOS · Offline · Multi-company · Odoo & ERPs»**:
+707 px, 13 de sobra. Las que se probaron y no entran: «Odoo and your ERP» (745),
+«Odoo + your ERP» (744) y «Android & iOS» + «Odoo & your ERP» (721, **por un
+píxel**).
+
+Si cambia el claim de la portada o esa captura, regenerá **las dos** y miralas:
+son lo primero que la gente ve antes de entrar. `tool/verificar.py` comprueba
+que las dos existan, que midan 1200 × 630 y que **cada página apunte a la que le
+toca** — un `og:image` con el claim en español en una página en inglés es el
+error que nadie ve hasta que alguien pega el enlace en un chat.
 
 ---
 
@@ -958,10 +1222,18 @@ la página de inicio; `https://vendooapp.com/robots.txt` tiene que existir. El
 estado de cada publicación está en la pestaña **Actions** y en **Settings →
 Pages**.
 
-El workflow arma `_sitio/` a mano (HTML, `assets/`, `robots.txt`,
-`sitemap.xml`, `favicon.svg`, `site.webmanifest`, `CNAME` y un `.nojekyll`),
-borra los `README.md` de `assets/` y **falla si `_headers`, `tool/` o
-`.github/` terminaron adentro**. La publicación en curso **no se cancela**
+El workflow arma `_sitio/` a mano (HTML, **la carpeta `en/`**, `assets/`,
+`robots.txt`, `sitemap.xml`, `favicon.svg`, `site.webmanifest`, `CNAME` y un
+`.nojekyll`), borra los `README.md` de `assets/` y **falla si `_headers`,
+`tool/` o `.github/` terminaron adentro** — o si **`en/` no llegó**. Ese
+segundo chequeo entró con la traducción: `cp -R en _sitio/` es una línea suelta
+que alguien puede borrar al reordenar el bloque, y el sitio publicado no
+protestaría: sólo se caería `/en/`, con las ocho `hreflang` apuntando a cuatro
+404.
+
+`_headers` **no hizo falta tocarlo**: su regla es `/*` y la CSP es la misma en
+los dos idiomas —el `<script>` en línea es byte a byte el mismo, así que el hash
+tampoco cambió—. La publicación en curso **no se cancela**
 (`cancel-in-progress: false`): un `deploy-pages` cortado a la mitad deja el
 sitio en un estado que GitHub no promete.
 
@@ -984,7 +1256,7 @@ en **todo**. Lo que **no** hace y **no se puede configurar** en Pages:
 
 ⚠️ **El archivo `_headers` de la raíz lo ignora Pages** y ni siquiera se copia
 a `_sitio/`: es la **referencia** de lo que hay que reproducir en Cloudflare,
-y se mantiene al día con la CSP de las cinco páginas (el verificador no lo
+y se mantiene al día con la CSP de las diez páginas (el verificador no lo
 lee; es a mano). Nada de esto está aplicado —hace falta la cuenta de
 Cloudflare—, y es el dueño quien lo hace. **Antes de todo, la nube naranja**:
 las reglas de abajo sólo actúan con el proxy activo en `@` y `www`
@@ -1055,8 +1327,10 @@ tema, que va en línea en el `<head>`.
 | Qué | Dónde | Quién |
 |---|---|---|
 | Las reglas de Cloudflare de arriba (HSTS, cabeceras, caché) | panel de Cloudflare | Dueño |
-| 🔴 **La dirección legal de GUUAO LLC.** Apple la exige en la Support URL y hoy sale con el marcador `.pendiente`, a la vista en la página | `contacto.html` (#soporte y el JSON-LD de su cabeza) | Dueño / Legal |
 | Horario de atención público, si se quiere | `contacto.html` | Dueño |
+| 🔴 **Los badges de tienda en INGLÉS.** El arte que hay es el de la campaña en español (Apple `es-MX`, Google `Spanish-LATAM`) y en `/en/` incumple la regla de idioma de las dos guías. Hay que bajarlo de [Apple](https://developer.apple.com/app-store/marketing/guidelines/) y de [Google](https://partnermarketinghub.withgoogle.com/brands/google-play/google-play/lockups-icons-badges/#badges) y servirlo desde `assets/img/tiendas/`. **No se dibuja ni se le edita el texto al que hay**: eso es justo lo que las dos guías prohíben, y un badge retocado es peor que uno en otro idioma | `assets/img/tiendas/` | Dueño |
+| **Si el soporte se atiende en inglés.** `/en/contact.html#support` dice hoy «our working language is Spanish», porque que exista la traducción no prueba que haya quien conteste en inglés y eso no está escrito en ningún repositorio. Si se atiende, cambia esa frase y el `availableLanguage` del JSON-LD de esa página pasa a `["es","en"]` | `en/contact.html` | Dueño |
+| Que un abogado mire la **nota de prevalencia** de las dos legales en inglés («the Spanish text prevails»), que es lo que evita que la traducción sea un segundo texto vinculante | `en/terms.html`, `en/privacy.html` | Legal |
 | Revisión de abogado venezolano de las cláusulas 15 y 17 de los términos | `terminos.html` | Legal |
 | Que la ficha de App Store conteste 200 antes de publicar el sitio (el 11-sep-2026 daba 404) | App Store Connect | Dueño |
 | `downloadUrl` / `offers` del JSON-LD nombran una sola tienda (admiten un destino) | `index.html` | Dueño |
@@ -1073,7 +1347,7 @@ que no poner ninguno. Los datos de contacto publicados son dos:
 política de privacidad y en el `VENDOO_CORREO_PRIVACIDAD` con el que se compila
 la app; si difieren, el vendedor lee uno y escribe al otro— y el **WhatsApp
 +58 412-346 9712** (`https://wa.me/584123469712`, dueño, 2-sep-2026), en la
-página de contacto y en el pie de las cinco páginas. El ícono de WhatsApp es
+página de contacto y en el pie de las diez páginas. El ícono de WhatsApp es
 **propio** (una burbuja con un auricular), no el logotipo: la misma regla del
 muro de ERP.
 
@@ -1081,14 +1355,17 @@ muro de ERP.
 bloque de soporte. Es el mismo número dicho dos veces, no dos datos: Apple pide
 un teléfono en la Support URL, y un número que sólo se puede escribir por un
 mensajero no es lo que ese campo promete. Si alguna vez son dos números
-distintos hay que separarlos en tres sitios: `#soporte`, el pie de las cinco
-páginas y el JSON-LD de la cabeza de `contacto.html`.
+distintos hay que separarlos en **seis** sitios: `#soporte` y `#support`, el
+pie de las diez páginas, y el JSON-LD de la cabeza de `contacto.html` y de
+`en/contact.html`.
 
 Si en el futuro hace falta dejar un dato a la vista sin inventarlo, la clase
 `.pendiente` sigue en la hoja de estilo: pinta el marcador en punteado naranja.
-⚠️ **Este renglón decía «hoy no la usa ninguna página» y dejó de ser cierto el
-12-sep-2026**: la usa la «Dirección legal» de `contacto.html#soporte`, que es
-justamente el caso para el que se conservó.
+⚠️ **Hoy no la usa ninguna página, y ese renglón ya cambió dos veces**: la usó
+la «Dirección legal» de `contacto.html#soporte` entre el 12-sep-2026 y el día
+en que el dueño entregó el domicilio —que es justamente el caso para el que se
+conservó— y volvió a quedar libre cuando ese dato llegó. Sigue en la hoja
+porque el caso se va a repetir.
 
 ---
 
@@ -1181,7 +1458,10 @@ print('sha256-' + base64.b64encode(hashlib.sha256(c.encode()).digest()).decode()
 EOF
 ```
 
-y pegar el resultado en el `script-src` de las cinco páginas y de `_headers`
-(que sigue siendo la referencia para Cloudflare aunque Pages lo ignore). El
-script tiene que ser **idéntico en las cinco**, o el hash sólo servirá para una.
+y pegar el resultado en el `script-src` de **las diez páginas** —las cinco de
+cada idioma— y de `_headers` (que sigue siendo la referencia para Cloudflare
+aunque Pages lo ignore). El script tiene que ser **idéntico en las diez**, o el
+hash sólo servirá para las que lo tengan igual. ⚠️ El de `/en/` es byte a byte
+el mismo que el español **a propósito**, comentarios incluidos: no se traduce,
+porque traducirlo cambiaría el hash y obligaría a llevar dos en la CSP.
 `tool/verificar.py` comprueba justamente eso y te imprime el hash correcto.

@@ -30,7 +30,15 @@ chequeo *liviano* a propósito. Lo que comprueba:
      manifiesto sea JSON válido con íconos que existen; y
  11. que todas las URL de tienda del sitio nombren la MISMA aplicación —un
      solo Apple ID y un solo paquete de Google Play—, y
- 12. que ningún título, descripción, Open Graph ni JSON-LD diga «app Android»
+ 12. que las DOS versiones del sitio —español en la raíz, inglés en /en/—
+     estén completas y emparejadas: que cada página tenga su gemela, que las
+     dos declaren `hreflang` es/en/x-default apuntando la una a la otra, que
+     la canónica de cada una sea la suya, que el selector de idioma de la
+     cabecera lleve a la GEMELA (y no a la portada del otro idioma), que el
+     `lang` del <html> diga la verdad de en qué carpeta está —`sitio.js` lo
+     lee para saber en qué idioma escribir— y que el sitemap las nombre a las
+     dos con sus alternativas; y
+ 13. que ningún título, descripción, Open Graph ni JSON-LD diga «app Android»
      o «aplicación Android» (regla del dueño, 2-sep-2026: es «la aplicación»;
      Android queda sólo en `operatingSystem` del JSON-LD, en los botones de
      descarga y en el «Android 7.0 y iOS 15 o superior» del pie).
@@ -72,8 +80,45 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
-OBLIGATORIAS = ['index.html', 'contacto.html', 'terminos.html', 'privacidad.html']
-ADEMAS = ['404.html', 'robots.txt', 'sitemap.xml', 'favicon.svg', 'site.webmanifest']
+
+# El sitio existe en DOS idiomas desde el 15-sep-2026: el espanol en la raiz
+# —que es donde estaba y donde se queda, porque esas URL estan registradas en
+# App Store Connect y en Google Play y no se mueven— y el ingles en /en/.
+#
+# `GEMELAS` es la tabla de equivalencias, y es la fuente de casi todo lo que
+# comprueba este archivo sobre idiomas: que las dos existan, que cada una
+# apunte a la otra con `hreflang`, que el selector de la cabecera lleve a la
+# gemela y no a la portada, y que el sitemap las nombre a las dos.
+GEMELAS = {
+    'index.html':      'en/index.html',
+    'contacto.html':   'en/contact.html',
+    'terminos.html':   'en/terms.html',
+    'privacidad.html': 'en/privacy.html',
+}
+OBLIGATORIAS = sorted(list(GEMELAS.keys()) + list(GEMELAS.values()))
+ADEMAS = ['404.html', 'robots.txt', 'sitemap.xml', 'favicon.svg',
+          'site.webmanifest', 'site-en.webmanifest']
+
+# Las URL publicas de cada archivo, para poder comparar lo que dicen los
+# `hreflang` contra lo que hay en el disco.
+SITIO = 'https://vendooapp.com'
+
+
+def url_de(rel: str) -> str:
+    if rel == 'index.html':
+        return SITIO + '/'
+    if rel == 'en/index.html':
+        return SITIO + '/en/'
+    return SITIO + '/' + rel
+
+
+def rel_de(url: str) -> str:
+    """La inversa: de una URL del sitio al archivo que deberia servirla."""
+    ruta = url.split(SITIO, 1)[-1] if url.startswith(SITIO) else url
+    ruta = ruta.split('#')[0].split('?')[0].lstrip('/')
+    if ruta == '' or ruta.endswith('/'):
+        ruta += 'index.html'
+    return ruta
 
 # Los únicos dominios a los que el sitio puede ENLAZAR (nunca pedirles un
 # recurso). Tres, cada uno con su razón: en Play y en App Store está publicada
@@ -141,6 +186,8 @@ class Lector(HTMLParser):
         self.csp = ''
         self.metas: dict[str, str] = {}
         self.imagenes_sin_alt = 0
+        self.alternas: dict[str, str] = {}      # hreflang -> href
+        self.idioma_href = ''                   # el <a class="idioma"> de la cabecera
         self.en_script: str | None = None   # el `type` del <script> abierto
         self.guiones_de_script: list[tuple[str, int, str]] = []  # (tipo, linea, cuerpo)
         self.linea_script = 0
@@ -176,7 +223,10 @@ class Lector(HTMLParser):
             if a.get('rel') == 'canonical':
                 self.canonica = a.get('href', '')
             elif a.get('rel') == 'alternate':
-                pass                      # hreflang: apunta a URLs absolutas propias
+                # hreflang: apunta a URLs absolutas propias, y desde el
+                # 15-sep-2026 se comprueban (ver «los dos idiomas», abajo).
+                if a.get('hreflang'):
+                    self.alternas[a['hreflang']] = a.get('href', '')
             elif a.get('rel') in ('preconnect', 'dns-prefetch'):
                 # Una pista de red no carga nada, pero nombra un host: tiene
                 # que ser uno que la CSP ya deje entrar (abajo).
@@ -187,6 +237,8 @@ class Lector(HTMLParser):
             self.texto_cabeza.append(a.get('content', ''))
         elif tag == 'a' and a.get('href'):
             self.enlaces.append((a['href'], linea, a))
+            if 'idioma' in (a.get('class') or '').split():
+                self.idioma_href = a['href']
         elif tag == 'script':
             self.en_script = (a.get('type') or 'text/javascript').lower()
             self.linea_script = linea
@@ -251,16 +303,25 @@ class Lector(HTMLParser):
                 self.texto_cabeza.append(datos)
 
 
-def destino(href: str) -> Path | None:
-    """Convierte un href interno en la ruta del archivo que debería existir."""
+def destino(href: str, desde: str = '') -> Path | None:
+    """Convierte un href interno en la ruta del archivo que debería existir.
+
+    `desde` es la página que lo escribió, relativa a la raíz. Hace falta desde
+    que hay páginas en subcarpeta: en `/en/` un href relativo NO cuelga de la
+    raíz del sitio, y resolverlo como si colgara daba por bueno un enlace roto.
+    Todo el sitio escribe rutas absolutas, así que esto es un seguro.
+    """
     ruta = href.split('#')[0].split('?')[0]
     if not ruta:
         return None
     if ruta.startswith('/'):
+        base = RAIZ
         ruta = ruta[1:]
+    else:
+        base = (RAIZ / desde).parent if desde else RAIZ
     if ruta == '' or ruta.endswith('/'):
         ruta += 'index.html'
-    return RAIZ / ruta
+    return base / ruta
 
 
 def dominio(url: str) -> str:
@@ -279,46 +340,63 @@ def main() -> int:
         if not (RAIZ / nombre).exists():
             error(nombre, 'falta este archivo')
 
-    paginas = sorted(RAIZ.glob('*.html'))
+    # Las de la raíz (español) y las de /en/ (inglés). Cada página se nombra
+    # por su ruta relativa y NO por su nombre a secas: hay dos `index.html` y
+    # dos `contact`/`contacto`, y con el nombre pelado una tapaba a la otra —
+    # las anclas de una se habrían comprobado contra los `id` de la otra.
+    paginas = sorted(RAIZ.glob('*.html')) + sorted((RAIZ / 'en').glob('*.html'))
     if not paginas:
         error('(sitio)', 'no hay ninguna página HTML')
+
+    def rel(p: Path) -> str:
+        return p.relative_to(RAIZ).as_posix()
 
     ids_por_pagina: dict[str, set[str]] = {}
     lectores: dict[str, Lector] = {}
 
     for pagina in paginas:
         texto = pagina.read_text(encoding='utf-8')
-        lector = Lector(pagina.name)
+        lector = Lector(rel(pagina))
         # el <title> se cierra por la vía normal; se recupera con expresión
         # regular porque HTMLParser no distingue el fin del título del resto.
         lector.feed(texto)
         lector.close()
         if lector.pila:
             for tag, ln in lector.pila:
-                error(pagina.name, f'<{tag}> abierta en la línea {ln} y nunca cerrada')
+                error(rel(pagina), f'<{tag}> abierta en la línea {ln} y nunca cerrada')
         m = re.search(r'<title>(.*?)</title>', texto, re.S)
         lector.titulo = (m.group(1).strip() if m else '')
-        lectores[pagina.name] = lector
-        ids_por_pagina[pagina.name] = lector.ids
+        lectores[rel(pagina)] = lector
+        ids_por_pagina[rel(pagina)] = lector.ids
 
         if not lector.titulo:
-            error(pagina.name, 'sin <title>')
+            error(rel(pagina), 'sin <title>')
         elif len(lector.titulo) > 70:
-            aviso(pagina.name, f'<title> de {len(lector.titulo)} caracteres (más de 70)')
+            aviso(rel(pagina), f'<title> de {len(lector.titulo)} caracteres (más de 70)')
         if not lector.descripcion:
-            error(pagina.name, 'sin <meta name="description">')
+            error(rel(pagina), 'sin <meta name="description">')
         elif len(lector.descripcion) > 175:
-            aviso(pagina.name, f'descripción de {len(lector.descripcion)} caracteres')
+            aviso(rel(pagina), f'descripción de {len(lector.descripcion)} caracteres')
         if not lector.lang:
-            error(pagina.name, 'el <html> no declara lang')
+            error(rel(pagina), 'el <html> no declara lang')
+        else:
+            # El `lang` es la fuente de verdad del idioma: de ahí lo lee
+            # `sitio.js` para rotular el interruptor de tema y para armar el
+            # correo del formulario. Si una página de /en/ dijera `es-VE`, la
+            # traducción estaría ahí pero el script escribiría en español.
+            esperado = 'en' if rel(pagina).startswith('en/') else 'es'
+            if lector.lang.lower().split('-')[0] != esperado:
+                error(rel(pagina), f'el <html> declara lang="{lector.lang}" y está en '
+                                   f'la versión «{esperado}». `assets/js/sitio.js` lee ese '
+                                   'atributo para saber en qué idioma escribir.')
         if not lector.viewport:
-            error(pagina.name, 'sin <meta name="viewport">')
+            error(rel(pagina), 'sin <meta name="viewport">')
         if not lector.canonica:
-            error(pagina.name, 'sin <link rel="canonical">')
+            error(rel(pagina), 'sin <link rel="canonical">')
         if lector.h1 != 1:
-            error(pagina.name, f'tiene {lector.h1} elementos <h1>; debe haber exactamente uno')
+            error(rel(pagina), f'tiene {lector.h1} elementos <h1>; debe haber exactamente uno')
         if lector.imagenes_sin_alt:
-            error(pagina.name, f'{lector.imagenes_sin_alt} <img> sin alt')
+            error(rel(pagina), f'{lector.imagenes_sin_alt} <img> sin alt')
 
         # Regla del dueño (2-sep-2026): es «la aplicación», no «la app Android».
         # Se mira title, meta y JSON-LD de la cabeza; `operatingSystem` del
@@ -326,7 +404,7 @@ def main() -> int:
         cabeza = re.sub(r'"operatingSystem"\s*:\s*"[^"]*"', '', '\n'.join(lector.texto_cabeza))
         m_android = re.search(r'\b(app|aplicaci[oó]n)\s+Android\b', cabeza, re.I)
         if m_android:
-            error(pagina.name, f'la cabeza dice «{m_android.group(0)}»: es «la aplicación» '
+            error(rel(pagina), f'la cabeza dice «{m_android.group(0)}»: es «la aplicación» '
                                '(regla del dueño, 2-sep-2026; Android sólo en operatingSystem).')
 
         # Open Graph y Twitter Card: lo que decide cómo se ve el sitio cuando
@@ -335,7 +413,7 @@ def main() -> int:
                          'og:type', 'twitter:card', 'twitter:title',
                          'twitter:description', 'twitter:image'):
             if not lector.metas.get(etiqueta):
-                error(pagina.name, f'sin <meta> {etiqueta}')
+                error(rel(pagina), f'sin <meta> {etiqueta}')
 
         # Cada <script> en línea tiene que estar declarado en la CSP de SU
         # página, o el navegador lo bloquea en silencio y el tema parpadea.
@@ -345,11 +423,11 @@ def main() -> int:
                 try:
                     json.loads(cuerpo)
                 except Exception as exc:
-                    error(pagina.name, f'línea {linea}: el JSON-LD no es JSON válido ({exc})')
+                    error(rel(pagina), f'línea {linea}: el JSON-LD no es JSON válido ({exc})')
                 continue
             h = sha256_b64(cuerpo)
             if h not in lector.csp:
-                error(pagina.name,
+                error(rel(pagina),
                       f'línea {linea}: <script> en línea sin su hash en la CSP de esta '
                       f'página. El que corresponde es {h!r} — ver el README.')
 
@@ -403,7 +481,7 @@ def main() -> int:
                 if href[1:] not in lector.ids:
                     error(nombre, f'línea {linea}: el ancla {href} no existe en esta página')
                 continue
-            archivo = destino(href)
+            archivo = destino(href, nombre)
             if archivo is None:
                 continue
             if not archivo.exists():
@@ -411,7 +489,11 @@ def main() -> int:
                 continue
             if '#' in href and archivo.suffix == '.html':
                 ancla = href.split('#', 1)[1]
-                ids = ids_por_pagina.get(archivo.name)
+                try:
+                    clave = archivo.resolve().relative_to(RAIZ).as_posix()
+                except ValueError:
+                    clave = archivo.name
+                ids = ids_por_pagina.get(clave)
                 if ids is not None and ancla not in ids:
                     error(nombre, f'línea {linea}: {href} apunta a un id que no existe')
 
@@ -420,9 +502,107 @@ def main() -> int:
                 error(nombre, f'línea {linea}: RECURSO externo ({href}). El sitio se '
                               'sirve entero desde su propio origen.')
                 continue
-            archivo = destino(href)
+            archivo = destino(href, nombre)
             if archivo is not None and not archivo.exists():
                 error(nombre, f'línea {linea}: {href} apunta a un archivo que no está')
+
+    # ======================================================================
+    # LOS DOS IDIOMAS (15-sep-2026)
+    #
+    # Una traducción se rompe siempre por el mismo sitio: alguien agrega una
+    # página, o le cambia el nombre a una, y la pareja queda coja. El daño no
+    # se ve —la página sigue abriendo— pero Google deja de saber que son la
+    # misma cosa en dos lenguas, y el visitante que toca «ES» aterriza en la
+    # portada en vez de en la página que estaba leyendo.
+    #
+    # Es el mismo movimiento que ya se hizo con el hash del script del tema y
+    # con los identificadores de tienda: una convención que hay que recordar
+    # pasa a ser un chequeo que no se puede olvidar.
+    for es, en in sorted(GEMELAS.items()):
+        for cual in (es, en):
+            if cual not in lectores:
+                continue
+        l_es, l_en = lectores.get(es), lectores.get(en)
+        if l_es is None or l_en is None:
+            continue                       # ya se reportó arriba como archivo que falta
+
+        u_es, u_en = url_de(es), url_de(en)
+
+        # 1. Cada una declara las tres alternativas, y apuntan a la pareja.
+        for pagina, lector, propia, otra in ((es, l_es, u_es, u_en), (en, l_en, u_en, u_es)):
+            esperado = {'es': u_es, 'en': u_en, 'x-default': u_es}
+            for etiqueta, url in sorted(esperado.items()):
+                hay = lector.alternas.get(etiqueta)
+                if not hay:
+                    error(pagina, f'no declara <link rel="alternate" hreflang="{etiqueta}">. '
+                                  f'El que corresponde apunta a {url}.')
+                elif hay != url:
+                    error(pagina, f'hreflang="{etiqueta}" apunta a {hay} y tiene que apuntar '
+                                  f'a {url}.')
+            # 2. Y la canónica es la suya, no la de su gemela.
+            if lector.canonica and lector.canonica != propia:
+                error(pagina, f'la canónica dice {lector.canonica} y esta página se sirve '
+                              f'en {propia}.')
+
+        # 3. El selector de la cabecera lleva a la GEMELA, no a la portada.
+        #    Mandar todo a «/en/» es contestarle «esta página no existe en el
+        #    otro idioma» a alguien que la está leyendo en el otro idioma.
+        for pagina, lector, destino_ok in ((es, l_es, url_de(en)), (en, l_en, url_de(es))):
+            ruta_ok = destino_ok.replace(SITIO, '')
+            if not lector.idioma_href:
+                error(pagina, 'la cabecera no tiene el selector de idioma '
+                              f'(<a class="idioma">); el suyo lleva a {ruta_ok}.')
+            elif lector.idioma_href != ruta_ok:
+                error(pagina, f'el selector de idioma lleva a {lector.idioma_href} y tiene '
+                              f'que llevar a la gemela, {ruta_ok}.')
+
+    # Las páginas que NO son de la tabla —404.html y los dos desvíos de
+    # soporte— no llevan `hreflang` a propósito: no son contenido, van con
+    # `noindex` y no compiten en buscadores. Pero si alguna lo llevara, tendría
+    # que apuntar a algo que exista.
+    emparejadas = set(GEMELAS.keys()) | set(GEMELAS.values())
+    for nombre, lector in sorted(lectores.items()):
+        if nombre in emparejadas:
+            continue
+        for etiqueta, url in sorted(lector.alternas.items()):
+            d = RAIZ / rel_de(url)
+            if not d.exists():
+                error(nombre, f'hreflang="{etiqueta}" apunta a {url}, que no existe.')
+
+    # El asunto del correo de contacto vive en TRES sitios por idioma: el
+    # `mailto:` del <noscript>, el del enlace directo de al lado, y la tabla
+    # `T` de assets/js/sitio.js que arma el correo cuando el script sí corre.
+    # Si difieren, el mismo formulario llega a la bandeja con dos asuntos
+    # distintos según si el visitante tenía JavaScript — y ordenar por asunto
+    # deja de servir. Es la misma clase de copia que el hash del tema.
+    js = (RAIZ / 'assets' / 'js' / 'sitio.js')
+    if js.exists():
+        fuente = js.read_text(encoding='utf-8')
+        for pagina, clave in (('contacto.html', 'es'), ('en/contact.html', 'en')):
+            lector = lectores.get(pagina)
+            if lector is None:
+                continue
+            m = re.search(r"%s:\s*\{[^}]*?asunto:\s*'([^']*)'" % clave, fuente, re.S)
+            if not m:
+                error('assets/js/sitio.js', f'no encuentro el asunto del formulario para '
+                                            f'«{clave}» en la tabla T.')
+                continue
+            del_script = m.group(1).strip().rstrip('\u2014').strip()
+            # ⚠️ NO se comparan TODOS los mailto: de la página. El bloque de
+            # soporte lleva a propósito su propio asunto («Soporte de Vendoo»),
+            # que es lo que hace que una petición de soporte se distinga de una
+            # de demo en la bandeja. Lo que se exige es que el asunto del
+            # formulario esté en la página AL MENOS UNA VEZ: ése es el que se
+            # duplica a mano en el <noscript> y en el enlace de al lado, y el
+            # que se queda viejo cuando alguien retoca la tabla `T`.
+            from urllib.parse import unquote
+            asuntos = [unquote(h.split('subject=')[1].split('&')[0]).strip()
+                       for h, _, _ in lector.enlaces
+                       if h.startswith('mailto:') and 'subject=' in h]
+            if not any(a.startswith(del_script) or del_script.startswith(a) for a in asuntos):
+                error(pagina, f'sitio.js arma el asunto «{del_script}…» y ningún mailto: de '
+                              f'esta página lo usa (hay {asuntos}). El del <noscript> y el del '
+                              'enlace directo tienen que decir lo mismo que el script.')
 
     # El sitemap tiene que nombrar las cuatro páginas y ninguna que no exista.
     mapa = (RAIZ / 'sitemap.xml')
@@ -431,13 +611,26 @@ def main() -> int:
         urls = re.findall(r'<loc>\s*([^<\s]+)\s*</loc>', xml)
         rutas = {u.split('vendooapp.com', 1)[-1] or '/' for u in urls}
         for p in OBLIGATORIAS:
-            esperada = '/' if p == 'index.html' else '/' + p
+            esperada = url_de(p).replace(SITIO, '') or '/'
             if esperada not in rutas:
                 error('sitemap.xml', f'no incluye {esperada}')
         for r in rutas:
             d = destino(r)
             if d is not None and not d.exists():
                 error('sitemap.xml', f'{r} no existe en el sitio')
+        # Y cada <url> declara sus dos alternativas de idioma, que es lo que
+        # le dice a un buscador que son la misma página en dos lenguas.
+        for bloque in re.findall(r'<url>(.*?)</url>', xml, re.S):
+            loc = re.search(r'<loc>\s*([^<\s]+)\s*</loc>', bloque)
+            if not loc:
+                continue
+            quien = rel_de(loc.group(1))
+            if quien not in emparejadas:
+                continue
+            for etiqueta in ('es', 'en'):
+                if f'hreflang="{etiqueta}"' not in bloque:
+                    error('sitemap.xml', f'{loc.group(1)} no declara su alternativa '
+                                         f'hreflang="{etiqueta}"')
         if len(re.findall(r'<lastmod>', xml)) != len(urls):
             error('sitemap.xml', 'hay <url> sin <lastmod>')
 
@@ -464,31 +657,74 @@ def main() -> int:
     elif capturas.exists():
         error('assets/img/capturas/derivadas.json', 'falta: corré `python3 tool/imagenes.py`.')
 
-    # La imagen social: OpenGraph pide 1200 × 630 y se lee del IHDR del PNG.
-    og = RAIZ / 'assets' / 'img' / 'og.png'
-    if og.exists():
+    # Las imágenes sociales: OpenGraph pide 1200 × 630 y se lee del IHDR del
+    # PNG. Son DOS desde el 15-sep-2026 —una por idioma, porque el claim que
+    # llevan dibujado es texto— y las dos tienen que estar: un `og:image` que
+    # contesta 404 no se nota hasta que alguien pega el enlace en un chat y
+    # sale una tarjeta gris.
+    for nombre_og in ('og.png', 'og-en.png'):
+        og = RAIZ / 'assets' / 'img' / nombre_og
+        etiqueta = f'assets/img/{nombre_og}'
+        if not og.exists():
+            error(etiqueta, 'falta: es el `og:image` de una de las dos versiones. '
+                            'Se genera con tool/og.html y tool/og-en.html (ver el README).')
+            continue
         cab = og.read_bytes()[:24]
         if cab[:8] != b'\x89PNG\r\n\x1a\n':
-            error('assets/img/og.png', 'no es un PNG')
+            error(etiqueta, 'no es un PNG')
         else:
             ancho = int.from_bytes(cab[16:20], 'big')
             alto = int.from_bytes(cab[20:24], 'big')
             if (ancho, alto) != (1200, 630):
-                error('assets/img/og.png', f'mide {ancho}×{alto}; tiene que ser 1200×630')
+                error(etiqueta, f'mide {ancho}×{alto}; tiene que ser 1200×630')
 
-    # El manifiesto: JSON válido, y cada ícono que nombra existe.
-    manifiesto = RAIZ / 'site.webmanifest'
-    if manifiesto.exists():
+    # Y que cada página apunte a la que le toca: el `og:image` de una página en
+    # inglés con el claim en español es el error que nadie ve hasta que el
+    # enlace se comparte.
+    for nombre, lector in sorted(lectores.items()):
+        quiere = 'og-en.png' if nombre.startswith('en/') else 'og.png'
+        for etiqueta in ('og:image', 'twitter:image'):
+            valor = lector.metas.get(etiqueta, '')
+            if valor and not valor.endswith('/' + quiere):
+                error(nombre, f'{etiqueta} apunta a {valor} y esta página es '
+                              f'«{"en" if quiere == "og-en.png" else "es"}»: le toca {quiere}.')
+
+    # Los manifiestos: JSON válido, y cada ícono que nombran existe. Son DOS
+    # desde el 15-sep-2026, uno por idioma, porque `lang`, `name` y
+    # `description` son campos de UN idioma y no hay forma de declararlos en
+    # dos: con uno solo, quien instalara el sitio desde /en/ se encontraba el
+    # nombre y la descripción en castellano.
+    for nombre_man, lang_esperado in (('site.webmanifest', 'es'), ('site-en.webmanifest', 'en')):
+        manifiesto = RAIZ / nombre_man
+        if not manifiesto.exists():
+            error(nombre_man, 'falta: hay un manifiesto por idioma (ver el README).')
+            continue
         try:
             datos = json.loads(manifiesto.read_text(encoding='utf-8'))
             for icono in datos.get('icons', []):
                 d = destino(icono.get('src', ''))
                 if d is not None and not d.exists():
-                    error('site.webmanifest', f'el ícono {icono.get("src")} no existe')
+                    error(nombre_man, f'el ícono {icono.get("src")} no existe')
             if not any('maskable' in (i.get('purpose') or '') for i in datos.get('icons', [])):
-                aviso('site.webmanifest', 'no hay ícono maskable')
+                aviso(nombre_man, 'no hay ícono maskable')
+            if (datos.get('lang') or '').lower().split('-')[0] != lang_esperado:
+                error(nombre_man, f'declara lang="{datos.get("lang")}" y es el manifiesto '
+                                  f'de la versión «{lang_esperado}».')
+            partida = datos.get('start_url', '')
+            if partida != ('/en/' if lang_esperado == 'en' else '/'):
+                error(nombre_man, f'start_url dice {partida!r} y tiene que abrir la portada '
+                                  f'de su idioma.')
         except Exception as exc:
-            error('site.webmanifest', f'no es JSON válido ({exc})')
+            error(nombre_man, f'no es JSON válido ({exc})')
+
+    # Y que cada página enlace el manifiesto de SU idioma.
+    for nombre, lector in sorted(lectores.items()):
+        quiere = '/site-en.webmanifest' if nombre.startswith('en/') else '/site.webmanifest'
+        otro = '/site.webmanifest' if nombre.startswith('en/') else '/site-en.webmanifest'
+        enlazados = [h for h, _ in lector.recursos if h.endswith('.webmanifest')]
+        if otro in enlazados:
+            error(nombre, f'enlaza {otro} y le toca {quiere}: el nombre y la descripción '
+                          'que se instalan saldrían en el otro idioma.')
 
     # Las URL de tienda tienen que nombrar UNA sola aplicación.
     #
