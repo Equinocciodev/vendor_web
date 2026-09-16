@@ -357,6 +357,11 @@ no había pasado revisión. **El enlace se puso igual, por decisión del dueño*
 ese botón lleva a un 404 durante esa ventana. Vale la pena volver a correr esos
 dos comandos antes de dar por buena una publicación.
 
+⚠️ **Vuelto a comprobar el 15-sep-2026, con el sitio ya publicado: la ficha de
+App Store SIGUE dando 404** y la de Play, 200. Los dos comandos de arriba son
+los mismos. Mientras siga así, el badge de App Store lleva a una página que no
+existe desde las diez páginas del sitio.
+
 `tool/verificar.py` **no comprueba que un enlace conteste** y no va a hacerlo:
 no sale a la red a propósito, para correr igual sin internet y en CI. Lo único
 que sabe es que `apps.apple.com` está en su lista blanca de dominios
@@ -468,7 +473,9 @@ de `.seccion[id]`: los dos describen el mismo alto de cabecera.
 ## Los dos idiomas (15-sep-2026)
 
 Encargo del dueño: **«haz la página disponible en español/inglés»**. El sitio
-existe ahora en dos lenguas, y las decisiones que lo sostienen son cinco.
+existe ahora en dos lenguas. **Cinco decisiones lo sostienen** —las numeradas de
+abajo—, y detrás van el manifiesto, la ortografía, lo que esto le costó a la
+cabecera y cómo se comprobó todo.
 
 ### 1. El español se queda en la raíz; el inglés va a `/en/`
 
@@ -1332,7 +1339,7 @@ tema, que va en línea en el `<head>`.
 | **Si el soporte se atiende en inglés.** `/en/contact.html#support` dice hoy «our working language is Spanish», porque que exista la traducción no prueba que haya quien conteste en inglés y eso no está escrito en ningún repositorio. Si se atiende, cambia esa frase y el `availableLanguage` del JSON-LD de esa página pasa a `["es","en"]` | `en/contact.html` | Dueño |
 | Que un abogado mire la **nota de prevalencia** de las dos legales en inglés («the Spanish text prevails»), que es lo que evita que la traducción sea un segundo texto vinculante | `en/terms.html`, `en/privacy.html` | Legal |
 | Revisión de abogado venezolano de las cláusulas 15 y 17 de los términos | `terminos.html` | Legal |
-| Que la ficha de App Store conteste 200 antes de publicar el sitio (el 11-sep-2026 daba 404) | App Store Connect | Dueño |
+| 🔴 **Que la ficha de App Store conteste 200.** Vuelto a comprobar el **15-sep-2026 contra el sitio publicado: sigue dando 404** (Play da 200). O sea que el badge de App Store lleva hoy a una página que no existe — y ahora desde las **diez** páginas, porque la cabecera lo repite en los dos idiomas | App Store Connect | Dueño |
 | `downloadUrl` / `offers` del JSON-LD nombran una sola tienda (admiten un destino) | `index.html` | Dueño |
 
 ✅ **El botón compacto de la cabecera ya no lleva sólo a Google Play.** Estaba
