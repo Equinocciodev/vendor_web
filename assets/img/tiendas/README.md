@@ -32,12 +32,21 @@ your own localized badge»* — por eso no se toca el texto de adentro.
 
 Todo esto vive en `.tienda` / `.tiendas` de `assets/css/estilo.css`:
 
+⚠️ **Desde el 16-sep-2026 los badges salen en UN solo sitio: el héroe de las
+dos portadas** (`#descargar` en español, `#download` en inglés). Estuvieron
+también en la cabecera de todas las páginas entre el 11 y el 16 de septiembre,
+y los sacó el dueño: «the header menu has a lot of elements». En su lugar la
+cabecera lleva `.descarga-corta`, un botón de texto con un ícono **nuestro**
+que va a ese mismo bloque — no es un badge y no le aplica ninguna de estas
+reglas. El apartado de abajo conserva las medidas de la cabecera **entre
+paréntesis** por si algún día vuelven.
+
 - **Alto mínimo**: Apple pide **40 px** en pantalla; Google, **28 px**. Manda el
-  de Apple. El par de la portada va a **48 px** y el de la cabecera a **40 px**,
-  que es el mínimo exacto.
+  de Apple. El par de la portada va a **48 px**. (En la cabecera iban a 40, que
+  es el mínimo exacto.)
 - **Zona de respeto**: las dos guías piden **un cuarto del alto del badge** y que
-  ahí no entre ni tipografía ni otro gráfico. A 40 px son 10 px y a 48 px, 12; el
-  `gap` y los márgenes del contenedor los respetan con holgura.
+  ahí no entre ni tipografía ni otro gráfico. A 48 px son 12; el `gap` y los
+  márgenes del contenedor los respetan con holgura. (A 40 px eran 10.)
 - **Del mismo tamaño**: Google exige que *«the Google Play badge is the same size
   or larger than the other badges»*. Van **a la misma altura**, y como el de Play
   es más ancho (3,37:1 contra 2,99:1 de Apple) termina siendo el más grande. La
@@ -45,7 +54,7 @@ Todo esto vive en `.tienda` / `.tiendas` de `assets/css/estilo.css`:
   fijo distinto en uno de los dos.**
 - **El App Store va PRIMERO**: Apple lo pide cuando hay badges de otras
   plataformas en la misma composición (*«Place the App Store badge first in the
-  lineup of badges»*). Por eso en la portada y en la cabecera el orden es
+  lineup of badges»*). Por eso en la portada el orden es
   App Store → Google Play, y no al revés.
 - **Negro los dos, en los dos temas.** Apple: *«Whenever one or more badges for
   other app platforms appear in the layout, use the preferred black badge»*, y el

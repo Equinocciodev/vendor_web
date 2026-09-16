@@ -195,7 +195,7 @@ a:hover { text-decoration-thickness: 2px; }
    titular escondido DEBAJO de la barra. Es además la línea con la que el
    marcador del menú decide en qué sección estás. */
 .seccion[id] { scroll-margin-top: 84px; }
-@media (max-width: 1240px) { .seccion[id] { scroll-margin-top: 104px; } }
+@media (max-width: 1080px) { .seccion[id] { scroll-margin-top: 104px; } }
 
 .saltar {
   position: absolute; left: -9999px; top: 0; z-index: 100;
@@ -287,26 +287,28 @@ a:hover { text-decoration-thickness: 2px; }
    enlaces en la misma línea que la marca, la fila no entra en un teléfono de
    360 px y arrastra la página entera a un desplazamiento horizontal — que es
    el defecto más feo que puede tener un sitio en un móvil. */
-/* El corte estaba en 660 px, paso a 1000 el 2-sep-2026 —cuando el menu crecio
-   a SEIS enlaces mas el boton de descarga—, paso a 1160 el 11-sep-2026 —ese dia
-   el boton unico (118 px) se convirtio en los DOS badges oficiales (267 px)— y
-   paso a 1240 el 15-sep-2026, cuando entro el selector de idioma.
-   Es la CUARTA vez que sube por la misma razon, y la regla ya es un patron:
-   **cada vez que entra algo nuevo en esta fila, hay que volver a medirla.**
+/* ⚠️ ESTE NUMERO SUBIO TRES VECES Y EL 16-sep-2026 BAJO POR PRIMERA VEZ.
+   Su historia, porque explica el patron: 660 -> 1000 el 2-sep-2026 (el menu
+   crecio a SEIS enlaces mas el boton de descarga) -> 1160 el 11-sep-2026 (el
+   boton unico, 118 px, se convirtio en los DOS badges oficiales, 267) -> 1240
+   el 15-sep-2026 (entro el selector de idioma) -> **1080 hoy**, cuando el
+   dueno mando sacar los badges de la cabecera. La regla no cambia en ninguna
+   direccion: **cada vez que algo entra o sale de esta fila, hay que volver a
+   medirla.**
 
-   Esta MEDIDO, con el menu en espanol (que es el largo: en ingles la fila pide
-   ~80 px menos y por eso el numero sale del castellano). Con el menu sin
-   partir la fila pedia 1.025 px; `.idioma` agrega 64 —40 de ancho, 16 del
-   `gap` de la fila y 8 de su propio margen— y la deja en 1.089, o sea que
-   necesita una ventana de 1.169 para que `.envoltura` se los de. Por debajo de
-   eso el menu se parte en dos renglones («Como funciona») y la cabecera crece
-   17 px. 1240 deja 71 px de holgura.
+   Esta MEDIDO, con el menu en espanol, que es el largo: en ingles la fila pide
+   ~70 px menos, y por eso el numero sale del castellano. Piezas de hoy:
+   marca 103 + menu 560 + `.descarga-corta` 130 + `.idioma` 40 + `.tema` 40,
+   mas los `gap`, = **937 px**, o sea que necesita una ventana de 1.017 para
+   que `.envoltura` se los de. Por debajo de eso el menu se parte en dos
+   renglones («Como funciona») y la cabecera crece 17 px. 1080 deja 63 px de
+   holgura, que es la misma que tenia antes de todo esto.
    ⚠️ Si moves este numero, move tambien el `scroll-margin-top` de
    `.seccion[id]` de mas arriba: los dos describen el mismo alto de cabecera. */
-@media (max-width: 1240px) {
+@media (max-width: 1080px) {
   .cabecera__fila { flex-wrap: wrap; min-height: 0; padding-block: 10px; row-gap: 4px; }
   .marca { order: 1; }
-  .tiendas--mini, .descarga-corta { order: 2; margin-left: auto; }
+  .descarga-corta { order: 2; margin-left: auto; }
   /* ⚠️ `idioma` y `tema` comparten el order 3 —y NO 3 y 4— a propósito: el
      menú es `order: 4` con `flex-basis: 100%`, así que cualquier cosa que
      quede en un order POSTERIOR al suyo se va a un tercer renglón detrás de
@@ -710,22 +712,30 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
   display: block; height: 48px; width: auto; max-width: none;
 }
 
-/* Versión compacta, para la cabecera de las cinco páginas. */
-/* Sin `margin-left: auto`: con el menú en la misma fila ya lo lleva `.nav`, y
-   dos márgenes automáticos se reparten el hueco y despegan el menú de la
-   derecha. En pantalla angosta, donde el menú baja a su propio renglón, se lo
-   pone la media query de la cabecera. */
-.tiendas--mini { flex: none; flex-wrap: nowrap; gap: 12px; }
-.tiendas--mini img { height: 40px; }
+/* ⚠️ ACA VIVIA `.tiendas--mini`, LOS DOS BADGES EN CHICO DE LA CABECERA, Y SE
+   FUE EL 16-sep-2026. Estuvo desde el 11-sep por encargo del dueño, y lo sacó
+   el mismo dueño: «the header menu has a lot of elements, maybe remove the
+   stores links buttons». Tenia razon y estaba medido — esa fila habia empujado
+   el corte a dos renglones de 660 a 1000, a 1160 y a 1240 px, y los badges
+   eran 267 de los ~1.089 que pedia—.
 
-/* El botón corto del teléfono: lo que se ve por debajo de 500 px, donde los
-   dos badges no entran en el renglón a un tamaño legible. NO es un badge —es
-   texto y un ícono nuestro—, así que no incumple ninguna guía, y lleva al
-   bloque `#descargar` de la portada, donde están los dos de verdad. Antes un
-   toque de más que aterrizar en la tienda equivocada, que es el defecto que
-   este cambio vino a cerrar. */
+   Lo que la cabecera NO perdio es el camino a la tienda: en su lugar queda
+   `.descarga-corta`, que ya existia para el telefono y ahora sale siempre.
+   Eso importa, porque el defecto que el 11-sep vino a cerrar era justamente
+   que la cabecera llevaba SOLO a Google Play y quien entraba desde un iPhone
+   aterrizaba en la tienda equivocada. Quitar los badges sin dejar nada lo
+   habria reabierto peor: sin ningun camino a la tienda en ocho de las diez
+   paginas.
+
+   Los badges siguen donde las dos guias de marca se cumplen de verdad: el
+   heroe de las dos portadas (`#descargar` / `#download`), a 48 px. */
+
+/* El botón de descarga de la cabecera. NO es un badge —es texto y un ícono
+   nuestro—, así que no incumple ninguna guía de marca, y lleva al bloque
+   `#descargar` de la portada, donde están los dos de verdad. Antes un toque de
+   más que aterrizar en la tienda equivocada. */
 .descarga-corta {
-  display: none; align-items: center; gap: 8px; flex: none; margin-left: auto;
+  display: inline-flex; align-items: center; gap: 8px; flex: none; margin-left: auto;
   min-height: 40px; padding: 0 14px;
   border: var(--grosor) solid var(--borde); border-radius: var(--r-boton);
   color: var(--tinta); background: var(--superficie);
@@ -733,10 +743,6 @@ blockquote.cita footer { margin-top: 10px; font-size: .86rem; color: var(--tinta
 }
 .descarga-corta:hover { border-color: var(--acento); color: var(--acento); text-decoration: none; }
 .descarga-corta svg { width: 17px; height: 17px; flex: none; }
-@media (max-width: 500px) {
-  .tiendas--mini { display: none; }
-  .descarga-corta { display: inline-flex; }
-}
 
 /* --- Franja de datos duros ---------------------------------------------- */
 /* ⚠️ CUATRO elementos, y por eso las columnas van EXPLÍCITAS y no con

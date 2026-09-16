@@ -322,14 +322,40 @@ tamaño y con el mismo tratamiento: no hay una principal y una de relleno.
 
 | Tienda | Sale en |
 |---|---|
-| Google Play (paquete `com.leiros.vendoo`) | portada, cabecera de las cinco **de cada idioma**, JSON-LD |
-| App Store (Apple ID **6811065669**) | portada y cabecera de las cinco **de cada idioma** |
+| Google Play (paquete `com.leiros.vendoo`) | el héroe de las dos portadas, y el JSON-LD |
+| App Store (Apple ID **6811065669**) | el héroe de las dos portadas |
+
+⚠️ **Los badges estuvieron en la cabecera entre el 11 y el 16-sep-2026, y ya no
+están.** Los puso el dueño («en el header coloca el boton de play y agrega el de
+play store, en pequeño») y los sacó el dueño: **«the header menu has a lot of
+elements, maybe remove the stores links buttons»**. Tenía razón, y está medido:
+esa fila había empujado el corte a dos renglones de 660 a 1000, a 1160 y a
+1240 px, y los badges eran **267 de los ~1.089** que la fila pedía. Sin ellos
+pide **937** y el corte pudo volver a **1080** — la primera vez que ese número
+baja.
+
+🔴 **Lo que NO se quitó es el camino a la tienda**, y ésa es la parte que hay
+que entender antes de tocarlo. El defecto que el 11-sep vino a cerrar era que la
+cabecera llevaba **sólo a Google Play**, así que quien entraba desde un iPhone
+aterrizaba en la tienda equivocada. Quitar los badges sin poner nada lo habría
+reabierto peor: sin **ningún** camino a la tienda en ocho de las diez páginas.
+En su lugar quedó **`.descarga-corta`**, el botón que ya existía para el
+teléfono y que ahora sale siempre: no es un badge —es texto y un ícono
+nuestro—, no le aplica ninguna guía de marca, y lleva a `#descargar`, donde
+están los dos de verdad a 48 px. **Un toque de más es mejor que la tienda
+equivocada**, que era el argumento original y sigue siendo el mismo.
+
+✅ Y de paso resolvió medio pendiente: los badges que hay son los de la campaña
+**en español**, y en `/en/` incumplen la regla de idioma de las dos guías. Al
+salir de la cabecera dejaron de aparecer en cinco páginas inglesas y quedan en
+**una sola**, el héroe de `/en/`. Sigue habiendo que bajar el arte en inglés,
+pero la exposición pasó de cinco páginas a una.
 
 ⚠️ **Hasta el 11-sep-2026 acá decía que la URL de Apple vivía en UN solo sitio
-del marcado, a propósito. Dejó de ser cierto ese día**, cuando el dueño mandó
-poner los dos badges también en la cabecera —y la cabecera es, por diseño,
-cuarenta líneas copiadas en los cinco HTML—. La regla no se podía cumplir y no
-se disimuló: se cambió por algo más fuerte.
+del marcado, a propósito.** Dejó de ser cierto ese día y hoy volvió a serlo casi:
+las URL de tienda están en `index.html` y en `en/index.html`, una por idioma.
+La regla vieja no se restauró igual, porque lo que protegía —que una copia se
+quedara vieja— lo custodia mejor un chequeo:
 
 Lo que esa regla protegía no era la copia, era **que una copia se quedara
 vieja**. Eso ahora lo custodia `tool/verificar.py`: si el Apple ID o el paquete
@@ -447,7 +473,12 @@ No es cuestión de apretar el `gap` — a cualquier tamaño que entre, el badge 
 de ser legible, y achicarlo por debajo de los 40 px de Apple incumple la guía
 que este cambio vino a cumplir.
 
-Por eso **por debajo de 500 px los dos badges se reemplazan por un botón corto**
+⚠️ **Este apartado describía una regla que el 16-sep-2026 dejó de aplicarse a
+500 px y pasó a aplicarse SIEMPRE**: los badges salieron de la cabecera entera,
+no sólo del teléfono (arriba). Lo que sigue explica por qué el botón corto
+existía ya, y por qué era la pieza correcta para ocupar su lugar.
+
+Por eso **por debajo de 500 px los dos badges se reemplazaban por un botón corto**
 (`.descarga-corta`) que lleva a `/#descargar`, el bloque de la portada donde
 están los dos de verdad. **No es un badge** —es texto y un ícono nuestro—, así
 que no incumple ninguna guía, y resuelve igual el defecto que este encargo vino
@@ -600,6 +631,12 @@ sells out in the street» (que se lee como «se queda sin existencias» o
 líneas más abajo) y «With no signal too».
 
 ### Lo que la traducción le costó a la cabecera
+
+> ⚠️ **Y lo que se recuperó un día después.** Lo que sigue quedó corto el
+> 16-sep-2026, cuando el dueño mandó sacar los badges de la cabecera: el corte
+> bajó de 1240 a **1080 px**, la primera vez que ese número baja. La medición de
+> abajo es la de ese día y se conserva porque explica de dónde venía el
+> problema; la de hoy está arriba, en «Los dos botones de tienda».
 
 Lo de siempre, y ya es un patrón: **cada vez que entra algo nuevo en esa fila,
 hay que volver a medirla.** El corte a dos renglones subió de **1160 a 1240 px**
