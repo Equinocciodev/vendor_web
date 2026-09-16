@@ -2,7 +2,7 @@
 <html lang="es-VE">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-sBSmF0cvqwH9q89LN1kE6J363Sy1ybqC0YQqLHqJ1RI=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-al+j7D2AC+Lg/qYigLZDlWHZklNovSDisZNbFWp86bo=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Contacto y soporte de Vendoo — correo, teléfono y demo</title>
 <meta name="description" content="Soporte de Vendoo: el correo, el teléfono y el WhatsApp de GUUAO LLC, y el formulario para pedir una demo con tus datos. Te contesta una persona en menos de un día hábil.">
@@ -58,14 +58,18 @@
 
    1. El tema elegido: con `defer` la pagina parpadearia en claro. Los tres
       valores estan explicados en sitio.js.
-   2. `data-anim`, que es lo que habilita las animaciones de entrada. Va aca
+   2. `data-js`, que dice que SI hay JavaScript. De ahi cuelga el menu
+      plegable del telefono: sin esa marca el menu se ve entero, como antes.
+      Va aca porque el menu se pinta plegado, y puesta con `defer` se verian
+      los seis enlaces un instante antes de plegarse.
+   3. `data-anim`, que es lo que habilita las animaciones de entrada. Va aca
       y no en sitio.js por lo mismo: puesto despues, lo que va a aparecer se
       veria un instante antes de esconderse. Y se QUITA SOLO a los dos
       segundos si sitio.js no alcanzo a marcar `data-listo` — sin esa red,
       un script que no cargue dejaria media pagina en opacity 0. */
 try{var t=localStorage.getItem('vendoo-tema');
 if(t==='claro'||t==='oscuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}
-try{var h=document.documentElement;h.setAttribute('data-anim','1');
+try{var h=document.documentElement;h.setAttribute('data-js','1');h.setAttribute('data-anim','1');
 setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-anim');}},2000);}catch(e){}</script>
 <script src="/assets/js/sitio.js" defer></script>
 <!-- Analítica (GA4 por Firebase), decisión del dueño del 2-sep-2026. Es la
@@ -144,7 +148,30 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
         </g>
       </svg>
     </a>
-    <nav class="nav" aria-label="Navegación principal">
+    <!-- EL BOTON DEL MENU, SOLO EN EL TELEFONO (16-sep-2026). Encargo del dueno:
+         «make a better menu for phone, the header».
+
+         Lo que habia: los seis enlaces en una barra con desplazamiento lateral.
+         Medido a 390 px antes de tocar nada: la barra media 459 px en 350 de
+         ancho, «Seguridad» salia cortada a la mitad y «Contacto» no se veia —y
+         nada indicaba que hubiera mas—. Un menu que esconde dos de sus seis
+         destinos sin avisar no es un menu.
+
+         ⚠️ VA ANTES DEL <nav> EN EL HTML a proposito, aunque en pantalla quede
+         a la derecha: asi el tabulador llega al boton ANTES que a lo que
+         despliega. Con el menu plegado, `.nav` esta en `display:none` y no
+         recibe foco, asi que el orden de tabulacion y el visual coinciden.
+
+         ⚠️ Y TODO EL PLEGADO CUELGA DE `:root[data-js]`, que pone el script en
+         linea del <head> antes del primer pintado. Sin JavaScript no hay marca,
+         ninguna de esas reglas aplica y el menu se ve entero como antes: fea la
+         barra, pero completa. El boton, que sin script no haria nada, no se
+         llega a dibujar. -->
+    <button class="menu__boton" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Menú">
+      <svg class="menu__abrir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="menu__cerrar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <nav class="nav" id="menu-principal" aria-label="Navegación principal">
         <a href="/">Inicio</a>
         <a href="/#producto">Producto</a>
         <a href="/#como">Cómo funciona</a>

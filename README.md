@@ -134,6 +134,58 @@ menú y el pie de las diez páginas, las dos versiones de la página nueva, el
 **Términos y privacidad NO están en el menú** (decisión del dueño): viven en el
 pie y en la página de contacto.
 
+#### El menú del teléfono es plegable (16-sep-2026)
+
+Encargo del dueño: **«make a better menu for phone, the header»**.
+
+**Lo que había, medido a 390 px antes de tocar nada:** los seis enlaces en una
+barra con desplazamiento lateral que pedía **459 px de los 350** disponibles.
+«Seguridad» salía cortada a la mitad, «Contacto» no se veía, y **nada indicaba
+que hubiera más**. Un menú que esconde dos de sus seis destinos sin avisar no
+es un menú.
+
+**Lo que hay:** un botón de 44 × 44 que despliega los seis destinos como una
+lista, cada uno con **46 px de alto** —blanco táctil— y a todo el ancho. La
+cabecera plegada pasó de **105 a 65 px**: cuarenta píxeles de pantalla que se
+le devuelven al contenido en cada teléfono.
+
+Cinco cosas que conviene no deshacer:
+
+1. **Es una MEJORA, no un requisito.** Todo el plegado cuelga de
+   `:root[data-js]`, que pone el script en línea del `<head>` **antes del
+   primer pintado**. Sin JavaScript no hay marca, ninguna regla del plegado
+   aplica, el botón ni se dibuja y el menú se ve como se veía —la barra fea
+   pero completa—. Comprobado con la ejecución de scripts apagada.
+   ⚠️ Esa marca es la **tercera** cosa que decide ese script, y por eso
+   **cambió su hash** (`sha256-al+j7D2A…`): está en las once páginas y en
+   `_headers`. Si lo tocás otra vez, el verificador te dice el que toca.
+2. **El estado vive en UN solo sitio: el `aria-expanded` del botón.** De ahí lo
+   leen el CSS —para mostrar el panel y cambiar las tres rayas por la equis— y
+   el lector de pantalla. Una sola fuente de verdad y nada que sincronizar.
+3. **Plegado es `display: none`, no `visibility` ni altura cero.** Así los
+   enlaces escondidos **no reciben foco** con el tabulador, que es el defecto
+   clásico de estos menús: el foco se va a un sitio que no se ve. Medido: con
+   el panel plegado, cero enlaces alcanzables.
+4. **El botón va ANTES del `<nav>` en el HTML**, aunque en pantalla quede a la
+   derecha: así el tabulador llega al control antes que a lo que despliega.
+5. **Se cierra solo al elegir un destino**, porque las cuatro anclas de la
+   portada no recargan la página y el panel se quedaría tapando justo aquello a
+   lo que se acaba de saltar. **Escape también cierra, y devuelve el foco al
+   botón.** Y al ensanchar por encima del corte el estado se limpia, para que
+   el panel no reaparezca solo al volver a angostar.
+
+**`.descarga-corta` baja al panel.** A 320 px las cinco piezas no entran en un
+renglón —marca 82 + descarga 48 + idioma 34 + tema 40 + botón 44, más los
+`gap`, pasan de los 280 útiles—, y abajo queda mejor: es la llamada a la acción
+y va a todo el ancho. Ahí **recupera su texto**, que en la fila se esconde por
+falta de sitio: un botón que sólo enseña una flecha no dice a dónde lleva.
+
+**Comprobado** con Chrome por CDP: las **nueve cabeceras** por **seis anchos**
+(320, 360, 390, 430, 768, 1080), abierto y cerrado — los seis destinos visibles,
+ninguno recortado y `scrollWidth` nunca mayor que la ventana, 54 de 54; en
+escritorio el botón no se dibuja y la barra sigue horizontal a 69 px; y
+Lighthouse con accesibilidad, buenas prácticas y SEO en **100**.
+
 #### El marcador del ítem activo, y por qué necesita JavaScript
 
 Defecto reportado por el dueño el **2-sep-2026**: «el indicador de seleccionado
@@ -1505,7 +1557,9 @@ EOF
 y pegar el resultado en el `script-src` de **las diez páginas** —las cinco de
 cada idioma— y de `_headers` (que sigue siendo la referencia para Cloudflare
 aunque Pages lo ignore). El script tiene que ser **idéntico en las diez**, o el
-hash sólo servirá para las que lo tengan igual. ⚠️ El de `/en/` es byte a byte
+hash sólo servirá para las que lo tengan igual. ⚠️ Ese script decide **tres**
+cosas desde el 16-sep-2026 —tema, `data-js` y `data-anim`—, y la de en medio es
+la que sostiene el menú del teléfono. ⚠️ El de `/en/` es byte a byte
 el mismo que el español **a propósito**, comentarios incluidos: no se traduce,
 porque traducirlo cambiaría el hash y obligaría a llevar dos en la CSP.
 `tool/verificar.py` comprueba justamente eso y te imprime el hash correcto.

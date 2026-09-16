@@ -332,6 +332,67 @@ var VENDOO_BASE = VENDOO_IDIOMA === 'en' ? '/en/' : '/';
 
 
 /* ==========================================================================
+   El menu plegable del telefono (16-sep-2026)
+
+   Encargo del dueno: «make a better menu for phone, the header». Lo que habia
+   eran los seis enlaces en una barra con desplazamiento lateral: medido a
+   390 px, pedia 459 px de los 350 que hay, «Seguridad» salia cortada y
+   «Contacto» no se veia.
+
+   ⚠️ ESTO ES UNA MEJORA, NO UN REQUISITO. El plegado entero cuelga de
+   `:root[data-js]`, que pone el script en linea del <head> antes del primer
+   pintado. Sin JavaScript no hay marca, la hoja de estilo no pliega nada, el
+   boton ni se dibuja y el menu se ve como se veia. Este archivo solo maneja el
+   estado; quien lo dibuja es el CSS.
+
+   El estado vive en UN solo sitio: el `aria-expanded` del boton. De ahi lo
+   leen el CSS (para mostrar el panel y cambiar las rayas por la equis) y el
+   lector de pantalla. Una sola fuente de verdad, y nada que sincronizar.
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var boton = document.querySelector('.menu__boton');
+  var nav = document.querySelector('.nav');
+  if (!boton || !nav) return;
+
+  // El mismo corte que la hoja de estilo. Si se mueve alla, se mueve aca.
+  var CORTE = 1080;
+
+  function abierto() { return boton.getAttribute('aria-expanded') === 'true'; }
+  function poner(v) { boton.setAttribute('aria-expanded', v ? 'true' : 'false'); }
+
+  boton.addEventListener('click', function () { poner(!abierto()); });
+
+  // Al elegir un destino, el menu sobra: si no, el panel tapa justo aquello a
+  // lo que se acaba de saltar. Vale igual para las anclas de la portada, que
+  // no recargan la pagina y dejarian el panel abierto para siempre.
+  nav.addEventListener('click', function (ev) {
+    if (ev.target.closest && ev.target.closest('a')) poner(false);
+  });
+
+  // Escape cierra y DEVUELVE EL FOCO al boton: si no, el foco se queda en un
+  // panel que ya no existe y el siguiente tabulador sale de la nada.
+  document.addEventListener('keydown', function (ev) {
+    if ((ev.key === 'Escape' || ev.key === 'Esc') && abierto()) {
+      poner(false);
+      boton.focus();
+    }
+  });
+
+  // Al ensanchar, el menu vuelve a ser una barra y el boton desaparece. Si se
+  // quedara «abierto», al volver a angostar la pagina el panel aparecia solo.
+  var reloj;
+  window.addEventListener('resize', function () {
+    clearTimeout(reloj);
+    reloj = setTimeout(function () {
+      if (window.innerWidth > CORTE && abierto()) poner(false);
+    }, 200);
+  });
+})();
+
+
+/* ==========================================================================
    El formulario de contacto (2-sep-2026)
 
    Encargo del dueño: «Contacto es un formulario que manda un correo a

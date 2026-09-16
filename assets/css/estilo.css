@@ -282,6 +282,34 @@ a:hover { text-decoration-thickness: 2px; }
 }
 .idioma:hover { color: var(--tinta); border-color: var(--acento); text-decoration: none; }
 
+/* EL BOTON DEL MENU DEL TELEFONO (16-sep-2026).
+
+   No se dibuja por defecto: sale solo por debajo del corte de la cabecera Y
+   solo si hay JavaScript (`:root[data-js]`, que pone el script en linea del
+   <head> antes del primer pintado). Un boton que sin script no hace nada es
+   peor que no tenerlo, asi que sin la marca ni se pinta — y el menu se queda
+   como estaba, entero.
+
+   44x44: es el blanco tactil minimo, el mismo criterio con el que las pildoras
+   `.via` de la pagina de soporte miden 44 de alto. */
+.menu__boton {
+  display: none; flex: none;
+  width: 44px; height: 44px; place-items: center;
+  margin-left: 8px;
+  background: transparent; color: var(--tinta);
+  border: var(--grosor) solid var(--borde); border-radius: var(--r-boton);
+  cursor: pointer;
+}
+.menu__boton:hover { color: var(--acento); border-color: var(--acento); }
+.menu__boton svg { width: 21px; height: 21px; }
+/* La equis sustituye a las tres rayas cuando esta abierto, igual que la luna
+   sustituye al sol en el interruptor de tema. El estado lo dice
+   `aria-expanded`, que es el mismo atributo que lee un lector de pantalla:
+   una sola fuente de verdad para el dibujo y para la voz. */
+.menu__boton .menu__cerrar { display: none; }
+.menu__boton[aria-expanded="true"] .menu__abrir { display: none; }
+.menu__boton[aria-expanded="true"] .menu__cerrar { display: block; }
+
 /* En pantalla angosta la cabecera se parte en DOS renglones: la marca y el
    interruptor arriba, la navegación abajo a todo el ancho. Con los cuatro
    enlaces en la misma línea que la marca, la fila no entra en un teléfono de
@@ -324,9 +352,68 @@ a:hover { text-decoration-thickness: 2px; }
   .nav::-webkit-scrollbar { display: none; }
   .nav a { padding: 8px 7px; font-size: .86rem; white-space: nowrap; }
   .marca__palabra { height: 20px; }
+
+  /* ===================================================================
+     EL MENU PLEGABLE DEL TELEFONO (16-sep-2026)
+
+     Encargo del dueno: «make a better menu for phone, the header». Lo que
+     habia eran los seis enlaces en una barra con desplazamiento lateral, y
+     esta medido a 390 px: la barra pedia 459 px de los 350 que hay,
+     «Seguridad» salia cortada a la mitad y «Contacto» no se veia — sin
+     ninguna senal de que hubiera mas. Un menu que esconde dos de sus seis
+     destinos sin avisar no es un menu.
+
+     ⚠️ TODO LO DE ABAJO CUELGA DE `:root[data-js]`. Lo de arriba es lo que
+     ve quien no tiene JavaScript: la misma barra de antes, fea, pero
+     completa si uno arrastra. Lo de abajo es la mejora. Ninguna de las dos
+     esconde nada sin decirlo, y por eso el plegado puede ser una mejora en
+     vez de un requisito.
+
+     La fila de arriba pasa a ser marca · boton · idioma · tema, y
+     `.descarga-corta` BAJA al panel: a 320 px las cinco piezas no entran en
+     un renglon —marca 82 + descarga 48 + idioma 34 + tema 40 + boton 44,
+     mas los `gap`, pasan de los 280 utiles— y ademas, abajo, la llamada a
+     la accion queda a todo el ancho, que es donde mejor se toca.
+     =================================================================== */
+  :root[data-js] .menu__boton { display: inline-grid; order: 2; margin-left: auto; }
+  :root[data-js] .idioma, :root[data-js] .tema { order: 3; margin-left: 6px; }
+  :root[data-js] .nav { order: 4; }
+  :root[data-js] .descarga-corta { order: 5; flex-basis: 100%; margin-left: 0; justify-content: center; }
+
+  /* Plegado: el panel NO existe. `display:none` y no `visibility:hidden` ni
+     una altura de cero, para que sus enlaces no reciban foco con el
+     tabulador mientras estan escondidos — que es el defecto clasico de
+     estos menus: el foco se va a un sitio que no se ve. */
+  :root[data-js] .menu__boton[aria-expanded="false"] ~ .nav,
+  :root[data-js] .menu__boton[aria-expanded="false"] ~ .descarga-corta { display: none; }
+
+  /* Desplegado: una lista de verdad y no una barra apretada. Cada destino a
+     46 px de alto —blanco tactil— y alineado a la izquierda, que es como se
+     leen las listas. */
+  :root[data-js] .menu__boton[aria-expanded="true"] ~ .nav {
+    display: flex; flex-direction: column; align-items: stretch;
+    gap: 2px; overflow: visible; padding-block: 8px 4px;
+    border-top: 1px solid var(--borde-suave); margin-top: 6px;
+  }
+  :root[data-js] .menu__boton[aria-expanded="true"] ~ .nav a {
+    min-height: 46px; padding: 10px 12px; font-size: .95rem; font-weight: 500;
+  }
+  :root[data-js] .menu__boton[aria-expanded="true"] ~ .descarga-corta {
+    display: flex; margin-bottom: 4px;
+  }
 }
 @media (max-width: 420px) {
   .nav a { padding: 8px 5px; font-size: .78rem; }
+  :root[data-js] .menu__boton[aria-expanded="true"] ~ .nav a {
+    padding: 10px 12px; font-size: .95rem;
+  }
+  /* Y el texto «Descargar» VUELVE en el panel. Arriba se esconde porque en la
+     fila no cabe; abajo hay 350 px de ancho y un botón que sólo enseña una
+     flecha no dice a dónde lleva. */
+  :root[data-js] .menu__boton[aria-expanded="true"] ~ .descarga-corta span {
+    position: static; width: auto; height: auto; overflow: visible;
+    clip: auto; clip-path: none;
+  }
   /* El texto «Descargar» se esconde sólo a la vista: con `display: none` el
      enlace se quedaba sin nombre accesible (Lighthouse, 2-sep-2026) y un lector
      de pantalla anunciaba «enlace» a secas. */
