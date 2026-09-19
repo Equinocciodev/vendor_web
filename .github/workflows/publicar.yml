@@ -58,7 +58,7 @@ jobs:
         continue-on-error: true
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq tidy
-          for f in *.html en/*.html; do
+          for f in *.html en/*.html docs/*.html; do
             echo "--- $f"
             tidy -quiet -errors --gnu-emacs yes "$f" || true
           done
@@ -76,6 +76,11 @@ jobs:
           # sin esta línea se publica el sitio entero menos /en/, y las ocho
           # `hreflang` apuntan a cuatro páginas que contestan 404.
           cp -R en _sitio/
+          # El manual del vendedor, que también es una carpeta. Sin esta línea
+          # se publica el sitio entero menos /docs/, y los enlaces del pie de
+          # las cinco páginas contestan 404. Son doce páginas en español; el
+          # porqué de que no tengan gemela en inglés está en tool/verificar.py.
+          cp -R docs _sitio/
           # Sin Jekyll: Pages lo correría por defecto y se comería cualquier
           # archivo o carpeta que empiece con guion bajo. Y los README de
           # assets/ son del repositorio, no del sitio.
@@ -91,6 +96,7 @@ jobs:
           # de línea que alguien borra sin querer al reordenar el bloque, y el
           # sitio publicado no protestaría: sólo se caería /en/.
           for f in en/index.html en/contact.html en/terms.html en/privacy.html \
+                   docs/index.html docs/visita.html docs/sin-internet.html \
                    site.webmanifest site-en.webmanifest; do
             if [ ! -f "_sitio/$f" ]; then echo "$f no llegó a _sitio"; exit 1; fi
           done

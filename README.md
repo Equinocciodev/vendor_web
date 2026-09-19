@@ -68,6 +68,19 @@ de consumo**.
 │   ├── terms.html        gemela de /terminos.html
 │   ├── privacy.html      gemela de /privacidad.html
 │   └── support.html      desvío a /en/contact.html#support (espejo de /soporte.html)
+├── docs/                 El MANUAL DEL VENDEDOR: doce secciones, sólo en español
+│   ├── index.html        1 · Qué es Vendoo (es además la portada del manual)
+│   ├── entrar.html       2 · Entrar y sincronizar
+│   ├── sin-internet.html 3 · Trabajar sin internet
+│   ├── inicio.html       4 · Tu Inicio
+│   ├── ruta.html         5 · La ruta del día
+│   ├── visita.html       6 · La visita, paso a paso
+│   ├── catalogo.html     7 · El catálogo
+│   ├── cobrar.html       8 · Cobrarle a un cliente
+│   ├── facturas.html     9 · Las facturas y lo que te deben
+│   ├── actividad.html    10 · Tus pedidos y tu actividad
+│   ├── clientes.html     11 · Clientes nuevos y correcciones
+│   └── dudas.html        12 · Dudas rápidas
 ├── favicon.svg           El isotipo, copiado de la app
 ├── robots.txt
 ├── sitemap.xml
@@ -87,7 +100,8 @@ de consumo**.
 │       ├── isotipo.svg, favicon-32.png, icono-180.png, icono-192.png,
 │       │   icono-512.png, icono-512-maskable.png   (los PNG salen de tool/imagenes.py)
 │       ├── tiendas/      Los badges OFICIALES de App Store y Google Play. NO se editan.
-│       └── capturas/     Las seis capturas (PNG maestras + WebP derivadas + derivadas.json)
+│       └── capturas/     Capturas: seis de la portada (PNG) + nueve del manual (`manual-*.jpg`),
+│                          cada una con sus WebP derivadas y su huella en derivadas.json
 ├── tool/verificar.py     El chequeo que corre en CI y también en tu máquina
 ├── tool/imagenes.py      Deriva los WebP de las capturas y los íconos. Se corre a mano.
 ├── tool/og.html          El molde de la imagen social en español. NO se publica.
@@ -767,6 +781,207 @@ invisibles. Con reloj real, las dos cosas están bien:
 
 ---
 
+## El manual del vendedor (`/docs/`, 19-sep-2026)
+
+Doce páginas que explican **cómo se usa la aplicación en la calle**, pantalla
+por pantalla: la ruta, la visita de ocho pasos, la cobranza, las facturas, el
+catálogo y qué pasa cuando no hay señal. La portada del manual es `/docs/`.
+
+El lector no es el que compra el producto: es **el vendedor que lo usa todos
+los días**, parado en un negocio, con datos móviles y un teléfono de gama
+baja. De ahí salen casi todas las decisiones de abajo.
+
+### Está hecho a mano, y los generadores se evaluaron y se descartaron
+
+Se miraron Material for MkDocs, Just the Docs y compañía. **No entra ninguno**,
+por cinco razones que conviene dejar escritas para no reabrir la discusión:
+
+1. **El sitio no tiene build de contenido.** El workflow hace `cp *.html`.
+   Un generador le agrega una etapa de compilación a un sitio que hoy no la
+   necesita.
+2. **La CSP es `script-src 'self'` más un hash**, y `font-src 'self'`. El
+   JavaScript que trae un generador obliga a reabrirla.
+3. **`tool/verificar.py` lee el HTML commiteado.** Con un generador leería
+   otra cosa, o habría que reescribirlo.
+4. Traería **un segundo sistema de diseño** al lado del que ya existe.
+5. Y la de fondo: **la maqueta de tres columnas son unas sesenta líneas de
+   CSS Grid y `position: sticky`**. Lo que un generador compra de verdad es
+   escribir en Markdown, y el manual lo mantiene el dueño a mano.
+
+### Doce páginas y no una sola larga
+
+Es la decisión de estructura, y tiene contra: una página sola se busca con
+Ctrl+F y se lee entera sin señal después de abrirla una vez. Pesó más esto:
+
+- **La maqueta de tres columnas sólo tiene sentido con varias páginas.** El
+  carril de la izquierda es el manual entero *con la sección activa marcada*
+  —`aria-current="page"`, sin una línea de JavaScript— y el de la derecha son
+  las anclas *de lo que estás leyendo*. En una página sola los dos carriles
+  dirían lo mismo, y marcar la sección activa necesitaría un *scroll spy*, o
+  sea script, o sea tocar la CSP.
+- **Cada sección pesa entre 20 y 31 KB de HTML**, y las imágenes van con
+  `loading="lazy"`. En datos móviles se baja lo que se va a leer.
+- **El enlace de una sección es una URL de verdad** (`/docs/visita.html`), que
+  es como esto se va a usar: un supervisor le manda a un vendedor la parte que
+  le hace falta.
+
+Lo que se pierde —leer el manual completo sin señal— se compensa con
+**«Anterior / Siguiente»** al pie de cada página: en el teléfono el carril
+queda al final y nadie lo baja a buscar para pasar a la de al lado.
+
+### Las doce van AGRUPADAS en cuatro
+
+Una lista plana de doce destinos obliga a leerlos todos para encontrar uno.
+Los grupos son por lo que el vendedor está haciendo:
+
+| Grupo | Secciones |
+|---|---|
+| **Empezar aquí** | Qué es Vendoo · Entrar y sincronizar · **Trabajar sin internet** |
+| **El día en la calle** | Tu Inicio · La ruta del día · La visita, paso a paso |
+| **Vender y cobrar** | El catálogo · Cobrarle a un cliente · Las facturas y lo que te deben |
+| **Consultar** | Tus pedidos y tu actividad · Clientes nuevos y correcciones · Dudas rápidas |
+
+⚠️ **«Trabajar sin internet» va en el PRIMER grupo a propósito.** Sin señal es
+el modo **normal** de esta aplicación, no la avería. Metida en un grupo
+llamado «si algo falla» se leería como un caso de excepción, y es justamente
+la sección que le quita al vendedor el miedo a perder un pedido. El número
+sigue corriendo de 1 a 12 por encima de los grupos —el contador vive en el
+carril y no en la lista— porque es como se nombran entre compañeros: «mirá la
+6».
+
+### Sólo en español, y por qué no está en `GEMELAS`
+
+`tool/verificar.py` exige que cada página de contenido tenga su gemela en
+`/en/` y que las dos se apunten con `hreflang`. **El manual queda fuera de esa
+tabla, explícitamente y con el porqué escrito ahí mismo.**
+
+No es un pendiente: el manual lo leen los vendedores de calle, está escrito en
+español de Venezuela con el nombre exacto de cada botón de la aplicación, y se
+mantiene a mano cada vez que una pantalla cambia. Traducirlo no lo pidió
+nadie, y **una traducción que se queda atrás miente peor que no tener
+ninguna** — que es justo el riesgo que esa tabla existe para atajar.
+
+Lo que sí se les exige es **todo lo demás**: `title`, `description`, canónica,
+un solo `<h1>`, `alt` en toda imagen, la analítica, la CSP con el hash del
+script del tema y el manifiesto de su idioma. De eso no hay ninguna razón para
+eximirlas, y el verificador las trata como a las otras once.
+
+Consecuencia visible: el selector **EN** de la cabecera lleva a `/en/` —la
+portada en inglés— y no a una página hermana que no existe. Es lo único
+honesto que puede hacer. El día que haya manual en inglés, sus páginas entran
+a `GEMELAS` una por una y las tres comprobaciones de idioma empiezan a
+aplicarles solas.
+
+### La maqueta: tres columnas, cero JavaScript
+
+```
+        ┌────────┬──────────────────┬────────┐
+1260+   │ árbol  │  miga + título   │ en     │
+        │ del    ├──────────────────┤ esta   │
+        │ manual │  el contenido    │ página │
+        └────────┴──────────────────┴────────┘
+
+        ┌────────┬──────────────────┐
+1000→   │ árbol  │  miga + título   │        «en esta página» baja
+1259    │ del    ├──────────────────┤        a la columna del texto,
+        │ manual │  en esta página  │        en su caja
+        │        ├──────────────────┤
+        │        │  el contenido    │
+        └────────┴──────────────────┘
+
+        ┌──────────────────┐
+< 1000  │ miga + título    │        el orden del HTML ES el del teléfono:
+        │ en esta página   │        no hay nada que plegar, ningún botón
+        │ el contenido     │        que tocar, y por eso no hace falta
+        │ anterior / sig.  │        un script
+        │ todo el manual   │
+        └──────────────────┘
+```
+
+**Que sea CSS puro es un requisito, no una preferencia de estilo.** La CSP del
+sitio es `script-src 'self'` más UN hash sha256 escrito a mano en cada página;
+un `<script>` nuevo en `/docs/` obliga a recalcularlo en las veintitrés. Lo
+que hace falta para una maqueta de documentación es `grid-template-areas` y
+`position: sticky`.
+
+Tres detalles que costaron y no se «simplifican»:
+
+- **El orden del HTML es el del teléfono** y las áreas de la reja lo
+  reacomodan en pantalla grande. Por eso en una columna se lee de qué trata
+  esto, qué partes tiene, el texto, y al final «todo el manual» — sin plegar
+  nada.
+- ⚠️ **El área `aqui` tiene que estar declarada en los tres tramos**, aunque
+  entre 1000 y 1259 viva dentro de la columna del texto. Ver «El desborde que
+  no se ve venir», más abajo: sin declararla, la reja le inventa una columna
+  implícita y el texto se queda en 250 px.
+- ⚠️ **Los dos carriles son contenedores de desplazamiento** (`overflow-y:
+  auto` computa `overflow-x: auto`), así que **recortan en su borde**: con el
+  rótulo pegado a cero, la «T» de «TODO EL MANUAL» salía partida. De ahí el
+  relleno lateral del rótulo y los 4 px del carril, que además le dan sitio al
+  anillo de foco.
+
+### Lo que el verificador custodia, y por qué
+
+Dos cosas viven copiadas en doce archivos, y una convención repetida en doce
+archivos se queda vieja en uno. Es el mismo movimiento que ya está hecho con
+el hash del script del tema y con los identificadores de tienda:
+
+- **El árbol de navegación tiene que decir lo mismo en las doce** —los mismos
+  destinos, en el mismo orden— y **cada página tiene que marcarse a sí misma**
+  con `aria-current="page"`, ni una más ni una menos. Un menú cojo no se nota:
+  la página sigue abriendo.
+- **La versión de la aplicación que el manual dice describir** (hoy `5.2.5`)
+  tiene que ser la misma en las doce. A medias, el manual afirmaría describir
+  dos aplicaciones distintas.
+- Y **cada sección tiene que estar en el `sitemap.xml`**.
+
+### Las capturas: por qué NO son las de la portada
+
+La portada tiene seis capturas propias y **no se reusó ninguna en el manual**,
+salvo comprobar que no servían. El motivo es de fechas: son del 2-sep-2026 y
+el manual describe la **5.2.5**. Mirando `inicio.png` al lado del texto, el
+octavo botón dice «Sin ubicación» donde el manual dice «Ajuste de stock», y
+lleva un renglón de tasa que la aplicación quitó el 4-sep. **Un manual cuya
+captura contradice su propio texto enseña a desconfiar de los dos.**
+
+Las del manual son nueve, de la 5.2.5, y llevan el prefijo `manual-`. Dos
+cosas que hay que saber antes de agregar otra:
+
+- 🔴 **Hay capturas del lote original que NO se publicaron**, y no por gusto:
+  - una muestra **un número de cuenta bancaria completo** de la empresa;
+  - **cinco muestran el nombre de una compañía real** del grupo que usa la
+    aplicación. La regla de `assets/img/capturas/README.md` es que las
+    capturas van anonimizadas porque el sitio es público, y además el sitio
+    entero habla en genérico y **no nombra a ningún cliente**. Publicarlas es
+    una decisión del dueño, no del que arma la página.
+
+  De las cinco, dos se salvaron **recortando**: el panel de sincronización y
+  la mitad de abajo del Inicio no tienen la fila de la empresa. Recortar no es
+  falsear; poner un marco de teléfono alrededor de medio Inicio sí, y por eso
+  los dos recortes van con borde a secas y no con el marco.
+- **Las maestras del manual son JPG**, al revés que las seis de la portada.
+  Llegan así desde el teléfono: re-codificarlas a PNG no les devuelve la
+  calidad que ya perdieron y duplica lo que pesa el repositorio.
+  `tool/imagenes.py` acepta las dos extensiones y **no agranda nunca una
+  maestra** —de una de 620 px salen `-360` y `-620`, no dos ampliaciones
+  borrosas con nombre de resolución alta—, y `tool/verificar.py` les exige la
+  misma huella en `derivadas.json` que a las otras.
+
+### Dónde se enlaza
+
+En el **pie de las cinco páginas en español** («Sitio › Manual del vendedor»)
+y en **dos sitios de `/contacto.html#soporte`**: la tarjeta «Si usás Vendoo en
+la calle» y la ficha de datos, que es donde aterriza quien busca ayuda.
+
+⚠️ **NO va en la cabecera**, y es una decisión medida. Esa fila está calculada
+al píxel: el comentario de `.cabecera__fila` en `estilo.css` dice que a
+1080 px pide 937 de los 1017 disponibles. «Manual» son ~70 px más, o sea que
+habría que mover el punto de quiebre **y** el `scroll-margin-top` que describe
+el mismo alto de cabecera. El manual es un recurso de soporte, no un destino
+de venta: el pie y la página de soporte son su sitio.
+
+---
+
 ## El formulario de contacto
 
 Desde el **2-sep-2026** `contacto.html` es **una sola pieza**: rótulo,
@@ -1165,6 +1380,16 @@ encogerse (`min-width: 0`), la palabra puede partirse si no queda otra
 su tipografía y su relleno. **Si agregás una palabra larga a un mosaico,
 medí a 320 px.**
 
+Y el mismo `1fr` tiene una segunda trampa, que costó un rato el 19-sep-2026
+con el manual: **un elemento con `grid-area` que la plantilla del tramo no
+nombra no se cae — la reja le inventa una columna implícita al final**, y esa
+columna le come el ancho al `1fr` del contenido. Pasaba entre 1000 y 1259 px,
+donde la maqueta del manual es de dos columnas y el área `aqui` («En esta
+página») no estaba declarada: el texto quedaba en **250 px** dentro de una
+ventana de 1024, con media pantalla vacía al lado y el título partido en
+cuatro renglones. `scrollWidth` no lo delata —no hay desborde, hay desperdicio—
+así que **esto sólo se ve mirando la captura**.
+
 ### Medir que no haya desplazamiento horizontal
 
 Medido el 2-sep-2026 de **320 a 1440 px** en las cinco páginas: `scrollWidth`
@@ -1173,6 +1398,17 @@ de ventana**, así que por debajo de eso hay que medir metiendo la página en un
 `<iframe>` del ancho que se quiera y leyendo `contentDocument.documentElement.
 scrollWidth` desde el padre. Si medís con `--window-size=320,900` y te da 500,
 no estás midiendo 320.
+
+⚠️ **Y una captura hecha así MIENTE, no sólo la medición** (19-sep-2026). Con
+`--window-size=360,2600 --screenshot`, macOS le da a la ventana su ancho
+mínimo —unos 400 px—, la página maqueta a 400 y el PNG sale recortado a 360:
+se ve texto cortado a mitad de palabra en un sitio que no desborda. La forma
+que sí dice la verdad, y la que se usó para el manual, es el protocolo de
+DevTools: abrir Chrome con `--remote-debugging-port`, mandar
+`Emulation.setDeviceMetricsOverride` con el ancho que se quiere medir y
+después `Page.captureScreenshot` con `captureBeyondViewport: true`. Ahí sí
+`clientWidth` es el ancho pedido y la captura es de la página entera. Con
+eso se midió el manual a **360, 414, 768, 1024 y 1280**.
 
 ---
 

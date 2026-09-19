@@ -57,6 +57,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -76,6 +77,41 @@ IMG = RAIZ / 'assets' / 'img'
 ANCHOS = (360, 720, 1080)
 ALTO_MAESTRA = 2400
 ANCHO_MAESTRA = 1080
+
+# LAS DOS FAMILIAS DE CAPTURAS (19-sep-2026)
+#
+# Hasta hoy había una sola: las seis de la portada, maestras PNG de
+# 1080 × 2400 porque la reja de `#pantallas` pinta el marco del teléfono con
+# esa proporción. Con el manual del vendedor (`/docs/`) entró una segunda, y
+# NO cumple ninguna de las dos cosas:
+#
+#   1. **Llegan en JPG**, tal como salen del teléfono. Re-codificarlas a PNG
+#      no le devuelve a una imagen la calidad que ya perdió y multiplica por
+#      dos lo que pesa el repositorio, así que la maestra se queda en JPG.
+#   2. **Miden 620 px de ancho, y dos van recortadas** —el panel de
+#      sincronización y el Inicio sin la fila de la empresa—, o sea que ni
+#      siquiera son todas de la misma forma. El manual las pinta en una
+#      columna de texto, no en un marco de teléfono, así que la proporción la
+#      da cada `<img>` con su `width`/`height`.
+#
+# De ahí las dos reglas de abajo: el tamaño exacto se le exige sólo a la
+# familia de la portada, y NINGUNA derivada agranda la maestra. Lo segundo
+# vale para las dos —una captura de 1080 sigue dando 360/720/1080, igual que
+# ayer— y es lo que hace que una de 620 dé 360 y 620 en vez de dos ampliaciones
+# borrosas con nombre de resolución alta.
+PREFIJO_MANUAL = 'manual-'
+EXTENSIONES = ('*.png', '*.jpg')
+
+
+def anchos_de(ancho_maestra: int) -> tuple[int, ...]:
+    """Los anchos a derivar: los estándar que caben, más el de la maestra."""
+    cabe = tuple(a for a in ANCHOS if a < ancho_maestra)
+    return cabe + (ancho_maestra,)
+
+
+def es_derivada(ruta: Path) -> bool:
+    """`inicio-720.webp` sí; `manual-panel.jpg` no. El sufijo es `-<ancho>`."""
+    return bool(re.search(r'-\d+$', ruta.stem))
 
 # Proporciones del isotipo, sacadas de assets/img/isotipo.svg (viewBox 1024):
 # la teja con radio 232, el anillo de radio 265,2 y trazo 149,6, el disco de
@@ -101,26 +137,29 @@ def guardar_webp(img: Image.Image, destino: Path) -> None:
 
 
 def derivar_capturas() -> int:
-    maestras = sorted(p for p in CAPTURAS.glob('*.png')
-                      if not any(p.stem.endswith(f'-{a}') for a in ANCHOS))
+    maestras = sorted((p for patron in EXTENSIONES for p in CAPTURAS.glob(patron)
+                       if not es_derivada(p)), key=lambda p: p.name)
     if not maestras:
         print(f'no hay maestras en {CAPTURAS}')
         return 0
     n = 0
     huellas: dict[str, str] = {}
     for maestra in maestras:
+        del_manual = maestra.name.startswith(PREFIJO_MANUAL)
         huellas[maestra.name] = hashlib.sha256(maestra.read_bytes()).hexdigest()
         with Image.open(maestra) as im:
-            if im.size != (ANCHO_MAESTRA, ALTO_MAESTRA):
+            if not del_manual and im.size != (ANCHO_MAESTRA, ALTO_MAESTRA):
                 print(f'  ⚠ {maestra.name} mide {im.size[0]}×{im.size[1]}; '
-                      f'la maestra tiene que ser {ANCHO_MAESTRA}×{ALTO_MAESTRA}')
+                      f'la maestra de la portada tiene que ser '
+                      f'{ANCHO_MAESTRA}×{ALTO_MAESTRA}')
             rgb = im.convert('RGB')
-            for ancho in ANCHOS:
+            anchos = anchos_de(rgb.width)
+            for ancho in anchos:
                 alto = round(rgb.height * ancho / rgb.width)
                 chica = rgb if ancho == rgb.width else rgb.resize((ancho, alto), Image.LANCZOS)
                 guardar_webp(chica, maestra.with_name(f'{maestra.stem}-{ancho}.webp'))
                 n += 1
-        print(f'  {maestra.name} → {len(ANCHOS)} webp')
+        print(f'  {maestra.name} ({rgb.width}×{rgb.height}) → {len(anchos)} webp')
     # La huella de cada maestra: es lo que le permite a tool/verificar.py
     # decir «esta captura cambió y sus WebP son de la anterior».
     (CAPTURAS / 'derivadas.json').write_text(

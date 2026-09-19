@@ -99,6 +99,36 @@ OBLIGATORIAS = sorted(list(GEMELAS.keys()) + list(GEMELAS.values()))
 ADEMAS = ['404.html', 'robots.txt', 'sitemap.xml', 'favicon.svg',
           'site.webmanifest', 'site-en.webmanifest']
 
+# ======================================================================
+# EL MANUAL DEL VENDEDOR — /docs/  (19-sep-2026)
+#
+# Doce paginas en ESPANOL Y SOLO EN ESPANOL, y eso es una decision, no un
+# pendiente. El manual lo leen los vendedores de calle: esta escrito en
+# espanol de Venezuela, con el nombre exacto de cada boton de la aplicacion,
+# y se mantiene a mano cada vez que una pantalla cambia. Traducirlo no lo
+# pidio nadie y una traduccion que se queda atras miente peor que no tener
+# ninguna — que es justo el riesgo que la tabla `GEMELAS` existe para
+# atajar.
+#
+# Por eso NO entran en `GEMELAS`: si entraran, este archivo exigiria una
+# gemela en /en/ por cada una y `hreflang` cruzado en las veinticuatro. Lo
+# que si se les exige es todo lo demas —title, descripcion, canonica, un
+# solo <h1>, `alt`, la analitica, la CSP, el manifiesto de su idioma— porque
+# de eso no hay ninguna razon para eximirlas.
+#
+# El dia que haya manual en ingles, sus paginas entran a `GEMELAS` una por
+# una y las tres comprobaciones de idioma empiezan a aplicarles solas.
+#
+# ⚠️ Y hay DOS cosas que solo pasan aca y que este archivo custodia, porque
+# son convenciones repetidas en doce archivos y las convenciones repetidas
+# se quedan viejas en uno: el arbol de navegacion de la izquierda —las doce
+# secciones, en el mismo orden— y la version de la aplicacion que el manual
+# dice describir. Es el mismo movimiento que el hash del script del tema y
+# que los identificadores de tienda.
+MANUAL = 'docs'
+MANUAL_VERSION = re.compile(r'<span class="version">[^<]*<b>([^<]+)</b>')
+MANUAL_ARBOL = re.compile(r'<nav class="manual__arbol".*?</nav>', re.S)
+
 # Las URL publicas de cada archivo, para poder comparar lo que dicen los
 # `hreflang` contra lo que hay en el disco.
 SITIO = 'https://vendooapp.com'
@@ -344,7 +374,9 @@ def main() -> int:
     # por su ruta relativa y NO por su nombre a secas: hay dos `index.html` y
     # dos `contact`/`contacto`, y con el nombre pelado una tapaba a la otra —
     # las anclas de una se habrían comprobado contra los `id` de la otra.
-    paginas = sorted(RAIZ.glob('*.html')) + sorted((RAIZ / 'en').glob('*.html'))
+    paginas = (sorted(RAIZ.glob('*.html'))
+               + sorted((RAIZ / 'en').glob('*.html'))
+               + sorted((RAIZ / MANUAL).glob('*.html')))
     if not paginas:
         error('(sitio)', 'no hay ninguna página HTML')
 
@@ -646,7 +678,13 @@ def main() -> int:
         except Exception as exc:
             anotadas = {}
             error('assets/img/capturas/derivadas.json', f'no es JSON válido ({exc})')
-        for maestra in sorted(capturas.glob('*.png')):
+        # Dos extensiones desde el 19-sep-2026: las seis de la portada son PNG
+        # y las del manual llegan en JPG desde el telefono. Re-codificarlas a
+        # PNG no les devuelve calidad y duplica lo que pesa el repositorio; el
+        # porque entero esta en tool/imagenes.py.
+        maestras = sorted([p for e in ('*.png', '*.jpg') for p in capturas.glob(e)],
+                          key=lambda p: p.name)
+        for maestra in maestras:
             if re.search(r'-\d+$', maestra.stem):
                 continue
             actual = hashlib.sha256(maestra.read_bytes()).hexdigest()
@@ -754,6 +792,66 @@ def main() -> int:
             detalle = '; '.join(f'{k} en {", ".join(sorted(v))}' for k, v in sorted(hallados.items()))
             error('URL de tienda', f'hay {len(hallados)} {cual} distintos en el sitio '
                                    f'({detalle}). Tienen que nombrar la misma aplicación.')
+
+    # ======================================================================
+    # EL MANUAL: el árbol y la versión, iguales en las doce
+    #
+    # Las dos cosas están copiadas en doce archivos y las dos se quedan viejas
+    # en uno solo. El árbol cojo se nota tarde —el visitante toca una sección
+    # y el menú de la que abre no la marca, o peor: no la lista—, y una
+    # versión a medias es un manual que afirma describir dos aplicaciones
+    # distintas. Es el mismo movimiento que ya está hecho con el hash del
+    # script del tema y con los identificadores de tienda.
+    manual = sorted((RAIZ / MANUAL).glob('*.html'))
+    arboles: dict[str, list[str]] = {}
+    versiones: dict[str, set[str]] = {}
+    for pagina in manual:
+        nombre = rel(pagina)
+        texto = pagina.read_text(encoding='utf-8')
+
+        m = MANUAL_ARBOL.search(texto)
+        if not m:
+            error(nombre, 'no tiene el árbol de navegación del manual '
+                          '(<nav class="manual__arbol">). Va en las doce.')
+        else:
+            destinos = re.findall(r'<a href="([^"]+)"', m.group(0))
+            arboles[nombre] = destinos
+            # Y la sección que se está leyendo se marca. Sin esto el carril se
+            # ve igual en las doce y deja de decir dónde estás.
+            propia = '/' + MANUAL + '/' if nombre.endswith('/index.html') \
+                else '/' + nombre
+            marcadas = re.findall(r'<a href="([^"]+)" aria-current="page"', m.group(0))
+            if marcadas != [propia]:
+                error(nombre, f'el árbol marca {marcadas} con aria-current y '
+                              f'tiene que marcar exactamente ["{propia}"].')
+
+        v = MANUAL_VERSION.search(texto)
+        if not v:
+            error(nombre, 'no dice de qué versión de la aplicación habla '
+                          '(<span class="version">). Va en las doce.')
+        else:
+            versiones.setdefault(v.group(1), set()).add(nombre)
+
+    if len(set(map(tuple, arboles.values()))) > 1:
+        cual = {n: len(d) for n, d in sorted(arboles.items())}
+        error(MANUAL + '/', f'el árbol de navegación NO dice lo mismo en las doce '
+                            f'páginas ({cual}). Se toca en todas o en ninguna.')
+    if len(versiones) > 1:
+        detalle = '; '.join(f'{v} en {", ".join(sorted(n))}'
+                            for v, n in sorted(versiones.items()))
+        error(MANUAL + '/', f'el manual declara {len(versiones)} versiones distintas '
+                            f'de la aplicación ({detalle}).')
+    # Y cada página del manual va en el sitemap: una sección que no está ahí
+    # es una sección que nadie encuentra buscando.
+    if manual and (RAIZ / 'sitemap.xml').exists():
+        xml_m = (RAIZ / 'sitemap.xml').read_text(encoding='utf-8')
+        for pagina in manual:
+            r = rel(pagina)
+            esperada = url_de(r).replace(SITIO, '')
+            if r.endswith('/index.html'):
+                esperada = '/' + MANUAL + '/'
+            if f'<loc>{SITIO}{esperada}</loc>' not in xml_m.replace('\n', ''):
+                error('sitemap.xml', f'no incluye {esperada} (sección del manual)')
 
     # robots.txt tiene que declarar el sitemap, o nadie lo encuentra.
     robots = (RAIZ / 'robots.txt')

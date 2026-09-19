@@ -1,7 +1,8 @@
 # Vendoo — https://vendooapp.com
 # Sitio público de producto. Se indexa entero: son cuatro páginas en español
-# (la raíz) y las mismas cuatro en inglés (/en/, desde el 15-sep-2026), y
-# ninguna tiene datos de nadie. Las dos versiones SE INDEXAN LAS DOS: para eso
+# (la raíz), las mismas cuatro en inglés (/en/, desde el 15-sep-2026) y las
+# doce del manual del vendedor (/docs/, desde el 19-sep-2026, sólo en
+# español). Ninguna tiene datos de nadie. Las dos versiones SE INDEXAN LAS DOS: para eso
 # están emparejadas con `hreflang` en cada página y en el sitemap, que es lo
 # que le dice a un buscador que son la misma cosa en dos lenguas y no
 # contenido duplicado.

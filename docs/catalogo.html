@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="es-VE">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-al+j7D2AC+Lg/qYigLZDlWHZklNovSDisZNbFWp86bo=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- /docs/catalogo.html — el manual del vendedor, seccion 7 de 12.
+
+     ⚠️ ESTA PAGINA NO TIENE GEMELA EN INGLES, y por eso no declara `hreflang`.
+     El manual esta escrito en espanol de Venezuela para los ~120 vendedores de
+     calle que usan la aplicacion, y traducirlo no lo pidio nadie: son doce
+     secciones que se mantienen a mano cada vez que la aplicacion cambia una
+     pantalla, y una traduccion a medias miente peor que no tenerla. La tabla
+     `GEMELAS` de `tool/verificar.py` la deja fuera a proposito y lo dice ahi.
+     El dia que haya manual en ingles, entra a esa tabla y las dos se ponen a
+     apuntarse con `hreflang`, como las otras cuatro.
+
+     ⚠️ LA MAQUETA DE TRES COLUMNAS ES CSS PURO —reja y `position: sticky`—, y
+     eso es un requisito y no una eleccion de estilo: la CSP de este sitio es
+     `script-src 'self'` mas UN hash sha256 escrito a mano en cada pagina. Un
+     `<script>` nuevo aca obliga a recalcular ese hash en las once. El
+     `<script>` de abajo es el del tema, copiado byte a byte de las otras.
+
+     ⚠️ EL ARBOL DE LA IZQUIERDA VA IGUAL EN LAS DOCE. Si agregas, quitas o
+     renombras una seccion, hay que tocarlo en las doce — y `tool/verificar.py`
+     se pone rojo si una se queda atras, que es lo que evita el menu cojo. -->
+<title>El catálogo — Manual de Vendoo</title>
+<meta name="description" content="Buscar un producto en Vendoo por nombre, código o código de barras, usar el escáner, filtrar, elegir con qué tarifa ves los precios y compartir por WhatsApp.">
+<meta name="robots" content="index, follow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="canonical" href="https://vendooapp.com/docs/catalogo.html">
+<meta name="theme-color" content="#F4F5F9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E0E10" media="(prefers-color-scheme: dark)">
+<meta name="author" content="GUUAO LLC">
+<meta name="apple-mobile-web-app-title" content="Vendoo">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Vendoo">
+<meta property="og:locale" content="es_VE">
+<meta property="og:url" content="https://vendooapp.com/docs/catalogo.html">
+<meta property="og:title" content="El catálogo — Manual de Vendoo">
+<meta property="og:description" content="Buscar un producto en Vendoo por nombre, código o código de barras, usar el escáner, filtrar, elegir con qué tarifa ves los precios y compartir por WhatsApp.">
+<meta property="og:image" content="https://vendooapp.com/assets/img/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Vendoo — la fuerza de ventas de campo, de punta a punta.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="El catálogo — Manual de Vendoo">
+<meta name="twitter:description" content="Buscar un producto en Vendoo por nombre, código o código de barras, usar el escáner, filtrar, elegir con qué tarifa ves los precios y compartir por WhatsApp.">
+<meta name="twitter:image" content="https://vendooapp.com/assets/img/og.png">
+<meta name="twitter:image:alt" content="Vendoo — la fuerza de ventas de campo, de punta a punta.">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/img/icono-180.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-700.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-400.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-600.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-500.woff2" crossorigin>
+<link rel="dns-prefetch" href="https://www.gstatic.com">
+<link rel="dns-prefetch" href="https://www.googletagmanager.com">
+<link rel="stylesheet" href="/assets/css/estilo.css">
+<script>/* Dos cosas que tienen que pasar ANTES del primer pintado.
+
+   1. El tema elegido: con `defer` la pagina parpadearia en claro. Los tres
+      valores estan explicados en sitio.js.
+   2. `data-js`, que dice que SI hay JavaScript. De ahi cuelga el menu
+      plegable del telefono: sin esa marca el menu se ve entero, como antes.
+      Va aca porque el menu se pinta plegado, y puesta con `defer` se verian
+      los seis enlaces un instante antes de plegarse.
+   3. `data-anim`, que es lo que habilita las animaciones de entrada. Va aca
+      y no en sitio.js por lo mismo: puesto despues, lo que va a aparecer se
+      veria un instante antes de esconderse. Y se QUITA SOLO a los dos
+      segundos si sitio.js no alcanzo a marcar `data-listo` — sin esa red,
+      un script que no cargue dejaria media pagina en opacity 0. */
+try{var t=localStorage.getItem('vendoo-tema');
+if(t==='claro'||t==='oscuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}
+try{var h=document.documentElement;h.setAttribute('data-js','1');h.setAttribute('data-anim','1');
+setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-anim');}},2000);}catch(e){}</script>
+<script src="/assets/js/sitio.js" defer></script>
+<script type="module" src="/assets/js/analitica.js"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "El catálogo",
+      "description": "Buscar un producto en Vendoo por nombre, código o código de barras, usar el escáner, filtrar, elegir con qué tarifa ves los precios y compartir por WhatsApp.",
+      "url": "https://vendooapp.com/docs/catalogo.html",
+      "inLanguage": "es-VE",
+      "datePublished": "2026-09-19",
+      "dateModified": "2026-09-19",
+      "about": {
+        "@type": "SoftwareApplication",
+        "name": "Vendoo",
+        "softwareVersion": "5.2.5"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "GUUAO LLC"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://vendooapp.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Manual del vendedor",
+          "item": "https://vendooapp.com/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "El catálogo",
+          "item": "https://vendooapp.com/docs/catalogo.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="saltar" href="#principal">Saltar al contenido</a>
+<header class="cabecera">
+  <div class="envoltura cabecera__fila">
+    <a class="marca" href="/" aria-label="Vendoo, ir al inicio">
+      <svg class="marca__palabra" viewBox="0 0 3806 926" role="img" aria-label="vendoo">
+        <g transform="translate(66,0)" fill="none" stroke="currentColor" stroke-width="132" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M66,326 L256,794 L446,326"/>
+          <path transform="translate(546,0)" d="M424,758.4 A234,234 0 1 1 534,560 L66,560"/>
+          <path transform="translate(1186,0)" d="M66,794 L66,538 A212,212 0 0 1 490,538 L490,794"/>
+          <path transform="translate(1782,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path transform="translate(1782,0)" d="M534,66 L534,794"/>
+          <path transform="translate(2428,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path transform="translate(3074,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path class="marca__disco" d="M3281.6,560 A92.4,92.4 0 1 0 3466.4,560 A92.4,92.4 0 1 0 3281.6,560 Z" stroke="none"/>
+        </g>
+      </svg>
+    </a>
+    <!-- EL BOTON DEL MENU, SOLO EN EL TELEFONO (16-sep-2026). Encargo del dueno:
+         «make a better menu for phone, the header».
+
+         Lo que habia: los seis enlaces en una barra con desplazamiento lateral.
+         Medido a 390 px antes de tocar nada: la barra media 459 px en 350 de
+         ancho, «Seguridad» salia cortada a la mitad y «Contacto» no se veia —y
+         nada indicaba que hubiera mas—. Un menu que esconde dos de sus seis
+         destinos sin avisar no es un menu.
+
+         ⚠️ VA ANTES DEL <nav> EN EL HTML a proposito, aunque en pantalla quede
+         a la derecha: asi el tabulador llega al boton ANTES que a lo que
+         despliega. Con el menu plegado, `.nav` esta en `display:none` y no
+         recibe foco, asi que el orden de tabulacion y el visual coinciden.
+
+         ⚠️ Y TODO EL PLEGADO CUELGA DE `:root[data-js]`, que pone el script en
+         linea del <head> antes del primer pintado. Sin JavaScript no hay marca,
+         ninguna de esas reglas aplica y el menu se ve entero como antes: fea la
+         barra, pero completa. El boton, que sin script no haria nada, no se
+         llega a dibujar. -->
+    <button class="menu__boton" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Menú">
+      <svg class="menu__abrir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="menu__cerrar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <nav class="nav" id="menu-principal" aria-label="Navegación principal">
+        <a href="/">Inicio</a>
+        <a href="/#producto">Producto</a>
+        <a href="/#como">Cómo funciona</a>
+        <a href="/#integraciones">Integraciones</a>
+        <a href="/#seguridad">Seguridad</a>
+        <a href="/contacto.html">Contacto</a>
+    </nav>
+    <a class="descarga-corta" href="/#descargar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v12M7.5 10.5 12 15l4.5-4.5M4 20h16"/></svg>
+      <span>Descargar</span>
+    </a>
+    <!-- EL SELECTOR DE IDIOMA (15-sep-2026). Un enlace de verdad a la pagina
+         gemela, no un menu ni un script: funciona con el JavaScript apagado,
+         un buscador lo sigue y cada version vive en su propia URL. Dice el
+         idioma AL QUE LLEVA, y lleva `lang` y `hreflang` para que un lector de
+         pantalla lo pronuncie en ingles y no deletree una sigla en espanol.
+         ⚠️ Esta copiado en las cinco paginas, como el resto de la cabecera, y
+         el destino CAMBIA en cada una: apunta a la gemela, no a la portada.
+         Mandar todo a /en/ seria contestar «esta pagina no existe en ingles»
+         cuando si existe. -->
+    <!-- ⚠️ EL MANUAL NO TIENE GEMELA EN INGLES, a proposito: son doce
+         secciones escritas en espanol de Venezuela para los vendedores de
+         la calle, y nadie pidio traducirlas. Por eso este selector lleva a
+         la PORTADA en ingles y no a una pagina hermana que no existe, y
+         por eso estas paginas no declaran `hreflang` (ver el README y
+         `tool/verificar.py`, que lo tiene escrito como excepcion). -->
+    <a class="idioma" href="/en/" hreflang="en" lang="en" aria-label="Switch to English">EN</a>
+    <button class="tema" type="button" aria-label="Cambiar de tema">
+      <svg class="sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="principal">
+<section class="seccion seccion--manual">
+  <div class="envoltura envoltura--manual">
+    <div class="manual">
+
+      <div class="manual__cabeza">
+        <nav class="miga" aria-label="Dónde estás">
+          <ol>
+          <li><a href="/">Vendoo</a></li>
+          <li><a href="/docs/">Manual del vendedor</a></li>
+          <li aria-current="page">El catálogo</li>
+          </ol>
+        </nav>
+        <span class="version">Manual de la versión <b>5.2.5</b></span>
+        <h1>El catálogo</h1>
+        <p class="manual__entrada">Todo lo que tu empresa vende, con su precio, su peso y cuánto queda. Se abre desde la pestaña «Catálogo», abajo.</p>
+      </div>
+
+      <nav class="manual__aqui" aria-labelledby="rot-aqui">
+        <span class="carril__rotulo" id="rot-aqui">En esta página</span>
+        <ul class="aqui">
+          <li><a href="#buscar">Buscar un producto</a></li>
+          <li><a href="#escaner">El escáner</a></li>
+          <li><a href="#no-aparece">Si buscas algo y no aparece</a></li>
+          <li><a href="#filtros">Los filtros</a></li>
+          <li><a href="#tarifas">Cuando tienes más de una lista de precios</a></li>
+          <li><a href="#ficha">La ficha del producto</a></li>
+          <li><a href="#whatsapp">Mandarle el producto al cliente por WhatsApp</a></li>
+          <li><a href="#sin-precio">«Sin precio» y «Falta bajar la tarifa»</a></li>
+        </ul>
+      </nav>
+
+      <article class="manual__cuerpo">
+<h2 id="buscar">Buscar un producto</h2>
+
+<figure class="manual-fig">
+  <div class="captura__marco">
+    <picture>
+      <source type="image/webp" sizes="264px" srcset="/assets/img/capturas/manual-catalogo-360.webp 360w, /assets/img/capturas/manual-catalogo-620.webp 620w">
+      <img src="/assets/img/capturas/manual-catalogo.jpg" width="620" height="1295" loading="lazy" decoding="async" alt="El catálogo de Vendoo: el buscador con escáner y filtros, los chips de departamento, y cada producto con su precio, su código, su peso y cuántas unidades quedan.">
+    </picture>
+  </div>
+  <figcaption>Cada producto con su precio, su presentación, su código, su peso y cuántas unidades quedan.</figcaption>
+</figure>
+
+<p>Escribe en el campo <strong>«Buscar producto o código…»</strong>. La aplicación busca por tres cosas a la vez:</p>
+<ul>
+  <li>El <strong>nombre</strong> del producto.</li>
+  <li>El <strong>código</strong> de la empresa (por ejemplo <strong>CM0521</strong>).</li>
+  <li>El <strong>código de barras</strong> del empaque.</li>
+</ul>
+<p>No hace falta escribir completo ni con acentos. Con dos o tres letras ya filtra.</p>
+
+<h2 id="escaner">El escáner</h2>
+<p>Dentro del mismo campo, a la derecha, está el ícono del <strong>escáner</strong>. Tócalo, apunta la cámara al código de barras y listo: el código se escribe solo en el buscador y la lista queda filtrada.</p>
+<p>Sirve parado frente al anaquel, cuando el cliente te muestra un empaque y no sabes cómo se llama en el sistema.</p>
+
+<h2 id="no-aparece">Si buscas algo y no aparece</h2>
+<p>La aplicación te dice si ese producto <strong>sí se trabaja</strong> pero hoy no se puede vender, y por qué:</p>
+<ul>
+  <li><strong>Agotado</strong> — se lo traes en la próxima visita.</li>
+  <li><strong>Sin precio</strong> — eso lo resuelve la oficina. <strong>No prometas fecha.</strong></li>
+</ul>
+<p><strong>No le digas al cliente que no lo manejamos sin mirar eso.</strong></p>
+
+<h2 id="filtros">Los filtros</h2>
+<p>El botón a la derecha del buscador abre la hoja de filtros:</p>
+<ul>
+  <li><strong>Departamento</strong> y <strong>Categoría</strong> — también están como chips arriba de la lista («Todo», «SUPERMERCADO»…).</li>
+  <li><strong>Precio</strong> — un rango, sobre el precio que ves en la tarjeta.</li>
+  <li><strong>«Solo con oferta»</strong> — deja únicamente lo que tiene precio rebajado.</li>
+  <li><strong>«Mostrar agotados»</strong> — nace apagado. Enciéndelo si quieres verlos igual.</li>
+  <li><strong>Orden</strong> — cómo se acomoda la lista.</li>
+</ul>
+
+<h2 id="tarifas">Cuando tienes más de una lista de precios</h2>
+<p>Si en esta empresa manejas <strong>dos o más tarifas</strong>, aparece un botón entre el escáner y el de filtros. Al tocarlo se abre <strong>«Con qué tarifa ves los precios»</strong>.</p>
+<ul>
+  <li>De fábrica queda en <strong>«Todas»</strong>: la aplicación muestra <strong>el precio más barato</strong> de todas tus tarifas, con la palabra <strong>«desde»</strong> delante. El catálogo no sabe a qué cliente vas, así que no existe <em>el</em> precio: lo único honesto es el piso.</li>
+  <li>Si eliges una tarifa, desaparece el «desde» y ves <strong>el precio de esa tarifa</strong>, limpio. El botón te recuerda cuál tienes puesta.</li>
+</ul>
+<p>La elección se guarda <strong>por empresa</strong>. Si cambias de empresa, esa empresa tiene su propia elección.</p>
+
+<h2 id="ficha">La ficha del producto</h2>
+<p>Toca cualquier producto de la lista y se abre su ficha: la foto, el precio (tachado si hay oferta, con el porcentaje de rebaja), el equivalente en bolívares, el <strong>peso</strong>, cuántas unidades hay <strong>disponibles</strong> y el <strong>código</strong> —tócalo y se copia, para dictarlo por teléfono a la oficina—. Más abajo sale <strong>«Tus tarifas en esta empresa»</strong> con lo que cuesta en cada una.</p>
+
+<h2 id="whatsapp">Mandarle el producto al cliente por WhatsApp</h2>
+<p>Arriba a la derecha de la ficha está el botón de <strong>compartir</strong>. Arma un mensaje con el nombre, el código, el precio (y su equivalente en bolívares) y si hay para entrega.</p>
+
+<div class="nota nota--aviso">
+  <span class="nota__rotulo">Ojo</span>
+  <p>Al cliente le va <strong>un solo precio</strong>: el que estás viendo arriba en la pantalla. La lista de todas tus tarifas <strong>no viaja</strong>, a propósito. Mandarle las cuatro es enseñarle el precio que le hacen a otro, y ese mensaje se le queda guardado en el teléfono.</p>
+</div>
+
+<h2 id="sin-precio">«Sin precio» y «Falta bajar la tarifa»</h2>
+<p>Son dos cosas distintas y se arreglan distinto:</p>
+
+<div class="manual-tabla">
+  <table>
+    <thead><tr><th>Lo que dice</th><th>Qué pasa</th><th>Qué hacer</th></tr></thead>
+    <tbody>
+    <tr><td><strong>«Sin precio»</strong></td><td>Ese producto no tiene precio puesto en ninguna de tus tarifas.</td><td>Es de la oficina. Avisa y no prometas fecha.</td></tr>
+    <tr><td><strong>«Falta bajar la tarifa»</strong></td><td>La lista de precios de esta empresa todavía no se ha descargado a tu teléfono.</td><td>Conéctate un momento y sincroniza. Se arregla solo.</td></tr>
+    </tbody>
+  </table>
+</div>
+<nav class="saltos" aria-label="Secciones vecinas">
+  <a class="salto salto--ant" href="/docs/visita.html"><span>Anterior</span><b>La visita, paso a paso</b></a>
+  <a class="salto salto--sig" href="/docs/cobrar.html"><span>Siguiente</span><b>Cobrarle a un cliente</b></a>
+</nav>
+      </article>
+
+      <nav class="manual__arbol" aria-labelledby="rot-arbol">
+        <span class="carril__rotulo" id="rot-arbol">Todo el manual</span>
+        <ul class="arbol">
+        <li class="arbol__grupo">Empezar aquí</li>
+        <li><a href="/docs/"><span>Qué es Vendoo</span></a></li>
+        <li><a href="/docs/entrar.html"><span>Entrar y sincronizar</span></a></li>
+        <li><a href="/docs/sin-internet.html"><span>Trabajar sin internet</span></a></li>
+        <li class="arbol__grupo">El día en la calle</li>
+        <li><a href="/docs/inicio.html"><span>Tu Inicio</span></a></li>
+        <li><a href="/docs/ruta.html"><span>La ruta del día</span></a></li>
+        <li><a href="/docs/visita.html"><span>La visita, paso a paso</span></a></li>
+        <li class="arbol__grupo">Vender y cobrar</li>
+        <li><a href="/docs/catalogo.html" aria-current="page"><span>El catálogo</span></a></li>
+        <li><a href="/docs/cobrar.html"><span>Cobrarle a un cliente</span></a></li>
+        <li><a href="/docs/facturas.html"><span>Las facturas y lo que te deben</span></a></li>
+        <li class="arbol__grupo">Consultar</li>
+        <li><a href="/docs/actividad.html"><span>Tus pedidos y tu actividad</span></a></li>
+        <li><a href="/docs/clientes.html"><span>Clientes nuevos y correcciones</span></a></li>
+        <li><a href="/docs/dudas.html"><span>Dudas rápidas</span></a></li>
+        </ul>
+      </nav>
+
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="pie">
+  <div class="envoltura">
+    <div class="pie__reja">
+      <div>
+        <a class="marca" href="/" aria-label="Vendoo, ir al inicio">
+      <svg class="marca__palabra" viewBox="0 0 3806 926" role="img" aria-label="vendoo">
+        <g transform="translate(66,0)" fill="none" stroke="currentColor" stroke-width="132" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M66,326 L256,794 L446,326"/>
+          <path transform="translate(546,0)" d="M424,758.4 A234,234 0 1 1 534,560 L66,560"/>
+          <path transform="translate(1186,0)" d="M66,794 L66,538 A212,212 0 0 1 490,538 L490,794"/>
+          <path transform="translate(1782,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path transform="translate(1782,0)" d="M534,66 L534,794"/>
+          <path transform="translate(2428,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path transform="translate(3074,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path class="marca__disco" d="M3281.6,560 A92.4,92.4 0 1 0 3466.4,560 A92.4,92.4 0 1 0 3281.6,560 Z" stroke="none"/>
+        </g>
+      </svg>
+    </a>
+        <p class="pie__nota">La aplicación de fuerza de ventas de campo: ruta, pedidos, cobranza y evidencia, con o sin señal.</p>
+        <div class="botones mt-sm">
+        </div>
+      </div>
+      <div>
+        <h3>Producto</h3>
+        <ul>
+          <li><a href="/#producto">Qué hace Vendoo</a></li>
+          <li><a href="/#como">Cómo funciona</a></li>
+          <li><a href="/#pantallas">Pantalla por pantalla</a></li>
+          <li><a href="/#integraciones">Integraciones y ERP</a></li>
+          <li><a href="/#seguridad">Seguridad</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Sitio</h3>
+        <ul>
+          <li><a href="/">Inicio</a></li>
+          <li><a href="/contacto.html">Contacto</a></li>
+          <li><a href="/contacto.html#soporte">Soporte</a></li>
+          <li><a href="/docs/">Manual del vendedor</a></li>
+          <li><a href="/contacto.html#demo">Solicitar una demo</a></li>
+          <li><a href="/privacidad.html">Política de privacidad</a></li>
+          <li><a href="/terminos.html">Términos de servicio</a></li>
+          <li><a href="/en/privacy.html" hreflang="en" lang="en">English</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pie__base">
+      <p>&copy; 2026 GUUAO LLC.</p>
+      <p><a href="mailto:hola@vendooapp.com">hola@vendooapp.com</a> &middot; <a class="sin-corte" href="https://wa.me/584123469712" target="_blank" rel="noopener">WhatsApp +58 412-346 9712</a></p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

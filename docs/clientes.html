@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="es-VE">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-al+j7D2AC+Lg/qYigLZDlWHZklNovSDisZNbFWp86bo=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- /docs/clientes.html — el manual del vendedor, seccion 11 de 12.
+
+     ⚠️ ESTA PAGINA NO TIENE GEMELA EN INGLES, y por eso no declara `hreflang`.
+     El manual esta escrito en espanol de Venezuela para los ~120 vendedores de
+     calle que usan la aplicacion, y traducirlo no lo pidio nadie: son doce
+     secciones que se mantienen a mano cada vez que la aplicacion cambia una
+     pantalla, y una traduccion a medias miente peor que no tenerla. La tabla
+     `GEMELAS` de `tool/verificar.py` la deja fuera a proposito y lo dice ahi.
+     El dia que haya manual en ingles, entra a esa tabla y las dos se ponen a
+     apuntarse con `hreflang`, como las otras cuatro.
+
+     ⚠️ LA MAQUETA DE TRES COLUMNAS ES CSS PURO —reja y `position: sticky`—, y
+     eso es un requisito y no una eleccion de estilo: la CSP de este sitio es
+     `script-src 'self'` mas UN hash sha256 escrito a mano en cada pagina. Un
+     `<script>` nuevo aca obliga a recalcular ese hash en las once. El
+     `<script>` de abajo es el del tema, copiado byte a byte de las otras.
+
+     ⚠️ EL ARBOL DE LA IZQUIERDA VA IGUAL EN LAS DOCE. Si agregas, quitas o
+     renombras una seccion, hay que tocarlo en las doce — y `tool/verificar.py`
+     se pone rojo si una se queda atras, que es lo que evita el menu cojo. -->
+<title>Clientes nuevos y correcciones — Manual de Vendoo</title>
+<meta name="description" content="Cómo proponer un cliente nuevo desde Vendoo y cómo sugerir la corrección de uno que ya tienes: los tres pasos, los recaudos y en qué puede quedar la solicitud.">
+<meta name="robots" content="index, follow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="canonical" href="https://vendooapp.com/docs/clientes.html">
+<meta name="theme-color" content="#F4F5F9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E0E10" media="(prefers-color-scheme: dark)">
+<meta name="author" content="GUUAO LLC">
+<meta name="apple-mobile-web-app-title" content="Vendoo">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Vendoo">
+<meta property="og:locale" content="es_VE">
+<meta property="og:url" content="https://vendooapp.com/docs/clientes.html">
+<meta property="og:title" content="Clientes nuevos y correcciones — Manual de Vendoo">
+<meta property="og:description" content="Cómo proponer un cliente nuevo desde Vendoo y cómo sugerir la corrección de uno que ya tienes: los tres pasos, los recaudos y en qué puede quedar la solicitud.">
+<meta property="og:image" content="https://vendooapp.com/assets/img/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Vendoo — la fuerza de ventas de campo, de punta a punta.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Clientes nuevos y correcciones — Manual de Vendoo">
+<meta name="twitter:description" content="Cómo proponer un cliente nuevo desde Vendoo y cómo sugerir la corrección de uno que ya tienes: los tres pasos, los recaudos y en qué puede quedar la solicitud.">
+<meta name="twitter:image" content="https://vendooapp.com/assets/img/og.png">
+<meta name="twitter:image:alt" content="Vendoo — la fuerza de ventas de campo, de punta a punta.">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/img/icono-180.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-700.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-400.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-600.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-500.woff2" crossorigin>
+<link rel="dns-prefetch" href="https://www.gstatic.com">
+<link rel="dns-prefetch" href="https://www.googletagmanager.com">
+<link rel="stylesheet" href="/assets/css/estilo.css">
+<script>/* Dos cosas que tienen que pasar ANTES del primer pintado.
+
+   1. El tema elegido: con `defer` la pagina parpadearia en claro. Los tres
+      valores estan explicados en sitio.js.
+   2. `data-js`, que dice que SI hay JavaScript. De ahi cuelga el menu
+      plegable del telefono: sin esa marca el menu se ve entero, como antes.
+      Va aca porque el menu se pinta plegado, y puesta con `defer` se verian
+      los seis enlaces un instante antes de plegarse.
+   3. `data-anim`, que es lo que habilita las animaciones de entrada. Va aca
+      y no en sitio.js por lo mismo: puesto despues, lo que va a aparecer se
+      veria un instante antes de esconderse. Y se QUITA SOLO a los dos
+      segundos si sitio.js no alcanzo a marcar `data-listo` — sin esa red,
+      un script que no cargue dejaria media pagina en opacity 0. */
+try{var t=localStorage.getItem('vendoo-tema');
+if(t==='claro'||t==='oscuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}
+try{var h=document.documentElement;h.setAttribute('data-js','1');h.setAttribute('data-anim','1');
+setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-anim');}},2000);}catch(e){}</script>
+<script src="/assets/js/sitio.js" defer></script>
+<script type="module" src="/assets/js/analitica.js"></script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Clientes nuevos y correcciones",
+      "description": "Cómo proponer un cliente nuevo desde Vendoo y cómo sugerir la corrección de uno que ya tienes: los tres pasos, los recaudos y en qué puede quedar la solicitud.",
+      "url": "https://vendooapp.com/docs/clientes.html",
+      "inLanguage": "es-VE",
+      "datePublished": "2026-09-19",
+      "dateModified": "2026-09-19",
+      "about": {
+        "@type": "SoftwareApplication",
+        "name": "Vendoo",
+        "softwareVersion": "5.2.5"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "GUUAO LLC"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://vendooapp.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Manual del vendedor",
+          "item": "https://vendooapp.com/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Clientes nuevos y correcciones",
+          "item": "https://vendooapp.com/docs/clientes.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="saltar" href="#principal">Saltar al contenido</a>
+<header class="cabecera">
+  <div class="envoltura cabecera__fila">
+    <a class="marca" href="/" aria-label="Vendoo, ir al inicio">
+      <svg class="marca__palabra" viewBox="0 0 3806 926" role="img" aria-label="vendoo">
+        <g transform="translate(66,0)" fill="none" stroke="currentColor" stroke-width="132" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M66,326 L256,794 L446,326"/>
+          <path transform="translate(546,0)" d="M424,758.4 A234,234 0 1 1 534,560 L66,560"/>
+          <path transform="translate(1186,0)" d="M66,794 L66,538 A212,212 0 0 1 490,538 L490,794"/>
+          <path transform="translate(1782,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path transform="translate(1782,0)" d="M534,66 L534,794"/>
+          <path transform="translate(2428,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path transform="translate(3074,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path class="marca__disco" d="M3281.6,560 A92.4,92.4 0 1 0 3466.4,560 A92.4,92.4 0 1 0 3281.6,560 Z" stroke="none"/>
+        </g>
+      </svg>
+    </a>
+    <!-- EL BOTON DEL MENU, SOLO EN EL TELEFONO (16-sep-2026). Encargo del dueno:
+         «make a better menu for phone, the header».
+
+         Lo que habia: los seis enlaces en una barra con desplazamiento lateral.
+         Medido a 390 px antes de tocar nada: la barra media 459 px en 350 de
+         ancho, «Seguridad» salia cortada a la mitad y «Contacto» no se veia —y
+         nada indicaba que hubiera mas—. Un menu que esconde dos de sus seis
+         destinos sin avisar no es un menu.
+
+         ⚠️ VA ANTES DEL <nav> EN EL HTML a proposito, aunque en pantalla quede
+         a la derecha: asi el tabulador llega al boton ANTES que a lo que
+         despliega. Con el menu plegado, `.nav` esta en `display:none` y no
+         recibe foco, asi que el orden de tabulacion y el visual coinciden.
+
+         ⚠️ Y TODO EL PLEGADO CUELGA DE `:root[data-js]`, que pone el script en
+         linea del <head> antes del primer pintado. Sin JavaScript no hay marca,
+         ninguna de esas reglas aplica y el menu se ve entero como antes: fea la
+         barra, pero completa. El boton, que sin script no haria nada, no se
+         llega a dibujar. -->
+    <button class="menu__boton" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Menú">
+      <svg class="menu__abrir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="menu__cerrar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <nav class="nav" id="menu-principal" aria-label="Navegación principal">
+        <a href="/">Inicio</a>
+        <a href="/#producto">Producto</a>
+        <a href="/#como">Cómo funciona</a>
+        <a href="/#integraciones">Integraciones</a>
+        <a href="/#seguridad">Seguridad</a>
+        <a href="/contacto.html">Contacto</a>
+    </nav>
+    <a class="descarga-corta" href="/#descargar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v12M7.5 10.5 12 15l4.5-4.5M4 20h16"/></svg>
+      <span>Descargar</span>
+    </a>
+    <!-- EL SELECTOR DE IDIOMA (15-sep-2026). Un enlace de verdad a la pagina
+         gemela, no un menu ni un script: funciona con el JavaScript apagado,
+         un buscador lo sigue y cada version vive en su propia URL. Dice el
+         idioma AL QUE LLEVA, y lleva `lang` y `hreflang` para que un lector de
+         pantalla lo pronuncie en ingles y no deletree una sigla en espanol.
+         ⚠️ Esta copiado en las cinco paginas, como el resto de la cabecera, y
+         el destino CAMBIA en cada una: apunta a la gemela, no a la portada.
+         Mandar todo a /en/ seria contestar «esta pagina no existe en ingles»
+         cuando si existe. -->
+    <!-- ⚠️ EL MANUAL NO TIENE GEMELA EN INGLES, a proposito: son doce
+         secciones escritas en espanol de Venezuela para los vendedores de
+         la calle, y nadie pidio traducirlas. Por eso este selector lleva a
+         la PORTADA en ingles y no a una pagina hermana que no existe, y
+         por eso estas paginas no declaran `hreflang` (ver el README y
+         `tool/verificar.py`, que lo tiene escrito como excepcion). -->
+    <a class="idioma" href="/en/" hreflang="en" lang="en" aria-label="Switch to English">EN</a>
+    <button class="tema" type="button" aria-label="Cambiar de tema">
+      <svg class="sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="principal">
+<section class="seccion seccion--manual">
+  <div class="envoltura envoltura--manual">
+    <div class="manual">
+
+      <div class="manual__cabeza">
+        <nav class="miga" aria-label="Dónde estás">
+          <ol>
+          <li><a href="/">Vendoo</a></li>
+          <li><a href="/docs/">Manual del vendedor</a></li>
+          <li aria-current="page">Clientes nuevos y correcciones</li>
+          </ol>
+        </nav>
+        <span class="version">Manual de la versión <b>5.2.5</b></span>
+        <h1>Clientes nuevos y correcciones</h1>
+        <p class="manual__entrada">Tú no creas clientes: los propones. Alguien de la oficina revisa y decide.</p>
+      </div>
+
+      <nav class="manual__aqui" aria-labelledby="rot-aqui">
+        <span class="carril__rotulo" id="rot-aqui">En esta página</span>
+        <ul class="aqui">
+          <li><a href="#nuevo">Pedir un cliente nuevo</a></li>
+          <li><a href="#recaudos">Los recaudos</a></li>
+          <li><a href="#corregir">Corregir un cliente que ya tienes</a></li>
+          <li><a href="#estados">En qué puede quedar tu solicitud</a></li>
+        </ul>
+      </nav>
+
+      <article class="manual__cuerpo">
+<div class="nota nota--clave">
+  <span class="nota__rotulo">No te equivoques en esto</span>
+  <p>Ni el alta ni la corrección cambian el cliente por su cuenta. <strong>Lo revisa una persona en la oficina.</strong> No le prometas al cliente que ya quedó: dile que lo mandaste.</p>
+</div>
+
+<p>Todo esto vive en <strong>«Mis solicitudes de cliente»</strong>, uno de los botones del Inicio. Ahí se juntan los clientes que pediste dar de alta y las correcciones que propusiste.</p>
+
+<h2 id="nuevo">Pedir un cliente nuevo</h2>
+<p>Botón <strong>«Cliente nuevo»</strong>, arriba en esa pantalla. Son tres pasos.</p>
+
+<ol class="manual-pasos">
+  <li><b>«¿Ya existe este cliente?»</b><p>Busca por <strong>RIF o por nombre</strong>. Es obligatorio y es lo primero: muchos negocios ya están cargados con otro nombre, y darlos de alta otra vez crea un cliente repetido. Si aparece el que buscas, la aplicación te dice qué hacer con él. Si de verdad no está, toca <strong>«Ninguno es: dar de alta uno nuevo»</strong>.</p></li>
+  <li><b>«Datos del cliente»</b><p>Tipo de documento, RIF o cédula, nombre, teléfono, <strong>correo</strong> (obligatorio), dirección y una nota opcional para la oficina. La aplicación revisa el RIF mientras escribes y te avisa si el número no cierra. Luego, <strong>«Seguir con los recaudos»</strong>.</p></li>
+  <li><b>«Recaudos»</b><p>Los papeles del negocio. Cuando los tengas, <strong>«Mandar a la oficina»</strong>.</p></li>
+</ol>
+
+<div class="nota nota--aviso">
+  <span class="nota__rotulo">Ojo</span>
+  <p><strong>El alta necesita señal para EMPEZAR.</strong> No es un capricho: esa primera búsqueda es la que evita el cliente repetido, y sin internet no se puede hacer.</p>
+<p><strong>De ahí en adelante todo funciona sin señal</strong>: llenar los datos, tomar los recaudos y mandarlo. Si no tienes señal en el momento del envío, queda guardado y sale solo.</p>
+</div>
+
+<h2 id="recaudos">Los recaudos</h2>
+<p>Por cada papel tienes dos caminos:</p>
+<ul>
+  <li><strong>«Sacarle una foto»</strong> — la aplicación la convierte en PDF sola. Es lo normal: la cédula, el RIF, el acta.</li>
+  <li><strong>«Cargar un PDF del teléfono»</strong> — el que ya te mandó el cliente por WhatsApp o por correo. <strong>No hace falta imprimirlo para volver a fotografiarlo.</strong></li>
+</ul>
+<p>Cada renglón dice <strong>«Obligatorio»</strong> u <strong>«Opcional»</strong>, y cuando ya lo tomaste dice <strong>«Listo»</strong> con el peso del archivo.</p>
+
+<div class="nota ">
+  <span class="nota__rotulo">«Obligatorio» avisa, no bloquea</span>
+  <p>Si le das a «Mandar a la oficina» y falta alguno, sale un aviso que <strong>los nombra</strong> y te da dos salidas: <strong>«Tomar los que faltan»</strong> o <strong>«Mandar igual»</strong>. Hay negocios que de verdad no tienen alguno de esos papeles. <strong>Nada se manda hasta que confirmes.</strong></p>
+</div>
+
+<h2 id="corregir">Corregir un cliente que ya tienes</h2>
+<p>Esto <strong>no</strong> va por «Cliente nuevo». Abre la <strong>ficha del cliente</strong> —desde Mis clientes o desde la ruta— y toca <strong>«Sugerir una corrección»</strong>.</p>
+<ul>
+  <li>Cambia solo lo que está mal. Debajo de cada campo ves <strong>«Hoy dice: …»</strong>, que es lo que la oficina tiene cargado hoy.</li>
+  <li>Si un campo dice <strong>«No bajamos este dato»</strong>, es que tu teléfono no lo tiene: <strong>no quiere decir que esté vacío</strong>.</li>
+  <li>Puedes poner <strong>«Por qué»</strong> —«se mudó a la esquina», «cambió de dueño»—. Ayuda al que revisa.</li>
+  <li>Termina con <strong>«Enviar para que la revisen»</strong>.</li>
+</ul>
+<p><strong>La corrección funciona sin señal, completa.</strong> Si no hay internet, queda guardada en el teléfono y se manda sola.</p>
+
+<h2 id="estados">En qué puede quedar tu solicitud</h2>
+
+<div class="manual-tabla">
+  <table>
+    <thead><tr><th>Lo que dice el chip</th><th>Qué significa</th></tr></thead>
+    <tbody>
+    <tr><td><strong>Por enviar</strong></td><td>Está en tu teléfono, esperando señal. Sale sola.</td></tr>
+    <tr><td><strong>No se pudo enviar</strong></td><td>Lo intentó varias veces y no pudo. Ábrela y mírala.</td></tr>
+    <tr><td><strong>Esperando que la revisen</strong></td><td>Ya llegó a la oficina. Falta que una persona la mire. <strong>No quiere decir aprobada.</strong></td></tr>
+    <tr><td><strong>Te la devolvieron</strong></td><td>Necesita que corrijas algo. Ábrela: dice qué.</td></tr>
+    <tr><td><strong>Cliente creado</strong> / <strong>Aprobada</strong></td><td>Listo. El alta creó el cliente; la corrección ya quedó aplicada.</td></tr>
+    <tr><td><strong>Rechazada</strong></td><td>No procedió. El motivo está adentro.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<p>Toca cualquier tarjeta para abrirla y ver lo que propusiste, los recaudos que mandaste y el motivo, si lo hay.</p>
+<nav class="saltos" aria-label="Secciones vecinas">
+  <a class="salto salto--ant" href="/docs/actividad.html"><span>Anterior</span><b>Tus pedidos y tu actividad</b></a>
+  <a class="salto salto--sig" href="/docs/dudas.html"><span>Siguiente</span><b>Dudas rápidas</b></a>
+</nav>
+      </article>
+
+      <nav class="manual__arbol" aria-labelledby="rot-arbol">
+        <span class="carril__rotulo" id="rot-arbol">Todo el manual</span>
+        <ul class="arbol">
+        <li class="arbol__grupo">Empezar aquí</li>
+        <li><a href="/docs/"><span>Qué es Vendoo</span></a></li>
+        <li><a href="/docs/entrar.html"><span>Entrar y sincronizar</span></a></li>
+        <li><a href="/docs/sin-internet.html"><span>Trabajar sin internet</span></a></li>
+        <li class="arbol__grupo">El día en la calle</li>
+        <li><a href="/docs/inicio.html"><span>Tu Inicio</span></a></li>
+        <li><a href="/docs/ruta.html"><span>La ruta del día</span></a></li>
+        <li><a href="/docs/visita.html"><span>La visita, paso a paso</span></a></li>
+        <li class="arbol__grupo">Vender y cobrar</li>
+        <li><a href="/docs/catalogo.html"><span>El catálogo</span></a></li>
+        <li><a href="/docs/cobrar.html"><span>Cobrarle a un cliente</span></a></li>
+        <li><a href="/docs/facturas.html"><span>Las facturas y lo que te deben</span></a></li>
+        <li class="arbol__grupo">Consultar</li>
+        <li><a href="/docs/actividad.html"><span>Tus pedidos y tu actividad</span></a></li>
+        <li><a href="/docs/clientes.html" aria-current="page"><span>Clientes nuevos y correcciones</span></a></li>
+        <li><a href="/docs/dudas.html"><span>Dudas rápidas</span></a></li>
+        </ul>
+      </nav>
+
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="pie">
+  <div class="envoltura">
+    <div class="pie__reja">
+      <div>
+        <a class="marca" href="/" aria-label="Vendoo, ir al inicio">
+      <svg class="marca__palabra" viewBox="0 0 3806 926" role="img" aria-label="vendoo">
+        <g transform="translate(66,0)" fill="none" stroke="currentColor" stroke-width="132" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M66,326 L256,794 L446,326"/>
+          <path transform="translate(546,0)" d="M424,758.4 A234,234 0 1 1 534,560 L66,560"/>
+          <path transform="translate(1186,0)" d="M66,794 L66,538 A212,212 0 0 1 490,538 L490,794"/>
+          <path transform="translate(1782,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path transform="translate(1782,0)" d="M534,66 L534,794"/>
+          <path transform="translate(2428,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path transform="translate(3074,0)" d="M66,560 A234,234 0 1 0 534,560 A234,234 0 1 0 66,560"/>
+          <path class="marca__disco" d="M3281.6,560 A92.4,92.4 0 1 0 3466.4,560 A92.4,92.4 0 1 0 3281.6,560 Z" stroke="none"/>
+        </g>
+      </svg>
+    </a>
+        <p class="pie__nota">La aplicación de fuerza de ventas de campo: ruta, pedidos, cobranza y evidencia, con o sin señal.</p>
+        <div class="botones mt-sm">
+        </div>
+      </div>
+      <div>
+        <h3>Producto</h3>
+        <ul>
+          <li><a href="/#producto">Qué hace Vendoo</a></li>
+          <li><a href="/#como">Cómo funciona</a></li>
+          <li><a href="/#pantallas">Pantalla por pantalla</a></li>
+          <li><a href="/#integraciones">Integraciones y ERP</a></li>
+          <li><a href="/#seguridad">Seguridad</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Sitio</h3>
+        <ul>
+          <li><a href="/">Inicio</a></li>
+          <li><a href="/contacto.html">Contacto</a></li>
+          <li><a href="/contacto.html#soporte">Soporte</a></li>
+          <li><a href="/docs/">Manual del vendedor</a></li>
+          <li><a href="/contacto.html#demo">Solicitar una demo</a></li>
+          <li><a href="/privacidad.html">Política de privacidad</a></li>
+          <li><a href="/terminos.html">Términos de servicio</a></li>
+          <li><a href="/en/privacy.html" hreflang="en" lang="en">English</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pie__base">
+      <p>&copy; 2026 GUUAO LLC.</p>
+      <p><a href="mailto:hola@vendooapp.com">hola@vendooapp.com</a> &middot; <a class="sin-corte" href="https://wa.me/584123469712" target="_blank" rel="noopener">WhatsApp +58 412-346 9712</a></p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
