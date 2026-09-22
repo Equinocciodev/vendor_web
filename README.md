@@ -68,7 +68,7 @@ de consumo**.
 │   ├── terms.html        gemela de /terminos.html
 │   ├── privacy.html      gemela de /privacidad.html
 │   └── support.html      desvío a /en/contact.html#support (espejo de /soporte.html)
-├── docs/                 El MANUAL DEL VENDEDOR: doce secciones, sólo en español
+├── docs/                 El MANUAL DEL VENDEDOR: trece secciones, sólo en español
 │   ├── index.html        1 · Qué es Vendoo (es además la portada del manual)
 │   ├── entrar.html       2 · Entrar y sincronizar
 │   ├── sin-internet.html 3 · Trabajar sin internet
@@ -100,7 +100,7 @@ de consumo**.
 │       ├── isotipo.svg, favicon-32.png, icono-180.png, icono-192.png,
 │       │   icono-512.png, icono-512-maskable.png   (los PNG salen de tool/imagenes.py)
 │       ├── tiendas/      Los badges OFICIALES de App Store y Google Play. NO se editan.
-│       └── capturas/     Capturas: seis de la portada (PNG) + nueve del manual (`manual-*.jpg`),
+│       └── capturas/     Capturas: seis de la portada (PNG) + trece del manual (`manual-*.jpg`),
 │                          cada una con sus WebP derivadas y su huella en derivadas.json
 ├── tool/verificar.py     El chequeo que corre en CI y también en tu máquina
 ├── tool/imagenes.py      Deriva los WebP de las capturas y los íconos. Se corre a mano.
@@ -783,7 +783,7 @@ invisibles. Con reloj real, las dos cosas están bien:
 
 ## El manual del vendedor (`/docs/`, 19-sep-2026)
 
-Doce páginas que explican **cómo se usa la aplicación en la calle**, pantalla
+Trece páginas que explican **cómo se usa la aplicación en la calle**, pantalla
 por pantalla: la ruta, la visita de ocho pasos, la cobranza, las facturas, el
 catálogo y qué pasa cuando no hay señal. La portada del manual es `/docs/`.
 
@@ -808,7 +808,7 @@ por cinco razones que conviene dejar escritas para no reabrir la discusión:
    CSS Grid y `position: sticky`**. Lo que un generador compra de verdad es
    escribir en Markdown, y el manual lo mantiene el dueño a mano.
 
-### Doce páginas y no una sola larga
+### Trece páginas y no una sola larga
 
 Es la decisión de estructura, y tiene contra: una página sola se busca con
 Ctrl+F y se lee entera sin señal después de abrirla una vez. Pesó más esto:
@@ -829,9 +829,9 @@ Lo que se pierde —leer el manual completo sin señal— se compensa con
 **«Anterior / Siguiente»** al pie de cada página: en el teléfono el carril
 queda al final y nadie lo baja a buscar para pasar a la de al lado.
 
-### Las doce van AGRUPADAS en cuatro
+### Las trece van AGRUPADAS en cuatro
 
-Una lista plana de doce destinos obliga a leerlos todos para encontrar uno.
+Una lista plana de trece destinos obliga a leerlos todos para encontrar uno.
 Los grupos son por lo que el vendedor está haciendo:
 
 | Grupo | Secciones |
@@ -839,7 +839,7 @@ Los grupos son por lo que el vendedor está haciendo:
 | **Empezar aquí** | Qué es Vendoo · Entrar y sincronizar · **Trabajar sin internet** |
 | **El día en la calle** | Tu Inicio · La ruta del día · La visita, paso a paso |
 | **Vender y cobrar** | El catálogo · Cobrarle a un cliente · Las facturas y lo que te deben |
-| **Consultar** | Tus pedidos y tu actividad · Clientes nuevos y correcciones · Dudas rápidas |
+| **Consultar** | Tus pedidos y tu actividad · Clientes nuevos y correcciones · **Hablar con la oficina** · Dudas rápidas |
 
 ⚠️ **«Trabajar sin internet» va en el PRIMER grupo a propósito.** Sin señal es
 el modo **normal** de esta aplicación, no la avería. Metida en un grupo
@@ -922,16 +922,16 @@ Tres detalles que costaron y no se «simplifican»:
 
 ### Lo que el verificador custodia, y por qué
 
-Dos cosas viven copiadas en doce archivos, y una convención repetida en doce
+Dos cosas viven copiadas en trece archivos, y una convención repetida en trece
 archivos se queda vieja en uno. Es el mismo movimiento que ya está hecho con
 el hash del script del tema y con los identificadores de tienda:
 
-- **El árbol de navegación tiene que decir lo mismo en las doce** —los mismos
+- **El árbol de navegación tiene que decir lo mismo en las trece** —los mismos
   destinos, en el mismo orden— y **cada página tiene que marcarse a sí misma**
   con `aria-current="page"`, ni una más ni una menos. Un menú cojo no se nota:
   la página sigue abriendo.
-- **La versión de la aplicación que el manual dice describir** (hoy `5.2.5`)
-  tiene que ser la misma en las doce. A medias, el manual afirmaría describir
+- **La versión de la aplicación que el manual dice describir** (hoy `5.2.9`)
+  tiene que ser la misma en las trece. A medias, el manual afirmaría describir
   dos aplicaciones distintas.
 - Y **cada sección tiene que estar en el `sitemap.xml`**.
 
@@ -939,12 +939,12 @@ el hash del script del tema y con los identificadores de tienda:
 
 La portada tiene seis capturas propias y **no se reusó ninguna en el manual**,
 salvo comprobar que no servían. El motivo es de fechas: son del 2-sep-2026 y
-el manual describe la **5.2.5**. Mirando `inicio.png` al lado del texto, el
+el manual describe la **5.2.9**. Mirando `inicio.png` al lado del texto, el
 octavo botón dice «Sin ubicación» donde el manual dice «Ajuste de stock», y
 lleva un renglón de tasa que la aplicación quitó el 4-sep. **Un manual cuya
 captura contradice su propio texto enseña a desconfiar de los dos.**
 
-Las del manual son nueve, de la 5.2.5, y llevan el prefijo `manual-`. Dos
+Las del manual son trece, y llevan el prefijo `manual-`. Nueve son de la 5.2.5 y **cuatro de la 5.2.9** (la devolución, sus estados, el multi-pedido y la conversación; 22-sep-2026). Dos
 cosas que hay que saber antes de agregar otra:
 
 - 🔴 **Hay capturas del lote original que NO se publicaron**, y no por gusto:

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-al+j7D2AC+Lg/qYigLZDlWHZklNovSDisZNbFWp86bo=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- /docs/index.html — el manual del vendedor, seccion 1 de 12.
+<!-- /docs/index.html — el manual del vendedor, seccion 1 de 13.
 
      ⚠️ ESTA PAGINA NO TIENE GEMELA EN INGLES, y por eso no declara `hreflang`.
      El manual esta escrito en espanol de Venezuela para los ~120 vendedores de
@@ -22,10 +22,10 @@
      `<script>` de abajo es el del tema, copiado byte a byte de las otras.
 
      ⚠️ EL ARBOL DE LA IZQUIERDA VA IGUAL EN LAS DOCE. Si agregas, quitas o
-     renombras una seccion, hay que tocarlo en las doce — y `tool/verificar.py`
+     renombras una seccion, hay que tocarlo en las trece — y `tool/verificar.py`
      se pone rojo si una se queda atras, que es lo que evita el menu cojo. -->
 <title>Manual del vendedor — Vendoo</title>
-<meta name="description" content="Cómo se usa Vendoo en la calle, pantalla por pantalla: la ruta, la visita, el pedido, la cobranza y qué pasa cuando no hay señal. Versión 5.2.5.">
+<meta name="description" content="Cómo se usa Vendoo en la calle, pantalla por pantalla: la ruta, la visita, el pedido, la cobranza y qué pasa cuando no hay señal. Versión 5.2.9.">
 <meta name="robots" content="index, follow">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="canonical" href="https://vendooapp.com/docs/">
@@ -39,7 +39,7 @@
 <meta property="og:locale" content="es_VE">
 <meta property="og:url" content="https://vendooapp.com/docs/">
 <meta property="og:title" content="Manual del vendedor — Vendoo">
-<meta property="og:description" content="Cómo se usa Vendoo en la calle, pantalla por pantalla: la ruta, la visita, el pedido, la cobranza y qué pasa cuando no hay señal. Versión 5.2.5.">
+<meta property="og:description" content="Cómo se usa Vendoo en la calle, pantalla por pantalla: la ruta, la visita, el pedido, la cobranza y qué pasa cuando no hay señal. Versión 5.2.9.">
 <meta property="og:image" content="https://vendooapp.com/assets/img/og.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
@@ -47,7 +47,7 @@
 <meta property="og:image:alt" content="Vendoo — la fuerza de ventas de campo, de punta a punta.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Manual del vendedor — Vendoo">
-<meta name="twitter:description" content="Cómo se usa Vendoo en la calle, pantalla por pantalla: la ruta, la visita, el pedido, la cobranza y qué pasa cuando no hay señal. Versión 5.2.5.">
+<meta name="twitter:description" content="Cómo se usa Vendoo en la calle, pantalla por pantalla: la ruta, la visita, el pedido, la cobranza y qué pasa cuando no hay señal. Versión 5.2.9.">
 <meta name="twitter:image" content="https://vendooapp.com/assets/img/og.png">
 <meta name="twitter:image:alt" content="Vendoo — la fuerza de ventas de campo, de punta a punta.">
 
@@ -90,7 +90,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
     {
       "@type": "TechArticle",
       "headline": "Manual del vendedor de Vendoo",
-      "description": "Cómo se usa Vendoo en la calle, pantalla por pantalla: la ruta, la visita, el pedido, la cobranza y qué pasa cuando no hay señal. Versión 5.2.5.",
+      "description": "Cómo se usa Vendoo en la calle, pantalla por pantalla: la ruta, la visita, el pedido, la cobranza y qué pasa cuando no hay señal. Versión 5.2.9.",
       "url": "https://vendooapp.com/docs/",
       "inLanguage": "es-VE",
       "datePublished": "2026-09-19",
@@ -98,7 +98,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
       "about": {
         "@type": "SoftwareApplication",
         "name": "Vendoo",
-        "softwareVersion": "5.2.5"
+        "softwareVersion": "5.2.9"
       },
       "publisher": {
         "@type": "Organization",
@@ -214,7 +214,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
           <li aria-current="page">Manual del vendedor</li>
           </ol>
         </nav>
-        <span class="version">Manual de la versión <b>5.2.5</b></span>
+        <span class="version">Manual de la versión <b>5.2.9</b></span>
         <h1>Manual del vendedor de Vendoo</h1>
         <p class="manual__entrada">Cómo se usa la aplicación en la calle, pantalla por pantalla. Está escrito para leerlo desde el teléfono, en el orden que quieras.</p>
       </div>
@@ -328,6 +328,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
         <li class="arbol__grupo">Consultar</li>
         <li><a href="/docs/actividad.html"><span>Tus pedidos y tu actividad</span></a></li>
         <li><a href="/docs/clientes.html"><span>Clientes nuevos y correcciones</span></a></li>
+        <li><a href="/docs/conversacion.html"><span>Hablar con la oficina</span></a></li>
         <li><a href="/docs/dudas.html"><span>Dudas rápidas</span></a></li>
         </ul>
       </nav>

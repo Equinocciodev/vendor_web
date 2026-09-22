@@ -77,6 +77,10 @@ al párrafo de al lado enseña a desconfiar de los dos.
 | `manual-facturas.jpg` | La cartera y «CÓBRALE HOY» | Las facturas |
 | `manual-actividad.jpg` | Pedidos › «Abiertos» | Actividad |
 | `manual-catalogo.jpg` | Buscador, chips y fichas de producto | El catálogo |
+| `manual-devolucion.jpg` | Paso 5 de 8: el motivo dentro de la tarjeta y el pie «De la devolución» | La visita |
+| `manual-devoluciones.jpg` | Los contadores de Actividad › Devoluciones | Actividad |
+| `manual-multipedido.jpg` | Paso 3 de 8 con tres pedidos abiertos y sus chips | La visita |
+| `manual-conversacion.jpg` | Una nota interna, un mensaje y el compositor | Hablar con la oficina |
 
 ### Reglas propias
 
@@ -88,11 +92,31 @@ al párrafo de al lado enseña a desconfiar de los dos.
   las pinta dentro de una columna de texto y la proporción la da cada `<img>`
   con su `width`/`height`. De una maestra de 620 px salen `-360` y `-620`:
   **nunca se agranda una maestra.**
-- 🔴 **Dos son RECORTES y por eso no llevan el marco del teléfono**
-  (`manual-inicio`, `manual-panel`). Se recortaron para sacar de la imagen el
-  nombre de una compañía real. Recortar no falsea nada; poner un marco de
-  teléfono alrededor de medio Inicio sí, porque diría que eso es una pantalla
-  completa.
+- 🔴 **Cinco son RECORTES y por eso no llevan el marco del teléfono**
+  (`manual-inicio`, `manual-panel`, `manual-devolucion`, `manual-devoluciones`,
+  `manual-multipedido`).
+  Se recortaron para sacar de la imagen el nombre de una compañía o de un
+  comercio reales. Recortar no falsea nada; poner un marco de teléfono
+  alrededor de medio Inicio sí, porque diría que eso es una pantalla completa.
+
+  Las dos de la devolución (22-sep-2026) se recortaron así:
+
+  - **`manual-devolucion`** — se le quitó **la barra de arriba**, que lleva el
+    nombre del comercio que se está visitando, y **el pie**, que en esa pantalla
+    es un tercio de negro porque el paso está filtrado por código. Lo que queda
+    es el flujo entero del paso: cantidad, motivos sugeridos, motivo escrito, y
+    el bloque «De la devolución» con observaciones y foto.
+  - **`manual-multipedido`** — mismo recorte superior que la anterior, por la
+    misma razón: la barra lleva el nombre del comercio.
+  - **`manual-conversacion`** — **entera y sin recortar**, porque no hacía
+    falta: esa pantalla no nombra a ningún comercio ni a ninguna compañía. Es
+    la única del lote del 22-sep que se pudo publicar completa, y por eso sí
+    lleva el marco del teléfono.
+  - **`manual-devoluciones`** — de la lista de Actividad sólo entró **la banda
+    de contadores**. 🔴 Las tarjetas de abajo llevan **cinco nombres de
+    comercios reales**, y ahí recortar no alcanzaba: los nombres *son* el
+    contenido de esa lista. Publicarla entera necesita datos sembrados o el
+    permiso del dueño.
 
 ### 🔴 Lo que NO se publicó, y por qué
 

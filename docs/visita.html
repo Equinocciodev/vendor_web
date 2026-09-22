@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-al+j7D2AC+Lg/qYigLZDlWHZklNovSDisZNbFWp86bo=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- /docs/visita.html — el manual del vendedor, seccion 6 de 12.
+<!-- /docs/visita.html — el manual del vendedor, seccion 6 de 13.
 
      ⚠️ ESTA PAGINA NO TIENE GEMELA EN INGLES, y por eso no declara `hreflang`.
      El manual esta escrito en espanol de Venezuela para los ~120 vendedores de
@@ -22,7 +22,7 @@
      `<script>` de abajo es el del tema, copiado byte a byte de las otras.
 
      ⚠️ EL ARBOL DE LA IZQUIERDA VA IGUAL EN LAS DOCE. Si agregas, quitas o
-     renombras una seccion, hay que tocarlo en las doce — y `tool/verificar.py`
+     renombras una seccion, hay que tocarlo en las trece — y `tool/verificar.py`
      se pone rojo si una se queda atras, que es lo que evita el menu cojo. -->
 <title>La visita paso a paso — Manual de Vendoo</title>
 <meta name="description" content="Los ocho pasos de una visita en Vendoo: check-in, inventario, pedido, fotos, devoluciones, notas, firma y check-out, con lo que conviene saber de cada uno.">
@@ -98,7 +98,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
       "about": {
         "@type": "SoftwareApplication",
         "name": "Vendoo",
-        "softwareVersion": "5.2.5"
+        "softwareVersion": "5.2.9"
       },
       "publisher": {
         "@type": "Organization",
@@ -221,7 +221,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
           <li aria-current="page">La visita, paso a paso</li>
           </ol>
         </nav>
-        <span class="version">Manual de la versión <b>5.2.5</b></span>
+        <span class="version">Manual de la versión <b>5.2.9</b></span>
         <h1>La visita, paso a paso</h1>
         <p class="manual__entrada">Una visita son ocho pasos: Check-in, Inventario, Pedido, Fotos, Devoluciones, Notas, Firma y Check-out. Acá está cada uno, con lo que tienes que hacer y lo que conviene saber antes de pararte frente al cliente.</p>
       </div>
@@ -325,6 +325,36 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
 <p>Debajo de cada producto ves <strong>«Disponible: 77 uds»</strong>. Eso es <strong>lo que puedes vender ahora mismo</strong> de ese almacén, no lo que hay en el depósito. No puedes cargar más de eso.</p>
 <p>Abajo, la barra del <strong>Total</strong> con su equivalente en bolívares y el peso. Al lado tiene tres botones: armar <strong>otro pedido</strong> para el mismo cliente, <strong>«Pedir autorización por WhatsApp»</strong> y <strong>«Compartir presupuesto»</strong>.</p>
 
+<h3 id="varios-pedidos">Varios pedidos en la misma visita</h3>
+<p>Un cliente puede comprarte cosas que <strong>se despachan por separado</strong> —uno sin alcohol, uno con dulce, uno con diario—. Eso no son tres visitas: es <strong>una visita con tres pedidos</strong>.</p>
+
+<figure class="manual-fig manual-fig--ancha">
+  <div class="captura__marco">
+    <picture>
+      <source type="image/webp" sizes="(max-width: 480px) 88vw, 420px" srcset="/assets/img/capturas/manual-multipedido-360.webp 360w, /assets/img/capturas/manual-multipedido-620.webp 620w">
+      <img src="/assets/img/capturas/manual-multipedido.jpg" width="620" height="649" loading="lazy" decoding="async" alt="El paso 3 de una visita en Vendoo con tres pedidos abiertos: los chips «Pedido 1 · 1», «Pedido 2 · 1» y «Pedido 3», la tarifa y el almacén, y la primera tarjeta de producto con su selector de unidad o caja.">
+    </picture>
+  </div>
+  <figcaption>Los pedidos de esta visita, con el activo marcado y su menú de tres puntos.</figcaption>
+</figure>
+
+<ul>
+  <li>Cuando ya tengas algo cargado, toca el botón de <strong>otro pedido</strong> en la barra del total. Aparece <strong>sólo con el pedido actual cargado</strong>: no te deja abrir dos documentos en blanco.</li>
+  <li>Arriba salen los <strong>chips</strong>: «Pedido 1 · 3 productos», «Pedido 2 · 1 producto»… Tocas uno y cambias de pedido. Es el <strong>mismo catálogo</strong> para todos.</li>
+  <li>El pedido nuevo nace <strong>vacío y con sus propias presentaciones</strong>: la caja que elegiste para el ron no decide nada sobre la harina del pedido de al lado.</li>
+  <li>En el chip del pedido activo hay un <strong>«⋮»</strong> con <strong>«Vaciar este pedido»</strong> y <strong>«Quitar este pedido»</strong>. Si lleva productos, te pregunta antes.</li>
+</ul>
+
+<div class="nota ">
+  <span class="nota__rotulo">Quién decide qué va en cada uno</span>
+  <p><strong>Tú.</strong> La aplicación no separa sola por categoría ni por nada: los pedidos son los que armes. Y <strong>un pedido vacío no viaja</strong> — si abriste uno y no le pusiste nada, no llega ningún documento en blanco a la oficina.</p>
+</div>
+
+<div class="nota nota--clave">
+  <span class="nota__rotulo">No te equivoques en esto</span>
+  <p>Cada pedido es un <strong>documento aparte en la oficina</strong>, con su propio número. En <a href="/docs/actividad.html">Actividad › Pedidos</a> los vas a ver separados, y pueden ir a distinta velocidad: uno puede quedar confirmado y el otro esperando analista.</p>
+</div>
+
 <div class="nota nota--clave">
   <span class="nota__rotulo">No te equivoques en esto</span>
   <p>El precio que ves es una <strong>cotización</strong>, no la factura. La oficina vuelve a calcular precios e impuestos cuando recibe el pedido, con los del día en que llega. Si el número cambia, la aplicación te avisa después en <a href="/docs/actividad.html">Actividad › Pedidos</a>.</p>
@@ -348,17 +378,51 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
 </div>
 
 <h2 id="paso-5">Paso 5 — Devoluciones</h2>
-<p>Mercancía que el cliente te devuelve. Arriba dice <strong>«Unidades a devolver»</strong>.</p>
-<p>Súbele la cantidad al producto y se abre, dentro de esa misma tarjeta:</p>
-<ul>
-  <li><strong>Los motivos sugeridos</strong> — «Producto vencido», «Producto dañado / roto»… Tocas uno y se escribe solo.</li>
-  <li><strong>«Motivo (opcional)»</strong> — escribe con tus palabras si ninguno sirve. <strong>Lo que escribes tú manda.</strong></li>
-</ul>
-<p>Más abajo hay <strong>«Observaciones (opcional)»</strong> para toda la devolución, y puedes tomarle <strong>fotos</strong>. Si no hay nada que devolver, deja todo en cero y sigue.</p>
+<p>Mercancía que el cliente te devuelve: vencida, rota, mal despachada. Arriba dice <strong>«Unidades a devolver»</strong> y abajo se va armando el <strong>«Total devoluciones»</strong>.</p>
+<p>Si no hay nada que devolver, <strong>deja todo en cero y sigue</strong>. No es un paso obligatorio.</p>
+
+<figure class="manual-fig manual-fig--ancha">
+  <div class="captura__marco">
+    <picture>
+      <source type="image/webp" sizes="(max-width: 480px) 88vw, 420px" srcset="/assets/img/capturas/manual-devolucion-360.webp 360w, /assets/img/capturas/manual-devolucion-620.webp 620w">
+      <img src="/assets/img/capturas/manual-devolucion.jpg" width="620" height="689" loading="lazy" decoding="async" alt="El paso 5 de una visita en Vendoo, Devoluciones: un producto con dos unidades a devolver, los motivos sugeridos «Producto vencido» y «Producto dañado / roto», el campo «Motivo (opcional)», y abajo «De la devolución» con «Observaciones (opcional)» y el botón «Foto de la devolución».">
+    </picture>
+  </div>
+  <figcaption>El motivo va dentro de la tarjeta del producto; las observaciones y las fotos, abajo, son de toda la devolución.</figcaption>
+</figure>
+
+<h3 id="paso-5-como">Cómo se arma</h3>
+<ol>
+  <li><b>Encuentra el producto</b><p>Búscalo por nombre o por código en la barra de arriba, o escanéalo. Es la misma lista del paso Pedido.</p></li>
+  <li><b>Súbele la cantidad</b><p>Con el <strong>«+»</strong>. Apenas pasa de cero, la tarjeta se abre y aparece lo de abajo.</p></li>
+  <li><b>Di por qué vuelve</b><p><strong>Los motivos sugeridos</strong> —«Producto vencido», «Producto dañado / roto»…— se escriben solos al tocarlos, y la fila se corre a los lados: hay más de los que ves. <strong>«Motivo (opcional)»</strong> es para escribirlo con tus palabras, y <strong>lo que escribes tú manda</strong> sobre el sugerido.</p></li>
+  <li><b>Repite con cada producto</b><p>Cada uno lleva <strong>su propio motivo</strong>. Dos productos que vuelven por razones distintas se cuentan como lo que son.</p></li>
+  <li><b>Y lo que es de toda la devolución</b><p>Abajo del todo, bajo <strong>«De la devolución»</strong>: <strong>«Observaciones (opcional)»</strong> y <strong>«Foto de la devolución»</strong>. Ese bloque <strong>sólo aparece cuando hay algo cargado</strong>.</p></li>
+</ol>
 
 <div class="nota ">
-  <span class="nota__rotulo">Qué pasa después</span>
-  <p>La devolución <strong>queda en la oficina hasta que la reciban en el almacén</strong>. Que la mandes no quiere decir que ya esté recibida. <strong>No le prometas al cliente una nota de crédito inmediata.</strong></p>
+  <span class="nota__rotulo">La foto es tu respaldo</span>
+  <p>Si la mercancía viene golpeada o vencida, <strong>fotografíala ahí mismo</strong>. Es lo que sostiene la devolución cuando en el almacén la cuenten y no coincida con lo que dijiste. La foto viaja pegada a la devolución, no al pedido.</p>
+</div>
+
+<h3 id="paso-5-adonde">Adónde va después</h3>
+<p>La devolución <strong>no es parte del pedido</strong>: viaja sola y tiene su propia vida. El recorrido es éste:</p>
+<div class="manual-tabla">
+  <table>
+    <thead><tr><th>Dónde está</th><th>Qué quiere decir</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Por enviar</strong></td><td>Está en tu teléfono. Sale sola apenas agarres señal.</td></tr>
+      <tr><td><strong>En la oficina</strong></td><td>Llegó y quedó anotada. <strong>El almacén todavía no contó la mercancía.</strong></td></tr>
+      <tr><td><strong>Recibida</strong></td><td>El almacén ya la revisó y la dio por buena.</td></tr>
+    </tbody>
+  </table>
+</div>
+<p>La sigues en <strong>Actividad › Devoluciones</strong>, con su número de referencia, la fecha y cuántas unidades tiene.</p>
+
+<div class="nota nota--clave">
+  <span class="nota__rotulo">No te equivoques en esto</span>
+  <p><strong>Que la mandes no quiere decir que esté recibida.</strong> Entre «En la oficina» y «Recibida» está el almacén contando la mercancía, y eso puede tardar días.</p>
+  <p><strong>No le prometas al cliente una nota de crédito inmediata.</strong> Lo que puedes decirle con seguridad es que la devolución quedó registrada y con qué número.</p>
 </div>
 
 <h2 id="paso-6">Paso 6 — Notas</h2>
@@ -453,6 +517,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
         <li class="arbol__grupo">Consultar</li>
         <li><a href="/docs/actividad.html"><span>Tus pedidos y tu actividad</span></a></li>
         <li><a href="/docs/clientes.html"><span>Clientes nuevos y correcciones</span></a></li>
+        <li><a href="/docs/conversacion.html"><span>Hablar con la oficina</span></a></li>
         <li><a href="/docs/dudas.html"><span>Dudas rápidas</span></a></li>
         </ul>
       </nav>

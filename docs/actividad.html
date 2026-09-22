@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-al+j7D2AC+Lg/qYigLZDlWHZklNovSDisZNbFWp86bo=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- /docs/actividad.html — el manual del vendedor, seccion 10 de 12.
+<!-- /docs/actividad.html — el manual del vendedor, seccion 10 de 13.
 
      ⚠️ ESTA PAGINA NO TIENE GEMELA EN INGLES, y por eso no declara `hreflang`.
      El manual esta escrito en espanol de Venezuela para los ~120 vendedores de
@@ -22,7 +22,7 @@
      `<script>` de abajo es el del tema, copiado byte a byte de las otras.
 
      ⚠️ EL ARBOL DE LA IZQUIERDA VA IGUAL EN LAS DOCE. Si agregas, quitas o
-     renombras una seccion, hay que tocarlo en las doce — y `tool/verificar.py`
+     renombras una seccion, hay que tocarlo en las trece — y `tool/verificar.py`
      se pone rojo si una se queda atras, que es lo que evita el menu cojo. -->
 <title>Tus pedidos y tu actividad — Manual de Vendoo</title>
 <meta name="description" content="La pestaña Actividad de Vendoo: los borradores en «Abiertos», qué significa cada estado de un pedido, tus visitas y tus devoluciones.">
@@ -98,7 +98,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
       "about": {
         "@type": "SoftwareApplication",
         "name": "Vendoo",
-        "softwareVersion": "5.2.5"
+        "softwareVersion": "5.2.9"
       },
       "publisher": {
         "@type": "Organization",
@@ -221,7 +221,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
           <li aria-current="page">Tus pedidos y tu actividad</li>
           </ol>
         </nav>
-        <span class="version">Manual de la versión <b>5.2.5</b></span>
+        <span class="version">Manual de la versión <b>5.2.9</b></span>
         <h1>Tus pedidos y tu actividad</h1>
         <p class="manual__entrada">La pestaña <strong>«Actividad»</strong> de la barra de abajo guarda todo lo que hiciste: <strong>Pedidos</strong>, <strong>Visitas</strong> y <strong>Devoluciones</strong>.</p>
       </div>
@@ -232,6 +232,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
           <li><a href="#pantalla">Cómo se mueve la pantalla</a></li>
           <li><a href="#abiertos">«Abiertos» son tus borradores</a></li>
           <li><a href="#estados">Los estados de un pedido</a></li>
+          <li><a href="#que-puedo-hacer">Qué puedes hacerle a un pedido</a></li>
           <li><a href="#visitas">Visitas</a></li>
           <li><a href="#devoluciones">Devoluciones</a></li>
         </ul>
@@ -289,6 +290,40 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
   <p>Si un pedido dice <strong>«En tu teléfono»</strong> por mucho rato, <strong>no lo vuelvas a cargar</strong>. Ya existe. Conéctate un momento y sale solo.</p>
 </div>
 
+<h2 id="que-puedo-hacer">Qué puedes hacerle a un pedido</h2>
+<p>Tocas la tarjeta y se abre el detalle. Según en qué punto esté, abajo aparecen unos botones u otros.</p>
+
+<div class="manual-tabla">
+  <table>
+    <thead><tr><th>Acción</th><th>Cuándo aparece</th><th>Qué hace</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Repetir este pedido</strong></td><td>En cualquier pedido que ya esté en la oficina y tenga líneas.</td><td>Abre uno nuevo con los mismos productos y las mismas cantidades, para que lo ajustes y lo mandes. <strong>No duplica el viejo</strong>: es un pedido aparte.</td></tr>
+      <tr><td><strong>Editar pedido</strong></td><td><strong>Sólo mientras está «Con analista»</strong>.</td><td>Cambias cantidades y la nota. Una vez confirmado ya no se toca: eso lo decide la oficina.</td></tr>
+      <tr><td><strong>Cancelar pedido</strong></td><td>Mientras la oficina no lo haya confirmado.</td><td>Lo anula y libera la mercancía que tenía apartada.</td></tr>
+      <tr><td><strong>Nuevo pedido a este cliente</strong></td><td>Siempre.</td><td>Empieza uno desde cero con ese cliente, sin copiar nada.</td></tr>
+      <tr><td><strong>Conversación</strong></td><td>En todo pedido que ya llegó a la oficina.</td><td>Hablar con quien lo está revisando. Ver <a href="/docs/conversacion.html">Hablar con la oficina</a>.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="nota nota--clave">
+  <span class="nota__rotulo">No te equivoques en esto</span>
+  <p>Cancelar <strong>no se deshace</strong>. Si el cliente lo quiere después, hay que montarlo de nuevo.</p>
+  <p>Y hay dos cancelaciones distintas, aunque el botón se llame igual:</p>
+  <ul>
+    <li>Si el pedido <strong>todavía está en tu teléfono</strong>, cancelarlo lo borra de ahí y la oficina nunca supo que existió.</li>
+    <li>Si <strong>ya llegó</strong>, queda anulado allá. Y si la oficina alcanzó a confirmarlo, <strong>no se va a poder</strong> — la aplicación te avisa en el momento.</li>
+  </ul>
+</div>
+
+<h3 id="rebotado-por-stock">Si rebotó por falta de mercancía</h3>
+<p>Cuando armas un pedido sin señal y al salir no hay tanto disponible como pediste, el pedido rebota. <strong>Casi nunca está perdido:</strong> la oficina te dice cuánto queda de cada producto.</p>
+<p>Desde <strong>Inicio › Ajuste de stock</strong> bajas las cantidades a lo que hay y lo reenvías. Pediste 20 y quedan 6: <strong>seis cajas vendidas son mejor que ninguna</strong>.</p>
+<ul>
+  <li><strong>Los precios no cambian.</strong> Siguen siendo los que le cantaste al cliente.</li>
+  <li><strong>Es el mismo pedido</strong>, con otras cantidades — no uno nuevo. Por eso no se duplica nada aunque se reenvíe.</li>
+</ul>
+
 <h2 id="visitas">Visitas</h2>
 <p>Acá está todo lo que visitaste. Los chips son <strong>«Todas» · «Hoy» · «Con pedido» · «Sin pedido» · «Abiertas»</strong>.</p>
 <p>Arriba de la lista van siempre las dos que dependen de ti:</p>
@@ -298,7 +333,19 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
 </ul>
 
 <h2 id="devoluciones">Devoluciones</h2>
-<p>La mercancía que te devolvió un cliente. Los chips son <strong>«Todas» · «Por enviar» · «En la oficina» · «Recibidas» · «Canceladas»</strong>.</p>
+<p>La mercancía que te devolvió un cliente. Cada devolución nace en el <strong>paso 5 de una visita</strong> y aparece acá con su <strong>número de referencia</strong>, la fecha, los productos y cuántas unidades tiene.</p>
+
+<figure class="manual-fig manual-fig--ancha">
+  <div class="captura__marco">
+    <picture>
+      <source type="image/webp" sizes="(max-width: 480px) 88vw, 420px" srcset="/assets/img/capturas/manual-devoluciones-360.webp 360w, /assets/img/capturas/manual-devoluciones-620.webp 620w">
+      <img src="/assets/img/capturas/manual-devoluciones.jpg" width="620" height="258" loading="lazy" decoding="async" alt="La cabecera de Actividad › Devoluciones en Vendoo: el buscador por cliente, RIF, referencia o producto, y los contadores «Todas», «Por enviar», «En la oficina» y «Recibidas».">
+    </picture>
+  </div>
+  <figcaption>Los contadores de arriba: en qué punto está cada devolución.</figcaption>
+</figure>
+
+<p>Busca por <strong>cliente, RIF, referencia o producto</strong> — sirve para contestar «¿y aquella caja de whisky que te devolví?» sin salir de la pantalla. Los chips son <strong>«Todas» · «Por enviar» · «En la oficina» · «Recibidas» · «Canceladas»</strong>.</p>
 
 <div class="nota nota--clave">
   <span class="nota__rotulo">No te equivoques en esto</span>
@@ -338,6 +385,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
         <li class="arbol__grupo">Consultar</li>
         <li><a href="/docs/actividad.html" aria-current="page"><span>Tus pedidos y tu actividad</span></a></li>
         <li><a href="/docs/clientes.html"><span>Clientes nuevos y correcciones</span></a></li>
+        <li><a href="/docs/conversacion.html"><span>Hablar con la oficina</span></a></li>
         <li><a href="/docs/dudas.html"><span>Dudas rápidas</span></a></li>
         </ul>
       </nav>

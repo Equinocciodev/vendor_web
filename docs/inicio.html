@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-al+j7D2AC+Lg/qYigLZDlWHZklNovSDisZNbFWp86bo=' https://www.gstatic.com https://www.googletagmanager.com; style-src 'self'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.googletagmanager.com https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- /docs/inicio.html — el manual del vendedor, seccion 4 de 12.
+<!-- /docs/inicio.html — el manual del vendedor, seccion 4 de 13.
 
      ⚠️ ESTA PAGINA NO TIENE GEMELA EN INGLES, y por eso no declara `hreflang`.
      El manual esta escrito en espanol de Venezuela para los ~120 vendedores de
@@ -22,7 +22,7 @@
      `<script>` de abajo es el del tema, copiado byte a byte de las otras.
 
      ⚠️ EL ARBOL DE LA IZQUIERDA VA IGUAL EN LAS DOCE. Si agregas, quitas o
-     renombras una seccion, hay que tocarlo en las doce — y `tool/verificar.py`
+     renombras una seccion, hay que tocarlo en las trece — y `tool/verificar.py`
      se pone rojo si una se queda atras, que es lo que evita el menu cojo. -->
 <title>Tu Inicio — Manual de Vendoo</title>
 <meta name="description" content="La pantalla que más vas a ver en Vendoo: el saludo, los avisos, tu empresa, las tasas del día, el bloque «Hoy» y los ocho accesos rápidos.">
@@ -98,7 +98,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
       "about": {
         "@type": "SoftwareApplication",
         "name": "Vendoo",
-        "softwareVersion": "5.2.5"
+        "softwareVersion": "5.2.9"
       },
       "publisher": {
         "@type": "Organization",
@@ -221,7 +221,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
           <li aria-current="page">Tu Inicio</li>
           </ol>
         </nav>
-        <span class="version">Manual de la versión <b>5.2.5</b></span>
+        <span class="version">Manual de la versión <b>5.2.9</b></span>
         <h1>Tu Inicio</h1>
         <p class="manual__entrada">La pantalla que más vas a ver. De arriba abajo, esto es lo que hay.</p>
       </div>
@@ -271,6 +271,23 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
 <p>Los dos rellenos son los que vas a usar todos los días: <strong>Crear pedido</strong> y <strong>Cobrar</strong>.</p>
 <p>Cada botón trae su propio dato debajo —«4 en cartera», «1 factura vence hoy», «0 de 3 paradas»— así que sabes qué te espera sin entrar.</p>
 
+<h3 id="promociones">Promociones</h3>
+<p>El material de venta vigente de tu empresa: combos, descuentos y cupones. Es tu <strong>mostrador</strong> — lo abres delante del cliente para saber qué ofrecerle.</p>
+<p>⚠️ <strong>No aplica nada al pedido.</strong> El precio real sigue saliendo de la tarifa del cliente en el paso Pedido; esta pantalla sólo informa. Sin señal muestra lo último que se bajó, <strong>siempre con la fecha</strong>.</p>
+
+<h3 id="ajuste-de-stock">Ajuste de stock</h3>
+<p>Para el pedido que <strong>rebotó porque no había tanta mercancía</strong> como pediste. Pasa cuando lo armas sin señal y al salir el almacén ya no tiene esas cantidades.</p>
+<p>Acá bajas cada línea a lo que hay y lo reenvías. <strong>Los precios no cambian</strong> —son los que le cantaste al cliente— y es <strong>el mismo pedido</strong>, no uno nuevo, así que no se duplica nada. Está contado entero en <a href="/docs/actividad.html#rebotado-por-stock">Actividad</a>.</p>
+
+<h3 id="sin-ubicacion">Sin ubicación</h3>
+<p>Los negocios de tu cartera que <strong>todavía no tienen el pin puesto</strong> en el mapa. El botón te dice cuántos son.</p>
+<p>La lista existe para <strong>planificar</strong>: miras cuáles son, ves que tres están en la misma avenida y los metes en la ruta del jueves.</p>
+
+<div class="nota nota--clave">
+  <span class="nota__rotulo">Por qué no se marca desde acá</span>
+  <p>El pin <strong>sólo se pone parado en la puerta del negocio</strong>, desde la visita. Marcarlo desde la casa mirando un mapa es adivinar cuál de esas cuatro esquinas es, y de esa coordenada dependen tu ruta y la constancia de que estuviste ahí. Por eso esta pantalla <strong>lista pero no deja marcar</strong>.</p>
+</div>
+
 <h2 id="desempeno">Mi desempeño</h2>
 <p>Tocando el bloque «Hoy» entras a tu desempeño: el objetivo del mes con su semáforo, lo que llevas vendido, el peso y tu racha.</p>
 <p>Dos cosas que conviene saber de esos números:</p>
@@ -302,6 +319,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
         <li class="arbol__grupo">Consultar</li>
         <li><a href="/docs/actividad.html"><span>Tus pedidos y tu actividad</span></a></li>
         <li><a href="/docs/clientes.html"><span>Clientes nuevos y correcciones</span></a></li>
+        <li><a href="/docs/conversacion.html"><span>Hablar con la oficina</span></a></li>
         <li><a href="/docs/dudas.html"><span>Dudas rápidas</span></a></li>
         </ul>
       </nav>
