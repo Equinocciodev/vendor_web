@@ -98,7 +98,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
       "about": {
         "@type": "SoftwareApplication",
         "name": "Vendoo",
-        "softwareVersion": "5.2.9"
+        "softwareVersion": "5.2.11"
       },
       "publisher": {
         "@type": "Organization",
@@ -221,7 +221,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
           <li aria-current="page">Cobrarle a un cliente</li>
           </ol>
         </nav>
-        <span class="version">Manual de la versión <b>5.2.9</b></span>
+        <span class="version">Manual de la versión <b>5.2.11</b></span>
         <h1>Cobrarle a un cliente</h1>
         <p class="manual__entrada">Cuando un cliente te paga, lo registras en la aplicación. Eso se llama una <strong>solicitud de pago</strong>: tú cargas lo que recibiste y Finanzas la revisa después.</p>
       </div>
@@ -231,6 +231,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
         <ul class="aqui">
           <li><a href="#empezar">Por dónde se empieza</a></li>
           <li><a href="#recorrido">El recorrido</a></li>
+          <li><a href="#retencion">Cuando el cliente te retiene el IVA</a></li>
           <li><a href="#sobra">Lo que sobra queda a favor del cliente</a></li>
           <li><a href="#sin-senal">Se puede cobrar sin señal</a></li>
           <li><a href="#estados">Cómo va tu solicitud</a></li>
@@ -277,6 +278,28 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
 <div class="nota nota--aviso">
   <span class="nota__rotulo">Ojo</span>
   <p>Si arriba te sale <strong>«Este cliente ya tiene 3 solicitudes sin aprobar»</strong>, revisa antes de enviar. Puede ser el mismo depósito que ya cargaste.</p>
+</div>
+
+<h2 id="retencion">Cuando el cliente te retiene el IVA</h2>
+<p>Algunos clientes retienen el IVA: te pagan <strong>menos</strong> de lo que dice la factura y te entregan un comprobante de retención. Hasta que ese papel llegue a la oficina, la factura sigue mostrando el saldo completo.</p>
+<p>En esas facturas la aplicación <strong>ya no rellena el monto por su cuenta</strong>. El campo «Monto a pagar» abre <strong>vacío</strong>, con la cuenta arriba para que la sigas con el dedo —saldo de la factura, menos la retención por aplicar, igual al saldo teórico— y dos botones debajo:</p>
+
+<div class="manual-tabla">
+  <table>
+    <thead><tr><th>Si tocas</th><th>Es porque</th></tr></thead>
+    <tbody>
+    <tr><td><strong>Cobrar el total</strong></td><td>El cliente te pagó la factura completa y no retuvo nada.</td></tr>
+    <tr><td><strong>Retiene: cobrar</strong></td><td>El cliente retuvo el IVA y te dio el comprobante. Ese botón ya trae la retención restada.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<p>El botón no te amarra: si te pagó otra cantidad, escríbela a mano.</p>
+
+<div class="nota nota--clave">
+  <span class="nota__rotulo">Por qué te lo pregunta</span>
+  <p><strong>Ninguna de las dos respuestas acierta siempre.</strong> Antes la aplicación elegía una, y de las retenciones de enero sólo la mitad terminó aplicándose — o sea que adivinaba mal una de cada dos veces, y «de no darte cuenta quedaba saldo».</p>
+  <p>Quien sabe si el cliente retuvo o no eres <strong>tú</strong>, que tienes el comprobante en la mano.</p>
 </div>
 
 <h2 id="sobra">Lo que sobra queda a favor del cliente</h2>
