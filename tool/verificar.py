@@ -46,6 +46,10 @@ chequeo *liviano* a propósito. Lo que comprueba:
      lo hubo: desde ese día, además de fea, sería falsa. Se conserva tal cual y
      NO se le agregó el espejo «app iOS», que nadie escribió nunca; el día que
      alguien lo escriba, se agrega acá.
+ 14. que cada CSS y JS enlazado (`/assets/css|js/`) lleve `?v=` con la huella
+     AL DÍA de su contenido (tool/versionar.py la pone; sin ella, GitHub Pages
+     lo cachea diez minutos y una pestaña abierta mezcla el HTML nuevo con el
+     CSS viejo).
 
 ⚠️ LA ANALÍTICA ES LA ÚNICA EXCEPCIÓN A «NADA EXTERNO» (decisión del dueño,
 2-sep-2026). El <script> que ven estas comprobaciones es propio
@@ -183,6 +187,25 @@ VACIAS = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link',
 
 errores: list[str] = []
 avisos: list[str] = []
+
+# 14. La huella de los CSS y JS propios (23-sep-2026, heredado de
+# guuao_work_web). Misma expresión que tool/versionar.py.
+HUELLA = re.compile(r'(?:href|src)="(/assets/(?:css|js)/[^"?]+\.(?:css|js))(?:\?v=([0-9a-f]*))?"')
+
+
+def revisar_huellas(texto: str) -> list[str]:
+    """Los problemas de huella de una página: CSS/JS sin `?v=` o con una
+    que ya no coincide con el archivo."""
+    problemas = []
+    for ruta, v in HUELLA.findall(texto):
+        archivo = RAIZ / ruta.lstrip('/')
+        if not archivo.exists():
+            continue  # el enlace roto ya lo reporta la regla 4
+        actual = hashlib.sha256(archivo.read_bytes()).hexdigest()[:10]
+        if v != actual:
+            problemas.append('%s con huella %s, y el archivo es %s: corre tool/versionar.py'
+                             % (ruta, v or '(ninguna)', actual))
+    return problemas
 
 
 def error(archivo: str, texto: str) -> None:
@@ -401,6 +424,12 @@ def main() -> int:
         lectores[rel(pagina)] = lector
         ids_por_pagina[rel(pagina)] = lector.ids
 
+        # 14. Cada CSS y JS enlazado lleva la huella AL DÍA de su contenido
+        # (?v=…). Sin ella, Pages lo cachea diez minutos y una pestaña vieja
+        # mezcla el HTML nuevo con el CSS viejo. Arreglo: tool/versionar.py.
+        for problema in revisar_huellas(texto):
+            error(rel(pagina), problema)
+
         if not lector.titulo:
             error(rel(pagina), 'sin <title>')
         elif len(lector.titulo) > 70:
@@ -465,7 +494,8 @@ def main() -> int:
 
     for nombre, lector in lectores.items():
         # La analítica: en todas las páginas, y con sus hosts en la CSP.
-        carga_analitica = any(h == ANALITICA for h, _ in lector.recursos)
+        # La URL lleva `?v=<huella>` (regla 14): se compara sin la consulta.
+        carga_analitica = any(h.split('?')[0] == ANALITICA for h, _ in lector.recursos)
         if not carga_analitica:
             # ⚠️ «las cinco páginas» es la frase de siempre y se conserva, pero
             # esto recorre TODOS los *.html: desde el 12-sep-2026 son seis, y

@@ -49,6 +49,11 @@ jobs:
 
       # HTML bien formado, metadatos mínimos, enlaces internos y anclas,
       # y que no haya ni un recurso externo. Sin dependencias: solo Python.
+      # Incluye la regla 14 (23-sep-2026): cada CSS y JS de /assets/ va con
+      # `?v=<huella>` al día en las 24 páginas —raíz, /en/ y /docs/—. Si
+      # alguien toca estilo.css o un .js y no corre `tool/versionar.py`, este
+      # paso falla y no se publica HTML nuevo con un CSS que Pages tiene en
+      # caché diez minutos.
       - name: Chequeo del HTML y de los enlaces
         run: python3 tool/verificar.py
 

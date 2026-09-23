@@ -53,7 +53,7 @@
      antes competiría con la hoja de estilo y las fuentes por nada. -->
 <link rel="dns-prefetch" href="https://www.gstatic.com">
 <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-<link rel="stylesheet" href="/assets/css/estilo.css">
+<link rel="stylesheet" href="/assets/css/estilo.css?v=eb88d4d1d5">
 <script>/* Dos cosas que tienen que pasar ANTES del primer pintado.
 
    1. El tema elegido: con `defer` la pagina parpadearia en claro. Los tres
@@ -71,11 +71,11 @@ try{var t=localStorage.getItem('vendoo-tema');
 if(t==='claro'||t==='oscuro'){document.documentElement.setAttribute('data-tema',t);}}catch(e){}
 try{var h=document.documentElement;h.setAttribute('data-js','1');h.setAttribute('data-anim','1');
 setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-anim');}},2000);}catch(e){}</script>
-<script src="/assets/js/sitio.js" defer></script>
+<script src="/assets/js/sitio.js?v=f1c19eece1" defer></script>
 <!-- Analítica (GA4 por Firebase), decisión del dueño del 2-sep-2026. Es la
      única cosa externa del sitio; los hosts que necesita están en la CSP de
      arriba y explicados en assets/js/analitica.js. -->
-<script type="module" src="/assets/js/analitica.js"></script>
+<script type="module" src="/assets/js/analitica.js?v=9a4b8bdf8a"></script>
 
 <!-- El `address` va acá y en el `<dl>` de #soporte, y los dos tienen que
      decir lo mismo: es el dato que Apple exige en la Support URL («legal

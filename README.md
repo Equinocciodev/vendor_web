@@ -997,8 +997,12 @@ tarjetas de soporte, de descarga ni de política** en esa página: el correo del
 pie sirve para todo, y la política y los términos tienen su enlace en el pie.
 Sobre «roto»: la publicación lleva el HTML nuevo y `estilo.css` con
 `max-age=600`, así que durante hasta diez minutos un navegador con la hoja
-vieja en caché pinta los campos sin estilo. No es del código, pero conviene
-saberlo cuando se publica un cambio de CSS y HTML a la vez.
+vieja en caché pinta los campos sin estilo. **Desde el 23-sep-2026 eso ya no
+pasa**: cada CSS y JS se enlaza con `?v=<huella>` —los diez primeros hex del
+sha256 del archivo—, así que un CSS distinto es otra URL. Después de tocar
+cualquier archivo de `assets/css/` o `assets/js/` se corre
+`python3 tool/versionar.py`; si se olvida, la regla 14 de
+`tool/verificar.py` tumba la publicación. Heredado de `guuao_work_web`.
 
 **El sitio no tiene backend, así que hoy el envío es un `mailto:`.**
 `sitio.js` valida con HTML5 (`checkValidity` + `reportValidity`, o sea los
