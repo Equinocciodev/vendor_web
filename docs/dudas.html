@@ -98,7 +98,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
       "about": {
         "@type": "SoftwareApplication",
         "name": "Vendoo",
-        "softwareVersion": "5.2.11"
+        "softwareVersion": "5.2.19"
       },
       "publisher": {
         "@type": "Organization",
@@ -221,7 +221,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
           <li aria-current="page">Dudas rápidas</li>
           </ol>
         </nav>
-        <span class="version">Manual de la versión <b>5.2.11</b></span>
+        <span class="version">Manual de la versión <b>5.2.19</b></span>
         <h1>Dudas rápidas</h1>
         <p class="manual__entrada">Lo que más se pregunta, en una o dos frases.</p>
       </div>
@@ -235,6 +235,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
           <li><a href="#ubicacion">¿Por qué me pide el permiso de ubicación para tomar un pedido?</a></li>
           <li><a href="#no-permitir">Le dije «No permitir» y ahora no me vuelve a preguntar.</a></li>
           <li><a href="#cambio-precio">¿Por qué cambió el precio cuando el pedido llegó a la oficina?</a></li>
+          <li><a href="#limite">Me dice que el cliente pasa su límite de crédito. ¿Mando el pedido?</a></li>
           <li><a href="#actualizar">Me salió una pantalla que me pide actualizar.</a></li>
           <li><a href="#avisos">No me llegan los avisos.</a></li>
           <li><a href="#sin-precios">Cambié de empresa y el catálogo aparece sin precios.</a></li>
@@ -276,6 +277,11 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
 <div class="pregunta">
   <h2 id="cambio-precio">¿Por qué cambió el precio cuando el pedido llegó a la oficina?</h2>
   <p>Los precios son los del día en que el pedido <strong>entra al sistema</strong>, no los del día que lo tomaste. La aplicación te avisa qué producto cambió: <strong>avísale al cliente antes de que le llegue la factura</strong>.</p>
+</div>
+
+<div class="pregunta">
+  <h2 id="limite">Me dice que el cliente pasa su límite de crédito. ¿Mando el pedido?</h2>
+  <p><strong>Sí.</strong> La aplicación nunca frena un pedido por el crédito: el aviso es para que <strong>pidas la autorización ya</strong>, con el botón <strong>«Pedir autorización»</strong>, mientras tienes al cliente enfrente. En la oficina el pedido queda <strong>«Retenido»</strong> hasta que lo aprueben. Está contado en <a href="/docs/visita.html#limite-de-credito">la visita</a>.</p>
 </div>
 
 <div class="pregunta">

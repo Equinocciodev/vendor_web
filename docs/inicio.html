@@ -98,7 +98,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
       "about": {
         "@type": "SoftwareApplication",
         "name": "Vendoo",
-        "softwareVersion": "5.2.11"
+        "softwareVersion": "5.2.19"
       },
       "publisher": {
         "@type": "Organization",
@@ -221,7 +221,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
           <li aria-current="page">Tu Inicio</li>
           </ol>
         </nav>
-        <span class="version">Manual de la versión <b>5.2.11</b></span>
+        <span class="version">Manual de la versión <b>5.2.19</b></span>
         <h1>Tu Inicio</h1>
         <p class="manual__entrada">La pantalla que más vas a ver. De arriba abajo, esto es lo que hay.</p>
       </div>
@@ -255,7 +255,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
     <tr><td><strong>Los avisos</strong></td><td>Salen sólo cuando hay algo que arreglar: el teléfono en silencio, un permiso que falta. <strong>Si no hay nada mal, no sale nada.</strong></td></tr>
     <tr><td><strong>Tu empresa</strong></td><td>El logo, el nombre y el RIF. Si trabajas con varias, aquí cambias.</td></tr>
     <tr><td><strong>Las tasas</strong></td><td>Dólar, euro y la del Banco Central. Tócalas y se abre la pantalla completa con la calculadora y el historial.</td></tr>
-    <tr><td><strong>«Hoy»</strong></td><td>Visitas, pedidos y monto del día. Tócalo y entras a <strong>Mi desempeño</strong>, con tu objetivo del mes.</td></tr>
+    <tr><td><strong>«Hoy»</strong></td><td>Visitas cerradas, pedidos y monto del día. Tócalo y entras a <strong>Mi desempeño</strong>, con tu objetivo del mes.</td></tr>
     <tr><td><strong>Los ocho botones</strong></td><td>Los accesos rápidos. Cada uno trae un dato debajo.</td></tr>
     </tbody>
   </table>
@@ -269,7 +269,12 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
 <h2 id="accesos">Los ocho accesos</h2>
 <p>Son <strong>Crear pedido</strong>, <strong>Ruta de hoy</strong>, <strong>Cobrar</strong>, <strong>Mis clientes</strong>, <strong>Promociones</strong>, <strong>Calendario</strong>, <strong>Solicitudes de cliente</strong> y <strong>Ajuste de stock</strong>.</p>
 <p>Los dos rellenos son los que vas a usar todos los días: <strong>Crear pedido</strong> y <strong>Cobrar</strong>.</p>
-<p>Cada botón trae su propio dato debajo —«4 en cartera», «1 factura vence hoy», «0 de 3 paradas»— así que sabes qué te espera sin entrar.</p>
+<p>Cada botón trae su propio dato debajo —«40 clientes», «1 factura vence hoy», «0 de 3 paradas»— así que sabes qué te espera sin entrar.</p>
+
+<div class="nota ">
+  <span class="nota__rotulo">Cada número dice qué cuenta</span>
+  <p>El bloque «Hoy» dice <strong>«Visitas cerradas»</strong>: cuenta sólo las que ya completaste. En <a href="/docs/actividad.html#visitas">Actividad › Visitas</a> el chip «Hoy» cuenta también las que tienes abiertas, así que ahí el número puede ser mayor. Los dos son verdad.</p>
+</div>
 
 <h3 id="promociones">Promociones</h3>
 <p>El material de venta vigente de tu empresa: combos, descuentos y cupones. Es tu <strong>mostrador</strong> — lo abres delante del cliente para saber qué ofrecerle.</p>
@@ -280,7 +285,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
 <p>Acá bajas cada línea a lo que hay y lo reenvías. <strong>Los precios no cambian</strong> —son los que le cantaste al cliente— y es <strong>el mismo pedido</strong>, no uno nuevo, así que no se duplica nada. Está contado entero en <a href="/docs/actividad.html#rebotado-por-stock">Actividad</a>.</p>
 
 <h3 id="sin-ubicacion">Sin ubicación</h3>
-<p>Los negocios de tu cartera que <strong>todavía no tienen el pin puesto</strong> en el mapa. El botón te dice cuántos son.</p>
+<p>Los negocios de tu cartera que <strong>todavía no tienen el pin puesto</strong> en el mapa. El botón te dice cuántas <strong>direcciones</strong> faltan de cuántas tienes —«12 de 50 direcciones»—, porque el pin es de cada dirección: un cliente con dos sucursales cuenta dos.</p>
 <p>La lista existe para <strong>planificar</strong>: miras cuáles son, ves que tres están en la misma avenida y los metes en la ruta del jueves.</p>
 
 <div class="nota nota--clave">

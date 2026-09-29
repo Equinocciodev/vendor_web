@@ -98,7 +98,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
       "about": {
         "@type": "SoftwareApplication",
         "name": "Vendoo",
-        "softwareVersion": "5.2.11"
+        "softwareVersion": "5.2.19"
       },
       "publisher": {
         "@type": "Organization",
@@ -221,7 +221,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
           <li aria-current="page">Cobrarle a un cliente</li>
           </ol>
         </nav>
-        <span class="version">Manual de la versión <b>5.2.11</b></span>
+        <span class="version">Manual de la versión <b>5.2.19</b></span>
         <h1>Cobrarle a un cliente</h1>
         <p class="manual__entrada">Cuando un cliente te paga, lo registras en la aplicación. Eso se llama una <strong>solicitud de pago</strong>: tú cargas lo que recibiste y Finanzas la revisa después.</p>
       </div>
@@ -231,6 +231,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
         <ul class="aqui">
           <li><a href="#empezar">Por dónde se empieza</a></li>
           <li><a href="#recorrido">El recorrido</a></li>
+          <li><a href="#monto-de-la-app">Si dejas el monto vacío, lo llena la aplicación</a></li>
           <li><a href="#retencion">Cuando el cliente te retiene el IVA</a></li>
           <li><a href="#sobra">Lo que sobra queda a favor del cliente</a></li>
           <li><a href="#sin-senal">Se puede cobrar sin señal</a></li>
@@ -247,9 +248,11 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
 </div>
 
 <h2 id="empezar">Por dónde se empieza</h2>
-<p>Hay tres caminos y los tres llegan a la misma pantalla, <strong>«Nueva solicitud»</strong>:</p>
+<p>Hay cinco caminos y todos llegan a la misma pantalla, <strong>«Nueva solicitud»</strong>:</p>
 <ul>
   <li>El botón <strong>«Cobrar»</strong> de la pantalla de Inicio.</li>
+  <li>El botón <strong>«Cobrarle»</strong> de la <strong>ficha del cliente</strong>. Entras con el cliente ya puesto, sin buscarlo en la lista.</li>
+  <li>El botón <strong>«Cobrarle»</strong> de la pantalla <strong>«¡Visita enviada!»</strong>, debajo de «Ir al inicio». Es para el cliente al que le acabas de cerrar la visita: si te pagó ahí mismo, lo cargas sin salir a buscarlo.</li>
   <li>La pestaña <strong>«Cobranza»</strong> de abajo, sub-pestaña <strong>«Pagos»</strong>, y el botón <strong>+</strong> a la derecha del buscador.</li>
   <li>El botón <strong>«Subir pago»</strong> de una factura, en <a href="/docs/facturas.html">Cobranza › Facturas</a>. Así ya entras con el cliente puesto.</li>
 </ul>
@@ -264,6 +267,15 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
   <li><b>Fotos adicionales</b><p>Si hubo más de una transferencia, toca <strong>«Agregar»</strong> en «Fotos adicionales». Puedes poner hasta tres. Van a la conversación de la solicitud, donde Finanzas las ve.</p></li>
   <li><b>A qué facturas se aplica</b><p>Más abajo está «Facturas pendientes». Marca las facturas que ese pago cancela y reparte el monto entre ellas. Al final la aplicación te muestra «Total asignado» y «Restante».</p></li>
 </ol>
+
+<h3 id="monto-de-la-app">Si dejas el monto vacío, lo llena la aplicación</h3>
+<p>En una factura con retención (ver <a href="#retencion">más abajo</a>) no hace falta que escribas primero «Monto que recibiste». Si lo dejas vacío y tocas <strong>«Cobrar el total»</strong> o <strong>«Retiene: cobrar»</strong>, la aplicación escribe ese monto por ti. Desde ahí, mientras el monto sea el que escribió ella, es siempre <strong>la suma de todo lo que repartiste</strong> entre las facturas: marcas otra, desmarcas una, corriges el monto de una factura, y el monto recibido se vuelve a sumar solo. Así lo recibido y lo repartido <strong>no pueden decir cosas distintas</strong>.</p>
+<ul>
+  <li>Si el banco es en bolívares, la suma se pasa a bolívares con la tasa que ves en el formulario.</li>
+  <li><strong>Si el monto lo escribiste tú, la aplicación no lo toca.</strong> Tú lo leíste del comprobante, y eso manda.</li>
+  <li>Si después cambias a un banco de otra moneda, el monto que habías escrito se borra y te lo dice —«Cambiaste a un diario en bolívares: escribe de nuevo el monto que recibiste.»—, porque ese número estaba en la otra moneda.</li>
+  <li>El botón <strong>«Auto»</strong> reparte lo recibido entre las facturas en el orden de siempre, respeta lo que ya tecleaste en una factura y <strong>desmarca</strong> las que se quedan sin nada.</li>
+</ul>
 
 <figure class="manual-fig">
   <div class="captura__marco">
@@ -294,7 +306,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
   </table>
 </div>
 
-<p>El botón no te amarra: si te pagó otra cantidad, escríbela a mano.</p>
+<p>El botón no te amarra: si te pagó otra cantidad, escríbela a mano. Y si todavía no escribiste «Monto que recibiste», el botón lo llena con su cifra — no tienes que subir a teclearlo.</p>
 
 <div class="nota nota--clave">
   <span class="nota__rotulo">Por qué te lo pregunta</span>

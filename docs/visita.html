@@ -98,7 +98,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
       "about": {
         "@type": "SoftwareApplication",
         "name": "Vendoo",
-        "softwareVersion": "5.2.11"
+        "softwareVersion": "5.2.19"
       },
       "publisher": {
         "@type": "Organization",
@@ -221,7 +221,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
           <li aria-current="page">La visita, paso a paso</li>
           </ol>
         </nav>
-        <span class="version">Manual de la versión <b>5.2.11</b></span>
+        <span class="version">Manual de la versión <b>5.2.19</b></span>
         <h1>La visita, paso a paso</h1>
         <p class="manual__entrada">Una visita son ocho pasos: Check-in, Inventario, Pedido, Fotos, Devoluciones, Notas, Firma y Check-out. Acá está cada uno, con lo que tienes que hacer y lo que conviene saber antes de pararte frente al cliente.</p>
       </div>
@@ -325,6 +325,27 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
 <p>Debajo de cada producto ves <strong>«Disponible: 77 uds»</strong>. Eso es <strong>lo que puedes vender ahora mismo</strong> de ese almacén, no lo que hay en el depósito. No puedes cargar más de eso.</p>
 <p>Abajo, la barra del <strong>Total</strong> con su equivalente en bolívares y el peso. Al lado tiene tres botones: armar <strong>otro pedido</strong> para el mismo cliente, <strong>«Pedir autorización por WhatsApp»</strong> y <strong>«Compartir presupuesto»</strong>.</p>
 
+<h3 id="ir-al-cierre">Saltar al cierre</h3>
+<p>Si ya tienes el pedido y no vas a tomar fotos, ni recibir devolución, ni escribir notas, ni pedir firma, no hace falta pasar por esos cuatro pasos vacíos. En la barra del total sale <strong>«Ir al cierre»</strong> y te lleva directo al <a href="#paso-8">Check-out</a>.</p>
+<ul>
+  <li>Sale <strong>sólo si esos pasos están vacíos</strong>. Si ya tomaste una foto o contaste una devolución, sigues por el camino normal.</li>
+  <li><strong>No se salta nada de lo que importa</strong>: las revisiones del envío corren igual en el cierre.</li>
+  <li>¿Te acordaste de algo? Desde el cierre, la <strong>flecha de atrás</strong> te devuelve paso por paso a los que saltaste.</li>
+</ul>
+<p>Si el cliente <strong>no compra hoy</strong>, el atajo es otro: <strong>«El cliente no compra hoy — ir al cierre»</strong>.</p>
+
+<h3 id="limite-de-credito">Cuando el pedido pasa el límite de crédito del cliente</h3>
+<p>En las empresas que controlan el crédito, si con este pedido el cliente se pasa de su límite, la aplicación te lo dice en ámbar —en la barra del total, en el Check-out y en la pregunta final—, con cuánto se pasa:</p>
+<blockquote class="cita">Con este pedido el cliente pasa su límite por $120,00 (12,00 %). Odoo lo va a retener hasta que lo aprueben: pide la autorización ya.</blockquote>
+<p class="mt-sm">Al lado sale <strong>«Pedir autorización»</strong>, que te arma el mensaje para quien aprueba con las cifras del cliente.</p>
+<p>Las cifras del crédito van <strong>en dólares</strong>. En la ficha del cliente, bajo <strong>«Su cuenta»</strong>, las ves en orden: <strong>Cupo de crédito</strong>, <strong>Usado</strong>, <strong>Por facturar</strong> (pedidos confirmados que todavía no se facturaron) y <strong>Disponible</strong>. La cuenta se sigue con el dedo: cupo menos usado menos por facturar da el disponible, y si sale negativo va en rojo.</p>
+
+<div class="nota nota--clave">
+  <span class="nota__rotulo">No te equivoques en esto</span>
+  <p><strong>El aviso no te frena.</strong> El pedido se manda igual y llega a la oficina; allá queda <a href="/docs/actividad.html#estados">«Retenido»</a> hasta que lo autoricen. El aviso es para que <strong>pidas la autorización de una vez</strong>, con el cliente enfrente, y no te enteres días después.</p>
+  <p>Sin señal usa las cifras guardadas en el teléfono y lo dice: <strong>«Cifras de crédito guardadas en el teléfono, sin confirmar con Odoo.»</strong></p>
+</div>
+
 <h3 id="varios-pedidos">Varios pedidos en la misma visita</h3>
 <p>Un cliente puede comprarte cosas que <strong>se despachan por separado</strong> —uno sin alcohol, uno con dulce, uno con diario—. Eso no son tres visitas: es <strong>una visita con tres pedidos</strong>.</p>
 
@@ -347,8 +368,18 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
 
 <div class="nota ">
   <span class="nota__rotulo">Quién decide qué va en cada uno</span>
-  <p><strong>Tú.</strong> La aplicación no separa sola por categoría ni por nada: los pedidos son los que armes. Y <strong>un pedido vacío no viaja</strong> — si abriste uno y no le pusiste nada, no llega ningún documento en blanco a la oficina.</p>
+  <p><strong>Tú</strong>, con una sola excepción, la del licor (abajo). Fuera de eso la aplicación no separa sola por categoría ni por nada: los pedidos son los que armes. Y <strong>un pedido vacío no viaja</strong> — si abriste uno y no le pusiste nada, no llega ningún documento en blanco a la oficina.</p>
 </div>
+
+<h3 id="licor">El licor sale en su propio pedido</h3>
+<p>Hay empresas que <strong>no permiten mezclar licor con otros productos</strong> en un mismo pedido. En ésas, si cargas las dos cosas juntas, la aplicación <strong>parte el pedido en dos</strong> al salir del paso Pedido: uno con el licor y otro con el resto. Te lo dice así:</p>
+<blockquote class="cita">Salen dos pedidos: esta empresa no permite mezclar licor con otros productos en un mismo pedido.</blockquote>
+<ul class="mt-sm">
+  <li>Son <strong>dos documentos en la oficina</strong>, cada uno con su total. En la pregunta final de <a href="#paso-8">«Completar visita»</a> los ves por separado, el de licor marcado <strong>«· licor»</strong>.</li>
+  <li>Si vuelves al paso Pedido y agregas más, <strong>el licor nuevo se suma al pedido de licor</strong> y lo demás al otro. Nunca nace un tercero.</li>
+  <li><strong>«Compartir presupuesto»</strong> también sale en dos papeles: te pregunta cuál compartir, <strong>«Compartir el de licor»</strong> o <strong>«Compartir el otro»</strong>. El cliente nunca recibe un papel mezclado.</li>
+</ul>
+<p>En las empresas que no tienen esa regla, nada de esto pasa.</p>
 
 <div class="nota nota--clave">
   <span class="nota__rotulo">No te equivoques en esto</span>
@@ -388,7 +419,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
       <img src="/assets/img/capturas/manual-devolucion.jpg" width="620" height="689" loading="lazy" decoding="async" alt="El paso 5 de una visita en Vendoo, Devoluciones: un producto con dos unidades a devolver, los motivos sugeridos «Producto vencido» y «Producto dañado / roto», el campo «Motivo (opcional)», y abajo «De la devolución» con «Observaciones (opcional)» y el botón «Foto de la devolución».">
     </picture>
   </div>
-  <figcaption>El motivo va dentro de la tarjeta del producto; las observaciones y las fotos, abajo, son de toda la devolución.</figcaption>
+  <figcaption>El motivo va dentro de la tarjeta del producto. Captura de la 5.2.9: hoy el bloque «De la devolución» va <strong>arriba</strong> de la lista y las observaciones son <strong>obligatorias</strong> (ver abajo).</figcaption>
 </figure>
 
 <h3 id="paso-5-como">Cómo se arma</h3>
@@ -397,8 +428,14 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
   <li><b>Súbele la cantidad</b><p>Con el <strong>«+»</strong>. Apenas pasa de cero, la tarjeta se abre y aparece lo de abajo.</p></li>
   <li><b>Di por qué vuelve</b><p><strong>Los motivos sugeridos</strong> —«Producto vencido», «Producto dañado / roto»…— se escriben solos al tocarlos, y la fila se corre a los lados: hay más de los que ves. <strong>«Motivo (opcional)»</strong> es para escribirlo con tus palabras, y <strong>lo que escribes tú manda</strong> sobre el sugerido.</p></li>
   <li><b>Repite con cada producto</b><p>Cada uno lleva <strong>su propio motivo</strong>. Dos productos que vuelven por razones distintas se cuentan como lo que son.</p></li>
-  <li><b>Y lo que es de toda la devolución</b><p>Abajo del todo, bajo <strong>«De la devolución»</strong>: <strong>«Observaciones (opcional)»</strong> y <strong>«Foto de la devolución»</strong>. Ese bloque <strong>sólo aparece cuando hay algo cargado</strong>.</p></li>
+  <li><b>Y lo que es de toda la devolución</b><p>Arriba de la lista, bajo <strong>«De la devolución»</strong>: las observaciones y <strong>«Foto de la devolución»</strong>. El bloque está siempre ahí, aunque tengas cien productos; mientras no cargues unidades sale apagado y dice <strong>«Carga unidades para agregar observaciones y fotos»</strong>.</p></li>
 </ol>
+
+<div class="nota nota--clave">
+  <span class="nota__rotulo">Las observaciones son obligatorias</span>
+  <p>Con unidades a devolver, <strong>tienes que escribir las observaciones</strong>, y lo que piden es <strong>la factura y el pedido afectados</strong>: el campo te lo recuerda con <strong>«Indica la factura y el pedido afectados»</strong>. Es lo que lee quien aprueba el retiro y lo que el almacén contrasta cuando llega la mercancía.</p>
+  <p>Sin ellas, «Guardar y continuar» no te deja pasar y te lo dice en rojo: <strong>«Escribe la factura y el pedido afectados para poder seguir»</strong>. Las fotos siguen siendo opcionales: hasta <strong>5</strong>, y el botón te va contando cuántas llevas.</p>
+</div>
 
 <div class="nota ">
   <span class="nota__rotulo">La foto es tu respaldo</span>
@@ -417,7 +454,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
     </tbody>
   </table>
 </div>
-<p>La sigues en <strong>Actividad › Devoluciones</strong>, con su número de referencia, la fecha y cuántas unidades tiene.</p>
+<p>La sigues en <strong>Actividad › Devoluciones</strong>, con su número de referencia, la fecha y cuántas unidades tiene. Cuando la mercancía hay que ir a buscarla al cliente, ahí mismo ves también <strong>en qué va el retiro</strong>: si lo aprobaron, si ya pasaron a buscarla y si ya salió la nota de crédito. Está contado en <a href="/docs/actividad.html#retiro">Actividad › El retiro de la mercancía</a>.</p>
 
 <div class="nota nota--clave">
   <span class="nota__rotulo">No te equivoques en esto</span>
@@ -488,6 +525,15 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
 </div>
 
 <p>En los dos casos, el pedido lo sigues viendo en <strong>Actividad › Pedidos</strong> y la devolución en <strong>Actividad › Devoluciones</strong>. Mientras no haya salido del teléfono dice <strong>«Por enviar»</strong>.</p>
+<p>Si el cliente te pagó en la visita, toca <strong>«Cobrarle»</strong>, debajo de «Ir al inicio»: se abre la cobranza con ese cliente ya puesto. Ver <a href="/docs/cobrar.html#empezar">Cobrarle a un cliente</a>.</p>
+
+<h3 id="rebote">Si un pedido rebota y la visita ya está en la oficina</h3>
+<p>Puede pasar que la visita llegue a la oficina y <strong>uno de sus pedidos rebote</strong> —casi siempre porque no había tanta mercancía— y la aplicación te devuelva al paso Pedido para corregirlo. En ese caso:</p>
+<ul>
+  <li>Lo que ya entró <strong>no se puede cambiar desde la visita</strong>. Los pasos que viajaron con el cierre —check-in, inventario, fotos, devolución, notas y firma— quedan <strong>de solo lectura</strong>, con el aviso <strong>«Esta visita ya está en la oficina: solo puedes corregir el pedido que no entró»</strong>. Puedes desplazarte y revisarlos, pero no editarlos.</li>
+  <li>Con dos pedidos, si uno <strong>ya llegó</strong>, ése tampoco se toca: la aplicación te dice que ya llegó y que <strong>lo que le cambies no le llegaría</strong>. Para modificarlo, hazlo desde Actividad › Pedidos al cerrar la visita; para agregar productos, ábrelos en otro pedido.</li>
+  <li>El que <strong>no entró</strong> sí se corrige, y se manda desde el Check-out como siempre.</li>
+</ul>
 
 <div class="nota ">
   <span class="nota__rotulo">Recuerda</span>

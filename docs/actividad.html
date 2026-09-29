@@ -98,7 +98,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
       "about": {
         "@type": "SoftwareApplication",
         "name": "Vendoo",
-        "softwareVersion": "5.2.11"
+        "softwareVersion": "5.2.19"
       },
       "publisher": {
         "@type": "Organization",
@@ -221,7 +221,7 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
           <li aria-current="page">Tus pedidos y tu actividad</li>
           </ol>
         </nav>
-        <span class="version">Manual de la versión <b>5.2.11</b></span>
+        <span class="version">Manual de la versión <b>5.2.19</b></span>
         <h1>Tus pedidos y tu actividad</h1>
         <p class="manual__entrada">La pestaña <strong>«Actividad»</strong> de la barra de abajo guarda todo lo que hiciste: <strong>Pedidos</strong>, <strong>Visitas</strong> y <strong>Devoluciones</strong>.</p>
       </div>
@@ -273,11 +273,11 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
     <tr><td><strong>En tu teléfono</strong></td><td>Todavía no salió. Sale solo cuando haya señal.</td><td>Nada. Espera.</td></tr>
     <tr><td><strong>Enviando</strong></td><td>Está viajando a la oficina en este momento.</td><td>Nada.</td></tr>
     <tr><td><strong>Esperando analista</strong></td><td>Llegó a la oficina. Falta que lo aprueben.</td><td>Nada. Si urge, avisa.</td></tr>
-    <tr><td><strong>Retenido</strong></td><td>La oficina lo frenó por el crédito del cliente.</td><td>Cóbrale lo que debe y avisa.</td></tr>
+    <tr><td><strong>Retenido</strong></td><td>La oficina lo frenó por el crédito del cliente.</td><td>Cóbrale lo que debe y, si no lo hiciste en la visita, pide la autorización.</td></tr>
     <tr><td><strong>Confirmado</strong></td><td>Aprobado. El pedido va a despacho.</td><td>Nada. Listo.</td></tr>
     <tr><td><strong>Cancelado</strong></td><td>La oficina lo anuló.</td><td>Pregunta el motivo.</td></tr>
     <tr><td><strong>Sin stock</strong></td><td>No hay suficiente de algún producto.</td><td>Ábrelo y decide qué hacer.</td></tr>
-    <tr><td><strong>Rechazado</strong></td><td>La oficina lo rechazó. Mandarlo otra vez da lo mismo.</td><td>Ármalo de nuevo.</td></tr>
+    <tr><td><strong>Rechazado</strong></td><td>La oficina lo rechazó. Mandarlo otra vez da lo mismo. El pedido te muestra <strong>el motivo que dio Odoo</strong>, tal cual —por ejemplo, que esa empresa no deja mezclar licor con otros productos—, y el aviso que te llega dice lo mismo.</td><td>Lee el motivo y ármalo de nuevo como te dice.</td></tr>
     <tr><td><strong>No se envió</strong></td><td>Se intentó muchas veces y no salió.</td><td>Toca «Reintentar» o avisa.</td></tr>
     </tbody>
   </table>
@@ -356,6 +356,31 @@ setTimeout(function(){if(!h.hasAttribute('data-listo')){h.removeAttribute('data-
 </ul>
 <p>Mientras diga «En la oficina», <strong>no le prometas al cliente que ya le acreditaron nada</strong>.</p>
 </div>
+
+<h3 id="retiro">El retiro de la mercancía</h3>
+<p>Cuando la mercancía hay que ir a buscarla al cliente, la devolución lleva además <strong>el estado del retiro</strong>: una pastilla en la tarjeta y en el detalle que te dice en qué va. El recorrido es éste, y el nombre exacto de cada estado lo pone la oficina:</p>
+<div class="manual-tabla">
+  <table>
+    <thead><tr><th>Dice</th><th>Qué quiere decir</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Retiro por aprobar</strong></td><td>Lo pediste y está esperando que el Gerente de Ventas lo apruebe.</td></tr>
+      <tr><td><strong>Retiro rechazado</strong></td><td>No lo aprobaron. En el detalle, arriba y en rojo, está <strong>el motivo</strong>. Si la oficina no lo escribió, te lo dice y te manda a preguntarlo en la conversación.</td></tr>
+      <tr><td><strong>Retiro aprobado</strong></td><td>Aprobado. Falta que Logística lo programe.</td></tr>
+      <tr><td><strong>Retiro programado</strong></td><td>Ya tiene fecha para pasar por el negocio.</td></tr>
+      <tr><td><strong>Mercancía retirada</strong></td><td>Ya la recogieron del cliente.</td></tr>
+      <tr><td><strong>Recibida en almacén</strong> · <strong>Auditada</strong></td><td>Llegó al almacén y la están contando.</td></tr>
+      <tr><td><strong>Devuelta</strong></td><td>El almacén la dio por buena.</td></tr>
+      <tr><td><strong>Nota de crédito emitida</strong></td><td>Listo: al cliente ya le acreditaron. <strong>Ahora sí</strong> se lo puedes decir.</td></tr>
+    </tbody>
+  </table>
+</div>
+<p>Los colores ayudan a leerlo de un vistazo: <strong>rojo</strong> el rechazado, <strong>ámbar</strong> lo que va caminando, <strong>verde</strong> lo terminado.</p>
+<ul>
+  <li>Cuando lo aprueban o lo rechazan <strong>te llega un aviso</strong>, y al tocarlo se abre esa devolución.</li>
+  <li>En el filtro de la lista aparece la sección <strong>«Retiro»</strong>: <strong>«Por aprobar» · «Rechazado» · «En proceso» · «Devuelto o acreditado»</strong>. Sólo sale si alguna de tus devoluciones tiene retiro.</li>
+  <li>Si la oficina <strong>canceló</strong> la devolución, la tarjeta dice <strong>«Cancelada»</strong> en rojo, aunque el retiro se haya quedado en «aprobado». No esperes a ningún camión.</li>
+  <li>Las devoluciones que siguen <strong>en tu teléfono</strong> todavía no tienen retiro: eso empieza cuando llegan a la oficina.</li>
+</ul>
 
 <div class="nota ">
   <span class="nota__rotulo">Un detalle que vale</span>

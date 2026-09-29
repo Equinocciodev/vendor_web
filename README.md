@@ -930,7 +930,7 @@ el hash del script del tema y con los identificadores de tienda:
   destinos, en el mismo orden— y **cada página tiene que marcarse a sí misma**
   con `aria-current="page"`, ni una más ni una menos. Un menú cojo no se nota:
   la página sigue abriendo.
-- **La versión de la aplicación que el manual dice describir** (hoy `5.2.9`)
+- **La versión de la aplicación que el manual dice describir** (hoy `5.2.19`)
   tiene que ser la misma en las trece. A medias, el manual afirmaría describir
   dos aplicaciones distintas.
 - Y **cada sección tiene que estar en el `sitemap.xml`**.
@@ -944,7 +944,7 @@ octavo botón dice «Sin ubicación» donde el manual dice «Ajuste de stock», 
 lleva un renglón de tasa que la aplicación quitó el 4-sep. **Un manual cuya
 captura contradice su propio texto enseña a desconfiar de los dos.**
 
-Las del manual son trece, y llevan el prefijo `manual-`. Nueve son de la 5.2.5 y **cuatro de la 5.2.9** (la devolución, sus estados, el multi-pedido y la conversación; 22-sep-2026). Dos
+Las del manual son trece, y llevan el prefijo `manual-`. Nueve son de la 5.2.5 y **cuatro de la 5.2.9** (la devolución, sus estados, el multi-pedido y la conversación; 22-sep-2026). ⚠️ **La del paso Devoluciones (`manual-devolucion`) quedó vieja en la 5.2.16/5.2.17** —el bloque «De la devolución» subió arriba de la lista y las observaciones pasaron a ser obligatorias— y su pie lo dice: se reemplaza con una captura nueva, anonimizada, no se retoca. Dos
 cosas que hay que saber antes de agregar otra:
 
 - 🔴 **Hay capturas del lote original que NO se publicaron**, y no por gusto:
