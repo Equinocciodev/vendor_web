@@ -930,7 +930,7 @@ el hash del script del tema y con los identificadores de tienda:
   destinos, en el mismo orden— y **cada página tiene que marcarse a sí misma**
   con `aria-current="page"`, ni una más ni una menos. Un menú cojo no se nota:
   la página sigue abriendo.
-- **La versión de la aplicación que el manual dice describir** (hoy `5.2.19`)
+- **La versión de la aplicación que el manual dice describir** (hoy `5.2.20`)
   tiene que ser la misma en las trece. A medias, el manual afirmaría describir
   dos aplicaciones distintas.
 - Y **cada sección tiene que estar en el `sitemap.xml`**.
